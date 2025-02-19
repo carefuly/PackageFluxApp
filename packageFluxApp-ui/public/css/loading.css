@@ -24,7 +24,7 @@ html, body, #app {
 }
 
 .app-name__loader::before {
-  content: 'SkyAdmin';
+  content: 'PackageFluxApp';
 }
 
 .app-animate__loader {

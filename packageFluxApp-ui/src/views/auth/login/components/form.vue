@@ -5,26 +5,53 @@ import {HOME_URL} from "@/config";
 import {useUserStore} from "@/store";
 import {getAssets} from "@/utils";
 import {skyMsgError, skyMsgSuccess} from "@/utils/sky";
-import {login} from "@/apis/auth/login";
-import {Lock, Message} from "@element-plus/icons-vue";
+import {captcha, login} from "@/apis/auth/login";
+import {Lock, Message, TurnOff} from "@element-plus/icons-vue";
 
 const router = useRouter();
 const logo = getAssets("images/logo/logo.png");
 const formRef = ref();
 const userStore = useUserStore();
 const pageData = ref({
+  isCountingDown: false,
+  countdownSeconds: 60,
   loading: false,
   captcha: "",
   form: {
     email: "",
     password: "",
+    code: "",
   },
   rules: {
     email: [{required: true, message: "请输入登录的邮箱", trigger: "blur"}],
     password: [{required: true, message: "请输入密码", trigger: "blur"}],
+    code: [{required: true, message: "请输入验证码", trigger: "blur"}],
   },
 });
 const method = reactive({
+  // 发送验证码
+  handleSendCaptcha: async () => {
+    if (pageData.value.form.email.length <= 0) return skyMsgError("请输入邮箱🌻");
+    if (pageData.value.isCountingDown) return; // 如果正在倒计时，则不执行发送操作
+    const res: any = await captcha({email: pageData.value.form.email});
+    try {
+      // 发送成功
+      skyMsgSuccess(res.msg + "🌻");
+    } catch (error) {
+      skyMsgError("发送失败，请稍后重试🌻");
+    } finally {
+      // 开始倒计时
+      pageData.value.isCountingDown = true;
+      const intervalId = setInterval(() => {
+        pageData.value.countdownSeconds--;
+        if (pageData.value.countdownSeconds <= 0) {
+          clearInterval(intervalId); // 清除定时器
+          pageData.value.isCountingDown = false;
+          pageData.value.countdownSeconds = 60; // 重置倒计时秒数
+        }
+      }, 1000);
+    }
+  },
   skyLogin: async () => {
     if (!formRef.value) return;
     formRef.value.validate(async (valid: any) => {
@@ -32,12 +59,11 @@ const method = reactive({
         pageData.value.loading = true;
         try {
           const res: any = await login(pageData.value.form);
-          console.log(res);
-          // userStore.setToken(res.data.token);
-          // // 跳转到首页
-          // pageData.value.loading = false;
-          // skyMsgSuccess(res.msg);
-          // await router.push(HOME_URL);
+          userStore.setToken(res.data.token);
+          // 跳转到首页
+          pageData.value.loading = false;
+          skyMsgSuccess(res.msg);
+          await router.push(HOME_URL);
         } catch (error) {
           // 等待1秒关闭loading
           let loadingTime = 1;
@@ -54,6 +80,9 @@ const method = reactive({
     });
   },
 });
+const countdownText = computed(() => {
+  return pageData.value.isCountingDown ? `${pageData.value.countdownSeconds}秒后重试` : '发送验证码';
+});
 </script>
 
 <template>
@@ -68,7 +97,7 @@ const method = reactive({
       <span class="h-1px w-16 bg-gray-300 inline-block"></span>
     </div>
     <!-- 输入框盒子 -->
-    <el-form ref="formRef" class="w-260px formRef" :model="pageData.form" :rules="pageData.rules">
+    <el-form ref="formRef" class="w-300px formRef" :model="pageData.form" :rules="pageData.rules" label-width="auto">
       <el-row :gutter="24">
         <el-col :span="24">
           <el-form-item label="邮箱" prop="email" required>
@@ -81,6 +110,26 @@ const method = reactive({
           <el-form-item label="密码" prop="password" required>
             <el-input type="password" v-model="pageData.form.password" placeholder="请输入密码" show-password
                       :suffix-icon="Lock" @keydown.enter="method.skyLogin"/>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="24">
+        <el-col :span="17">
+          <el-form-item label="验证码" prop="code" required>
+            <el-input type="text" v-model="pageData.form.code" placeholder="请输入验证码" :suffix-icon="TurnOff"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="7">
+          <el-form-item>
+            <el-button
+              style="width: 80px"
+              type="primary"
+              text
+              :disabled="pageData.isCountingDown"
+              v-throttle="method.handleSendCaptcha"
+            >
+              {{ countdownText }}
+            </el-button>
           </el-form-item>
         </el-col>
       </el-row>

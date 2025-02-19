@@ -4,8 +4,7 @@ import {useRouter} from "vue-router";
 import {LOGIN_URL} from "@/config";
 import {getAssets} from "@/utils";
 import {skyMsgError, skyMsgSuccess} from "@/utils/sky";
-import {captcha} from "@/apis/auth/captcha";
-import {register} from "@/apis/auth/register";
+import {captcha, register} from "@/apis/auth/register";
 import {User, Lock, Message, TurnOff} from "@element-plus/icons-vue";
 
 const router = useRouter();
@@ -37,6 +36,9 @@ const method = reactive({
     try {
       // 发送成功
       skyMsgSuccess(res.msg + "🌻");
+    } catch (error) {
+      skyMsgError("发送失败，请稍后重试🌻");
+    } finally {
       // 开始倒计时
       pageData.value.isCountingDown = true;
       const intervalId = setInterval(() => {
@@ -47,8 +49,6 @@ const method = reactive({
           pageData.value.countdownSeconds = 60; // 重置倒计时秒数
         }
       }, 1000);
-    } catch (error) {
-      skyMsgError("发送失败，请稍后重试🌻");
     }
   },
   // 注册
