@@ -1,0 +1,28 @@
+# 服务器配置
+server:
+  host: "127.0.0.1"
+  port: 8080
+# 数据库配置
+database:
+  type: "mysql"
+  host: "192.168.66.102"
+  port: 3306
+  username: "root"
+  password: "123456"
+  dbname: "package_hot_app"
+  charset: "utf8mb4"
+  prefix: "package_"
+# Redis配置
+redis:
+  host: "192.168.66.102"
+  port: 6379
+  password: ""
+  db: 0
+# 邮箱配置
+email:
+  host: "smtp.qq.com"
+  port: 25
+  username: "2224693191@qq.com"
+  password: "bzntboozjzwsebjd"
+  from: ""
+  to: ""
