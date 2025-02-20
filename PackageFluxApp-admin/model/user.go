@@ -17,9 +17,9 @@ import (
 type User struct {
 	models.CoreModels
 	Username    string         `gorm:"type:varchar(40);comment:用户名" json:"username"`
-	Email       sql.NullString `gorm:"type:varchar(40);unique;comment:邮箱" json:"Email"`
-	Password    sql.NullString `gorm:"type:varchar(255);comment:密码" json:"password"`
-	PasswordStr sql.NullString `gorm:"type:varchar(255);comment:明文密码" json:"passwordStr"`
+	Email       sql.NullString `gorm:"type:varchar(40);unique;comment:邮箱" json:"-"`
+	Password    sql.NullString `gorm:"type:varchar(255);comment:密码" json:"-"`
+	PasswordStr sql.NullString `gorm:"type:varchar(255);comment:明文密码" json:"-"`
 	Avatar      string         `gorm:"type:text;comment:头像" json:"avatar"`
 	UsageNumber uint           `gorm:"type:int;default:0;comment:接口调用次数" json:"usageNumber"`
 	Total       uint           `gorm:"type:int;default:1000;comment:接口总次数" json:"total"`

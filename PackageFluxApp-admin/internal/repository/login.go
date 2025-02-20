@@ -19,6 +19,7 @@ var ErrUserNotFound = dao.ErrUserNotFound
 
 type LoginRepository interface {
 	Login(ctx context.Context, email string) (domain.Login, error)
+	UserInfo(ctx context.Context, uid string) (domain.UserInfo, error)
 }
 
 type loginRepository struct {
@@ -39,17 +40,29 @@ func (repo *loginRepository) Login(ctx context.Context, email string) (domain.Lo
 	return repo.toDomain(u), nil
 }
 
+func (repo *loginRepository) UserInfo(ctx context.Context, uid string) (domain.UserInfo, error) {
+	u, err := repo.dao.UserInfo(ctx, uid)
+	if err != nil {
+		return domain.UserInfo{}, err
+	}
+	return domain.UserInfo{
+		User: model.User{
+			CoreModels:  u.CoreModels,
+			Username:    u.Username,
+			Avatar:      u.Avatar,
+			UsageNumber: u.UsageNumber,
+			Total:       u.Total,
+		},
+		Email: u.Email.String,
+		CreateTime: u.CoreModels.CreateTime.Format("2006-01-02 15:04:05.000"),
+		UpdateTime: u.CoreModels.UpdateTime.Format("2006-01-02 15:04:05.000"),
+	}, nil
+}
+
 func (repo *loginRepository) toDomain(u model.User) domain.Login {
 	return domain.Login{
 		RecordId: u.CoreModels.RecordId,
 		Email:    u.Email.String,
 		Password: u.Password.String,
-		// Id:       u.Id,
-		// Email:    u.Email.String,
-		// Phone:    u.Phone.String,
-		// Password: u.Password,
-		// AboutMe:  u.AboutMe,
-		// Nickname: u.Nickname,
-		// Birthday: time.UnixMilli(u.Birthday),
 	}
 }

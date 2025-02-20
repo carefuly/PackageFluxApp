@@ -31,6 +31,7 @@ type LoginHandler interface {
 	RegisterRoutes(router *gin.RouterGroup)
 	SendEmailCaptchaHandler(ctx *gin.Context)
 	EmailLoginHandler(ctx *gin.Context)
+	UserInfoHandler(ctx *gin.Context)
 }
 
 type loginHandler struct {
@@ -67,6 +68,7 @@ type UserClaims struct {
 func (h *loginHandler) RegisterRoutes(router *gin.RouterGroup) {
 	router.POST("/send-login-captcha", h.SendEmailCaptchaHandler)
 	router.POST("/email-login", h.EmailLoginHandler)
+	router.GET("/userinfo", h.UserInfoHandler)
 }
 
 func (h *loginHandler) SendEmailCaptchaHandler(ctx *gin.Context) {
@@ -134,6 +136,25 @@ func (h *loginHandler) EmailLoginHandler(ctx *gin.Context) {
 		zap.L().Error("验证验证码异常", zap.Error(err))
 		response.NewResponse().ErrorResponse(ctx, http.StatusBadRequest, "服务器异常", nil)
 	}
+}
+
+func (h *loginHandler) UserInfoHandler(ctx *gin.Context) {
+	uid, ok := ctx.MustGet("userId").(string)
+	if !ok {
+		ctx.Set("internal", uid)
+		zap.L().Error("用户ID获取失败", zap.Error(errors.New(uid)))
+		response.NewResponse().ErrorResponse(ctx, http.StatusUnauthorized, "服务器异常", nil)
+		return
+	}
+
+	u, err := h.svc.UserInfo(ctx, uid)
+	if err != nil {
+		ctx.Set("internal", err.Error())
+		zap.L().Error("获取用户失败", zap.Error(err))
+		response.NewResponse().ErrorResponse(ctx, http.StatusUnauthorized, "服务器异常", nil)
+		return
+	}
+	response.NewResponse().SuccessResponse(ctx, "获取成功", u)
 }
 
 func (h *loginHandler) setJWTToken(ctx *gin.Context, uid string) string {

@@ -22,6 +22,7 @@ var (
 
 type LoginService interface {
 	Login(ctx context.Context, u domain.Login) (domain.Login, error)
+	UserInfo(ctx context.Context, uid string) (domain.UserInfo, error)
 }
 
 type loginService struct {
@@ -48,4 +49,8 @@ func (svc *loginService) Login(ctx context.Context, user domain.Login) (domain.L
 		return domain.Login{}, ErrInvalidUserOrPassword
 	}
 	return u, nil
+}
+
+func (svc *loginService) UserInfo(ctx context.Context, uid string) (domain.UserInfo, error) {
+	return svc.repo.UserInfo(ctx, uid)
 }

@@ -25,8 +25,8 @@ type CoreModels struct {
 	Modifier   uint       `gorm:"type:int;comment:修改人" json:"modifier"`
 	BelongDept uint       `gorm:"type:int;comment:数据归属部门" json:"belongDept"`
 	Status     bool       `gorm:"type:bool;default:true;comment:状态" json:"status"`
-	CreateTime *time.Time `gorm:"autoCreateTime;comment:创建时间" json:"createTime"`
-	UpdateTime *time.Time `gorm:"autoUpdateTime;comment:修改时间" json:"updateTime"`
+	CreateTime *time.Time `gorm:"autoCreateTime;comment:创建时间" json:"-"`
+	UpdateTime *time.Time `gorm:"autoUpdateTime;comment:修改时间" json:"-"`
 	Remark     string     `gorm:"type:varchar(255);comment:备注" json:"remark"`
 }
 
@@ -34,5 +34,12 @@ func (c *CoreModels) BeforeCreate(tx *gorm.DB) (err error) {
 	// 记录ID
 	c.RecordId = uuid.NewV4().String()
 	// 返回异常
+	return
+}
+
+// AfterFind Hook
+func (c *CoreModels) AfterFind(tx *gorm.DB) (err error) {
+	// 默认排序规则：按创建时间降序，按 Sort 升序
+	tx.Order("create_time DESC, sort ASC").Find(c)
 	return
 }
