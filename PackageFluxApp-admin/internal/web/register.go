@@ -121,6 +121,6 @@ func (h *registerHandler) EmailRegisterHandler(ctx *gin.Context) {
 	default: // 其他错误
 		ctx.Set("internal", err.Error())
 		zap.L().Error("验证验证码异常", zap.Error(err))
-		response.NewResponse().ErrorResponse(ctx, http.StatusBadRequest, "服务器异常", nil)
+		response.NewResponse().ErrorResponse(ctx, http.StatusInternalServerError, "服务器异常", nil)
 	}
 }

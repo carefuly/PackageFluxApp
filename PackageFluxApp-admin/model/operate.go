@@ -22,7 +22,7 @@ type OperateLogger struct {
 	RequestStatus   int    `gorm:"type:int;comment:响应状态码" json:"requestStatus"`
 	RequestMethod   string `gorm:"type:varchar(8);comment:请求方式" json:"requestMethod"`
 	RequestIp       string `gorm:"type:varchar(20);comment:请求IP地址" json:"requestIp"`
-	RequestPath     string `gorm:"type:varchar(40);comment:请求地址" json:"requestPath"`
+	RequestPath     string `gorm:"type:varchar(255);comment:请求地址" json:"requestPath"`
 	RequestQuery    string `gorm:"type:text;comment:请求查询参数" json:"requestQuery"`
 	RequestBody     any    `gorm:"type:text;comment:请求参数" json:"requestBody"`
 	RequestOs       string `gorm:"type:varchar(40);comment:操作系统" json:"requestOs"`

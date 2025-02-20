@@ -40,7 +40,7 @@ func (repo *registerRepository) Register(ctx context.Context, u domain.Register)
 
 func (repo *registerRepository) toEntity(u domain.Register) model.User {
 	return model.User{
-		Username: "",
+		Username: u.Username,
 		Email: sql.NullString{
 			String: u.Email,
 			Valid:  u.Email != "",

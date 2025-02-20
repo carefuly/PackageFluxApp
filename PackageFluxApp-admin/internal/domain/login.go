@@ -11,6 +11,7 @@ package domain
 import "github.com/carefuly/PackageFluxApp/model"
 
 type Login struct {
+	ID       uint   `json:"id"`       // 主键id
 	RecordId string `json:"recordId"` // 记录id
 	Email    string `json:"email"`    // 邮箱
 	Password string `json:"password"` // 密码

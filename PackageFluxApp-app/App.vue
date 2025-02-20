@@ -1,15 +1,18 @@
 <script>
 	import {
-		getStore,
-	} from "@/store/index.js";
+		getToken,
+	} from "./store/index.js";
+	import {
+		skyShowToast
+	} from "@/utils/sky.js";
 	export default {
-		onLaunch: function() {
+		onLaunch: async function() {
 			// console.log("App Launch");
-			const token = getStore("package_token");
-			if (!token) {
-				uni.reLaunch({
+			if (!getToken()) {
+				uni.redirectTo({
 					url: "/pages/auth/login/index",
 				});
+				skyShowToast("用户信息为空，请先登录");
 			}
 		},
 		onShow: function() {

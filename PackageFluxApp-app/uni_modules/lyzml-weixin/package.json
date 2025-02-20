@@ -1,0 +1,90 @@
+{
+	"id": "lyzml-weixin",
+	"displayName": "微信扫码授权登录",
+	"version": "1.0.0",
+	"description": "在APP内生成二维码，使用微信扫码后授权登录APP。通过微信授权返回的authCode获取微信用户的openId等基础信息。",
+	"keywords": [
+        "微信",
+        "扫码登录",
+        "微信登录",
+        "微信授权登录"
+    ],
+	"repository": "",
+	"engines": {
+		"HBuilderX": "^4.16"
+	},
+	"dcloudext": {
+		"type": "uts",
+		"sale": {
+			"regular": {
+				"price": "5.00"
+			},
+			"sourcecode": {
+				"price": "0.00"
+			}
+		},
+		"contact": {
+			"qq": "1193890771"
+		},
+		"declaration": {
+			"ads": "无",
+			"data": "无",
+			"permissions": "无"
+		},
+		"npmurl": ""
+	},
+	"uni_modules": {
+		"dependencies": [],
+		"encrypt": [],
+		"platforms": {
+			"cloud": {
+				"tcb": "y",
+				"aliyun": "y",
+				"alipay": "y"
+			},
+			"client": {
+				"Vue": {
+					"vue2": "n",
+					"vue3": "n"
+				},
+				"App": {
+                    "app-android": {
+                        "minVersion": "21"
+                    },
+                    "app-ios": {
+                        "minVersion": "12"
+                    },
+                    "app-harmony": "n"
+                },
+				"H5-mobile": {
+					"Safari": "n",
+					"Android Browser": "n",
+					"微信浏览器(Android)": "n",
+					"QQ浏览器(Android)": "n"
+				},
+				"H5-pc": {
+					"Chrome": "n",
+					"IE": "n",
+					"Edge": "n",
+					"Firefox": "n",
+					"Safari": "n"
+				},
+				"小程序": {
+					"微信": "n",
+					"阿里": "n",
+					"百度": "n",
+					"字节跳动": "n",
+					"QQ": "n",
+					"钉钉": "n",
+					"快手": "n",
+					"飞书": "n",
+					"京东": "n"
+				},
+				"快应用": {
+					"华为": "n",
+					"联盟": "n"
+				}
+			}
+		}
+	}
+}

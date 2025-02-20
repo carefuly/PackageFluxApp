@@ -61,7 +61,9 @@ type LoginRequest struct {
 
 type UserClaims struct {
 	jwt.RegisteredClaims
-	Uid       string
+	Uid       uint
+	RecordId  string
+	Email     string
 	UserAgent string
 }
 
@@ -112,7 +114,7 @@ func (h *loginHandler) EmailLoginHandler(ctx *gin.Context) {
 
 		switch {
 		case err == nil:
-			token := h.setJWTToken(ctx, u.RecordId)
+			token := h.setJWTToken(ctx, u)
 			response.NewResponse().SuccessResponse(ctx, "登录成功", gin.H{
 				"token": "Bearer " + token,
 			})
@@ -134,16 +136,16 @@ func (h *loginHandler) EmailLoginHandler(ctx *gin.Context) {
 	default: // 其他错误
 		ctx.Set("internal", err.Error())
 		zap.L().Error("验证验证码异常", zap.Error(err))
-		response.NewResponse().ErrorResponse(ctx, http.StatusBadRequest, "服务器异常", nil)
+		response.NewResponse().ErrorResponse(ctx, http.StatusInternalServerError, "服务器异常", nil)
 	}
 }
 
 func (h *loginHandler) UserInfoHandler(ctx *gin.Context) {
-	uid, ok := ctx.MustGet("userId").(string)
+	uid, ok := ctx.MustGet("recordId").(string)
 	if !ok {
 		ctx.Set("internal", uid)
 		zap.L().Error("用户ID获取失败", zap.Error(errors.New(uid)))
-		response.NewResponse().ErrorResponse(ctx, http.StatusUnauthorized, "服务器异常", nil)
+		response.NewResponse().ErrorResponse(ctx, http.StatusInternalServerError, "服务器异常", nil)
 		return
 	}
 
@@ -151,19 +153,21 @@ func (h *loginHandler) UserInfoHandler(ctx *gin.Context) {
 	if err != nil {
 		ctx.Set("internal", err.Error())
 		zap.L().Error("获取用户失败", zap.Error(err))
-		response.NewResponse().ErrorResponse(ctx, http.StatusUnauthorized, "服务器异常", nil)
+		response.NewResponse().ErrorResponse(ctx, http.StatusInternalServerError, "服务器异常", nil)
 		return
 	}
 	response.NewResponse().SuccessResponse(ctx, "获取成功", u)
 }
 
-func (h *loginHandler) setJWTToken(ctx *gin.Context, uid string) string {
+func (h *loginHandler) setJWTToken(ctx *gin.Context, u domain.Login) string {
 	uc := UserClaims{
-		Uid:       uid,
+		Uid:       u.ID,
+		RecordId:  u.RecordId,
+		Email:     u.Email,
 		UserAgent: ctx.GetHeader("User-Agent"),
 		RegisteredClaims: jwt.RegisteredClaims{
 			// 一小时过期
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute * 30)),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute * 60)),
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS512, uc)
@@ -171,7 +175,7 @@ func (h *loginHandler) setJWTToken(ctx *gin.Context, uid string) string {
 	if err != nil {
 		ctx.Set("internal", err.Error())
 		zap.L().Error("生成Token异常", zap.Error(err))
-		response.NewResponse().ErrorResponse(ctx, http.StatusBadRequest, "服务器异常", nil)
+		response.NewResponse().ErrorResponse(ctx, http.StatusInternalServerError, "服务器异常", nil)
 	}
 	return tokenStr
 }

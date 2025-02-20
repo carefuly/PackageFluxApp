@@ -27,12 +27,10 @@ export const login = (data) => sky({
 export const logout = () => sky({
 	url: API.LOGOUT,
 	method: "post",
-	data
 });
 
 // 用户信息
 export const userinfo = () => sky({
 	url: API.USERINFO,
-	method: "post",
-	data
+	method: "get",
 });

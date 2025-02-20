@@ -1,20 +1,43 @@
-const USER_KEY = 'pageage_user';
+import {
+	setStore,
+	getStore,
+	clearStore
+} from "../index.js";
 
-const setUser = (token) => {
-	uni.setStorageSync(USER_KEY, token);
+const TOKEN_KEY = "package_token";
+const USER_KEY = 'package_user';
+
+const setToken = (token) => {
+	setStore(TOKEN_KEY, token);
+};
+
+const setUser = (user) => {
+	setStore(USER_KEY, user);
+}
+
+const getToken = () => {
+	return getStore(TOKEN_KEY);
 }
 
 const getUser = () => {
-	return uni.getStorageSync(USER_KEY);
+	return getStore(USER_KEY);
+}
+
+const clearToken = () => {
+	clearStore(TOKEN_KEY);
 }
 
 const clearUser = () => {
-	uni.removeStorageSync(USER_KEY);
+	clearStore(USER_KEY);
 }
 
 export {
+	TOKEN_KEY,
 	USER_KEY,
+	setToken,
 	setUser,
+	getToken,
 	getUser,
-	clearUser
+	clearToken,
+	clearUser,
 };

@@ -7,8 +7,7 @@
 		login,
 	} from "@/apis/auth/login/index.js";
 	import {
-		setUser,
-		setStore,
+		setToken
 	} from "@/store/index.js";
 	export default {
 		data() {
@@ -49,10 +48,10 @@
 				try {
 					const res = await login(this.form);
 					this.handleOpen("success", res.msg);
-					setStore("package_token", res.data.token);
+					setToken(res.data.token);
 					setTimeout(() => {
-						uni.redirectTo({
-							url: "../../index/index",
+						uni.switchTab({
+							url: "/pages/index/index",
 						});
 					}, 1000);
 				} catch (err) {

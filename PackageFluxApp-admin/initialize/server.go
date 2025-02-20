@@ -28,14 +28,14 @@ import (
 func InitGinMiddlewares(rely config.RelyConfig) []gin.HandlerFunc {
 	return []gin.HandlerFunc{
 		middleware.Cors(),
-		middleware.NewLogger(rely.Logger).Logger(),
-		middleware.NewStorage().StorageLogger(rely.Db),
 		middleware.NewLoginJWTMiddlewareBuilder().
 			IgnorePaths("/api/v1/auth/send-register-captcha").
 			IgnorePaths("/api/v1/auth/email-register").
 			IgnorePaths("/api/v1/auth/send-login-captcha").
 			IgnorePaths("/api/v1/auth/email-login").
 			Build(),
+		middleware.NewLogger(rely.Logger).Logger(),
+		middleware.NewStorage().StorageLogger(rely.Db),
 	}
 }
 
@@ -92,7 +92,9 @@ func InitWebServer(middle []gin.HandlerFunc, rely config.RelyConfig) *gin.Engine
 
 	ApiGroup := server.Group("/api")
 	v1 := ApiGroup.Group("/v1")
+
 	router.NewAuthRouter(rely).RegisterAuthRouter(v1)
+	router.NewApplicationRouter(rely).RegisterAuthRouter(v1)
 
 	return server
 }

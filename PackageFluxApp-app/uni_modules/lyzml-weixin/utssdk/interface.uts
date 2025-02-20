@@ -1,0 +1,21 @@
+/**
+ * 生成登录二维码参数
+ */
+export type WeiXinAuthParam = {
+	appId : string;
+	scope : string;
+	nonceStr : string;
+	timeStamp : string;
+	signature : string;
+};
+
+
+/**
+ * 授权
+ */
+export type Auth = (params : WeiXinAuthParam, callback : (res : UTSJSONObject) => void) => void;
+
+/**
+ * 结束授权
+ */
+export type StopAuth = () => void;

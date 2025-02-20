@@ -14,10 +14,9 @@ import (
 
 // GetRequestUser 获取请求user
 func GetRequestUser(c *gin.Context) string {
-	return "AnonymousUser"
-	// token := c.GetHeader("Authorization")
-	// if token == "" {
-	// 	return "AnonymousUser"
-	// }
-	// seg := strings.SplitN(token, " ", 2)
+	email, ok := c.MustGet("email").(string)
+	if !ok {
+		return "AnonymousUser"
+	}
+	return email
 }

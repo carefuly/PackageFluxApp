@@ -53,7 +53,7 @@ func (repo *loginRepository) UserInfo(ctx context.Context, uid string) (domain.U
 			UsageNumber: u.UsageNumber,
 			Total:       u.Total,
 		},
-		Email: u.Email.String,
+		Email:      u.Email.String,
 		CreateTime: u.CoreModels.CreateTime.Format("2006-01-02 15:04:05.000"),
 		UpdateTime: u.CoreModels.UpdateTime.Format("2006-01-02 15:04:05.000"),
 	}, nil
@@ -61,6 +61,7 @@ func (repo *loginRepository) UserInfo(ctx context.Context, uid string) (domain.U
 
 func (repo *loginRepository) toDomain(u model.User) domain.Login {
 	return domain.Login{
+		ID:       u.CoreModels.ID,
 		RecordId: u.CoreModels.RecordId,
 		Email:    u.Email.String,
 		Password: u.Password.String,

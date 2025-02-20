@@ -8,6 +8,9 @@ const {
 	successCode
 } = netConfig;
 import {
+	getToken
+} from "@/store/index.js";
+import {
 	skyShowToast,
 	skyShowModal,
 	skyShowLoading,
@@ -19,6 +22,7 @@ const sky = (params) => {
 	const data = params.data || {};
 	const header = {
 		'Content-Type': contentType,
+		'Authorization': getToken(),
 	};
 	// 请求
 	return new Promise((resolve, reject) => {
@@ -30,11 +34,6 @@ const sky = (params) => {
 			data: data,
 			timeout: requestTimeout,
 			success(res) {
-				// if (typeof res.data.msg === "object") {
-				// 	res.data.msg = JSON.stringify(res.data.msg); // 后端返回数据是对象
-				// } else {
-				// 	res.data.msg = res.data.msg; // 后端返回数据是字符串
-				// }
 				if (res.statusCode === 200) {
 					if (res.data.code == 200) {
 						resolve(res.data);

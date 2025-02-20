@@ -93,5 +93,7 @@ func (l *LoginJWTMiddlewareBuilder) Build() gin.HandlerFunc {
 
 		ctx.Set("claims", claims)
 		ctx.Set("userId", claims.Uid)
+		ctx.Set("recordId", claims.RecordId)
+		ctx.Set("email", claims.Email)
 	}
 }
