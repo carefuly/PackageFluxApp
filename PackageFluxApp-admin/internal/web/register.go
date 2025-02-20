@@ -94,6 +94,7 @@ func (h *registerHandler) EmailRegisterHandler(ctx *gin.Context) {
 
 	switch {
 	case ok: // 验证成功，继续注册流程
+
 		err = h.svc.Register(ctx, domain.Register{
 			Username: req.Username,
 			Email:    req.Email,

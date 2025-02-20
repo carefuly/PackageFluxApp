@@ -27,7 +27,7 @@ type OperateLogger struct {
 	RequestBody     any    `gorm:"type:text;comment:请求参数" json:"requestBody"`
 	RequestOs       string `gorm:"type:varchar(40);comment:操作系统" json:"requestOs"`
 	RequestBrowser  string `gorm:"type:varchar(64);comment:操作浏览器" json:"requestBrowser"`
-	UserAgent       string `gorm:"type:varchar(128);comment:用户代理" json:"userAgent"`
+	UserAgent       string `gorm:"type:varchar(255);comment:用户代理" json:"userAgent"`
 	RequestCode     int    `gorm:"type:int;comment:自定义状态码" json:"requestCode"`
 	RequestResult   string `gorm:"type:text;comment:响应信息" json:"requestResult"`
 	Errors          string `gorm:"type:text;comment:错误信息" json:"errors"`

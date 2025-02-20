@@ -1,0 +1,35 @@
+{
+	"pages": [{
+		"path": "pages/index/index",
+		"style": {
+			"navigationBarTitleText": "首页"
+		}
+	}],
+	"subPackages": [{
+		"root": "pages/auth",
+		"pages": [{
+			"path": "register/index",
+			"style": {
+				"navigationBarTitleText": "注册",
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "login/index",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"navigationStyle": "custom"
+			}
+		}]
+	}],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "首页",
+		"navigationBarBackgroundColor": "#3478F5"
+	},
+	"easycom": {
+		"autoscan": true,
+		"custom": {
+			"cl-(.*)": "@/cl-uni/components/cl-$1/cl-$1.vue"
+		}
+	}
+}

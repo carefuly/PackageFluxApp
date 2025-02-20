@@ -11,6 +11,7 @@ package initialize
 import (
 	"fmt"
 	"github.com/carefuly/PackageFluxApp/config"
+	"github.com/carefuly/PackageFluxApp/model"
 	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -63,7 +64,7 @@ func (i DbPool) InitDb(database config.DatabaseConfig) *gorm.DB {
 	}
 	// 迁移表
 	// db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.User{})
-	// db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.OperateLogger{}
+	i.db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.OperateLogger{})
 
 	return i.db
 }

@@ -1,0 +1,4 @@
+// export const baseUrl = 'http://127.0.0.1:8080/api';
+export const baseUrl = 'http://192.168.211.168:8080/api';
+
+export const timeout = 100000;
