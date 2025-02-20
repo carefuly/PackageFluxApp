@@ -15,6 +15,7 @@ export const skyShowModal = (content, showCancel = false, title = "提示", dura
 		});
 	});
 };
+
 // 封装showToast
 export const skyShowToast = (content, icon = "none", duration = 3000) => {
 	return new Promise((resolve, reject) => {
@@ -31,6 +32,7 @@ export const skyShowToast = (content, icon = "none", duration = 3000) => {
 		});
 	});
 };
+
 // 封装showLoading
 export const skyShowLoading = (content, mask = true, duration = 3000) => {
 	return new Promise((resolve, reject) => {

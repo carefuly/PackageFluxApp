@@ -22,20 +22,23 @@ const sky = (params) => {
 	};
 	// 请求
 	return new Promise((resolve, reject) => {
+		skyShowLoading("加载中...");
 		uni.request({
 			url: baseURL + url,
 			method: method,
 			header: header,
 			data: data,
 			timeout: requestTimeout,
-			success(response) {
-				const res = response;
-				if (res.statusCode >= 0) {
-					if (res.data.status >= 0) {
-						// 返回数据
+			success(res) {
+				// if (typeof res.data.msg === "object") {
+				// 	res.data.msg = JSON.stringify(res.data.msg); // 后端返回数据是对象
+				// } else {
+				// 	res.data.msg = res.data.msg; // 后端返回数据是字符串
+				// }
+				if (res.statusCode === 200) {
+					if (res.data.code == 200) {
 						resolve(res.data);
 					} else {
-						skyShowToast(res.data.msg, "error");
 						reject(res.data);
 					}
 				} else {
@@ -48,20 +51,19 @@ const sky = (params) => {
 							});
 							break;
 						case 404:
-							showToast("请求地址不存在...");
+							skyShowToast("请求地址不存在...");
 							break;
 						default:
-							showToast("请重试...");
+							skyShowToast("请重试...");
 							break;
 					}
 				}
 			},
 			fail(err) {
-				console.log(err);
 				if (err.errMsg.indexOf('request:fail') !== -1) {
-					showToast("网络异常", "none");
+					skyShowToast("网络异常", "none");
 				} else {
-					showToast("未知异常", "none");
+					skyShowToast("未知异常", "none");
 				}
 				// 错误信息
 				reject(err);

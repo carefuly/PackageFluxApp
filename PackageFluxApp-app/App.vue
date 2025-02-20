@@ -1,16 +1,24 @@
 <script>
+	import {
+		getStore,
+	} from "@/store/index.js";
 	export default {
 		onLaunch: function() {
-			console.warn('当前组件仅支持 uni_modules 目录结构 ，请升级 HBuilderX 到 3.1.0 版本以上！')
-			console.log('App Launch')
+			// console.log("App Launch");
+			const token = getStore("package_token");
+			if (!token) {
+				uni.reLaunch({
+					url: "/pages/auth/login/index",
+				});
+			}
 		},
 		onShow: function() {
-			console.log('App Show')
+			console.log("App Show");
 		},
 		onHide: function() {
-			console.log('App Hide')
+			console.log("App Hide");
 		}
-	}
+	};
 </script>
 
 <style lang="scss">
@@ -39,7 +47,6 @@
 		font-display: swap;
 	}
 
-	/* #endif */
 	.example-info {
 		font-size: 14px;
 		color: #333;
