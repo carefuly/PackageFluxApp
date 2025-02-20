@@ -37,9 +37,9 @@ func (i DbPool) InitDb(database config.DatabaseConfig) *gorm.DB {
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 		logger.Config{
-			SlowThreshold: time.Second,   // 慢 SQL 阈值
-			LogLevel:      logger.Silent, // Log level
-			Colorful:      false,         // 禁用彩色打印
+			SlowThreshold: time.Second, // 慢 SQL 阈值
+			LogLevel:      logger.Info, // Log level
+			Colorful:      true,        // 禁用彩色打印
 		},
 	)
 	// dsn
@@ -63,7 +63,15 @@ func (i DbPool) InitDb(database config.DatabaseConfig) *gorm.DB {
 		zap.L().Error("数据库连接失败", zap.Error(err))
 	}
 	// 迁移表
-	// db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.User{})
+	// i.db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.User{})
+	err = i.db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.Detail{})
+	if err != nil {
+		zap.L().Error("数据库迁移失败", zap.Error(err))
+		return nil
+	}
+	i.db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.Version{})
+	i.db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.Logger{})
+	i.db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.File{})
 	i.db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.OperateLogger{})
 
 	return i.db
