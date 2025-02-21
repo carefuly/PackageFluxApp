@@ -12,13 +12,13 @@ export const layoutRouter: RouteRecordRaw[] = [
     component: Layout,
     redirect: HOME_URL,
     children: [
-      // {
-      //   path: HOME_URL, // [唯一]
-      //   component: () => import("@/views/application/details/index.vue"),
-      //   meta: {
-      //     title: "应用详情", // 标题
-      //   }
-      // },
+      {
+        path: HOME_URL, // [唯一]
+        component: () => import("@/views/application/details/index.vue"),
+        meta: {
+          title: "应用详情", // 标题
+        }
+      },
       // {
       //   path: "/application/statistic/:id",
       //   name: 'Statistic',

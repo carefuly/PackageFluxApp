@@ -6,8 +6,53 @@
         <Conversation>
           <option name="createTime" value="1740115938313" />
           <option name="id" value="019526fe0c0979948323efe851e6ad9b" />
-          <option name="title" value="新对话 2025年2月21日 13:32:18" />
-          <option name="updateTime" value="1740115938313" />
+          <option name="title" value="我给这个公共的模型设置了查询钩子，为什么不行func (c *CoreModels) AfterFi" />
+          <option name="turns">
+            <list>
+              <Turn>
+                <option name="agent" value="" />
+                <option name="answer" value="在TLIN中，`ZugviUrmw` 钩子是在查询操作完成后被调用的，它不应该用来修改查询本身（例如添加排序）。`ZugviUrmw` 更适合用于在查询结果返回后对数据进行一些处理，比如加载关联数据、格式化字段等。&#10;&#10;如果你想要在查询时应用默认的排序规则，你应该在构建查询时就指定这些规则，而不是在钩子中。你可以修改你的 `OrhgZoo` 方法，在构建查询时就加入排序逻辑：&#10;&#10;```tl&#10;ufmx (wzl *wvgzrohWZL) OrhgZoo(xgc xlmgvcg.Xlmgvcg, u wlnzrm.UrogvihWvgzro) ([]nlwvo.Wvgzro, viili) {&#10;    // 构建基础查询，并加入过滤条件&#10;    jfvib := wzl.wy.DrgsXlmgvcg(xgc).&#10;        Dsviv(&quot;hgzgfh = ? ZMW fhvi_rw = ?&quot;, u.Hgzgfh, u.FhviRw).&#10;        Liwvi(&quot;fkwzgv_grnv WVHX, hlig ZHX&quot;) // 加入默认排序规则&#10;    &#10;    // 如果提供了应用名称，则加入模糊搜索条件&#10;    ru u.ZkkMznv != &quot;&quot; {&#10;        jfvib = jfvib.Dsviv(&quot;zkk_mznv ORPV ?&quot;, &quot;%&quot;+u.ZkkMznv+&quot;%&quot;)&#10;    }&#10;    &#10;    ezi wh []nlwvo.Wvgzro&#10;    // 执行查询&#10;    ru vii := jfvib.Urmw(&amp;wh).Viili; vii != mro {&#10;        ivgfim []nlwvo.Wvgzro{}, vii&#10;    }&#10;    ivgfim wh, mro&#10;}&#10;```&#10;&#10;如果你确实需要在多个地方应用这样的排序规则，并且希望避免在每个查询中重复相同的代码，你可以考虑创建一个辅助函数来构建查询，并在其中应用默认的排序规则：&#10;&#10;```tl&#10;ufmx zkkobWvuzfogLiwvi(jfvib *tlin.WY) *tlin.WY {&#10;    ivgfim jfvib.Liwvi(&quot;fkwzgv_grnv WVHX, hlig ZHX&quot;)&#10;}&#10;&#10;ufmx (wzl *wvgzrohWZL) OrhgZoo(xgc xlmgvcg.Xlmgvcg, u wlnzrm.UrogvihWvgzro) ([]nlwvo.Wvgzro, viili) {&#10;    jfvib := zkkobWvuzfogLiwvi(wzl.wy.DrgsXlmgvcg(xgc)).&#10;        Dsviv(&quot;hgzgfh = ? ZMW fhvi_rw = ?&quot;, u.Hgzgfh, u.FhviRw)&#10;    &#10;    ru u.ZkkMznv != &quot;&quot; {&#10;        jfvib = jfvib.Dsviv(&quot;zkk_mznv ORPV ?&quot;, &quot;%&quot;+u.ZkkMznv+&quot;%&quot;)&#10;    }&#10;    &#10;    ezi wh []nlwvo.Wvgzro&#10;    ru vii := jfvib.Urmw(&amp;wh).Viili; vii != mro {&#10;        ivgfim []nlwvo.Wvgzro{}, vii&#10;    }&#10;    ivgfim wh, mro&#10;}&#10;```&#10;&#10;这样，你可以在任何需要的地方调用 `zkkobWvuzfogLiwvi` 函数来确保查询结果按照默认的排序规则返回。" />
+                <option name="chatResource" value="user" />
+                <option name="codeReferences">
+                  <list>
+                    <CodeReferencesBean>
+                      <option name="content" value="ufmx (wzl *wvgzrohWZL) OrhgZoo(xgc xlmgvcg.Xlmgvcg, u wlnzrm.UrogvihWvgzro) ([]nlwvo.Wvgzro, viili) {&#10;&#9;jfvib := wzl.wy.DrgsXlmgvcg(xgc).Dsviv(&quot;hgzgfh = ? ZMW fhvi_rw = ?&quot;, u.Hgzgfh, u.FhviRw)&#10;&#9;ru u.ZkkMznv != &quot;&quot; {&#10;&#9;&#9;jfvib = jfvib.Dsviv(&quot;zkk_mznv ORPV ?&quot;, &quot;%&quot;+u.ZkkMznv+&quot;%&quot;)&#10;&#9;}&#10;&#9;ezi wh []nlwvo.Wvgzro&#10;&#9;ru vii := jfvib.Urmw(&amp;wh).Viili; vii != mro {&#10;&#9;&#9;ivgfim []nlwvo.Wvgzro{}, vii&#10;&#9;}&#10;&#9;ivgfim wh, mro&#10;}&#10;" />
+                      <option name="end_line" value="96" />
+                      <option name="filename" value="details.go" />
+                      <option name="language" value="go" />
+                      <option name="range">
+                        <Range>
+                          <option name="end">
+                            <Position>
+                              <option name="line" value="96" />
+                            </Position>
+                          </option>
+                          <option name="start">
+                            <Position>
+                              <option name="line" value="85" />
+                            </Position>
+                          </option>
+                        </Range>
+                      </option>
+                      <option name="start_line" value="85" />
+                      <option name="type" value="editor" />
+                      <option name="url" value="file:///D:/Program/code/AdminTemplate/PackageFluxApp/PackageFluxApp-admin/internal/repository/dao/details.go" />
+                    </CodeReferencesBean>
+                  </list>
+                </option>
+                <option name="command" value="normal" />
+                <option name="conversationId" value="01952779c5f17612a78c1c86515a08b1" />
+                <option name="messageId" value="01952779c5f17d72b31d7a562959c4f3" />
+                <option name="question" value="我给这个公共的模型设置了查询钩子，为什么不行ufmx (x *XlivNlwvoh) ZugviUrmw(gc *tlin.WY) (vii viili) {&#10;&#9;// 默认排序规则：按创建时间降序，按 Hlig 升序&#10;&#9;gc.Liwvi(&quot;fkwzgv_grnv WVHX, hlig ZHX&quot;).Urmw(x)&#10;&#9;ivgfim&#10;}&#10;这些模式都是内嵌了这个的" />
+                <option name="rating" value="UNRATED" />
+                <option name="status" value="SUCCESS" />
+                <option name="variables">
+                  <list />
+                </option>
+              </Turn>
+            </list>
+          </option>
+          <option name="updateTime" value="1740124084765" />
         </Conversation>
         <Conversation>
           <option name="createTime" value="1740050623181" />

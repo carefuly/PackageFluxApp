@@ -45,7 +45,7 @@ class Sky {
       const token = getToken();
       // 如果实现挤下线功能，需要用户绑定一个uuid，uuid发生变化，token失效
       if (token) {
-        config.headers['Authorization'] = "Bearer " + token;
+        config.headers['Authorization'] = token;
       }
       // 2. 请求结束
       NProgress.done();

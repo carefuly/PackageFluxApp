@@ -64,9 +64,14 @@ func (repo *detailsRepository) FindById(ctx context.Context, userId uint, record
 func (repo *detailsRepository) ListAll(ctx context.Context, f domain.FiltersDetail) ([]domain.Detail, error) {
 	list, err := repo.dao.ListAll(ctx, f)
 	if err != nil {
-		return nil, err
+		return []domain.Detail{}, err
 	}
 	var details []domain.Detail
+
+	if len(list) == 0 {
+		return []domain.Detail{}, err
+	}
+
 	for _, v := range list {
 		details = append(details, repo.toDomain(v))
 	}

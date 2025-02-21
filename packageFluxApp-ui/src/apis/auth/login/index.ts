@@ -19,4 +19,4 @@ export const login = (data: any) => sky.post(API.LOGIN, data);
 export const logout = () => sky.post(API.LOGOUT);
 
 // 用户信息
-export const userinfo = () => sky.post(API.USERINFO);
+export const userinfo = () => sky.get(API.USERINFO);

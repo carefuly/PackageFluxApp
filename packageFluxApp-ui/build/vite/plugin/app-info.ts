@@ -11,7 +11,7 @@ export default function appInfo(): Plugin {
       // eslint-disable-next-line no-console
       console.log(
         boxen(
-          `${bold(green(`${bgGreen('PACKAGE-HOT-APP v4.0.0-SNAPSHOT')}`))}\n
+          `${bold(green(`${bgGreen('PACKAGE-FLUX-APP v1.0.0-SNAPSHOT')}`))}\n
   ${cyan('持续迭代优化的APP在线热更新管理系统。')}`,
           {
             padding: 1,

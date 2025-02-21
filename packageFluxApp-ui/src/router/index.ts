@@ -32,38 +32,37 @@ const router = createRouter({
  * @description 前置路由
  */
 router.beforeEach(async (to, from, next) => {
-  next();
-  // const userStore = useUserStore();
-  // // NProgress 开始
-  // NProgress.start();
-  // // 标题切换，没有防止后置路由，是因为页面路径不存在，title会变成undefined
-  // const title = import.meta.env.VITE_WEB_TITLE;
-  // document.title = (to.meta.title || title) + " - HOT APP";
-  // if (userStore.token) {
-  //   // 获取token
-  //   const token = atob(userStore.token.split(".")[1]);
-  //   // 获取token解析对象
-  //   const token_str = JSON.parse(token);
-  //   const time = Date.now();
-  //   if (token_str.exp * 1000 <= time) {
-  //     if (to.path === "/login") {
-  //       next();
-  //     } else {
-  //       skyMsgWarning("Token已过期，请先登录！🌻");
-  //       next(LOGIN_URL);
-  //     }
-  //   } else {
-  //     next();
-  //   }
-  // } else {
-  //   // 判断访问页面是否在路由白名单地址[静态路由]中，如果存在直接放行。
-  //   if (ROUTER_WHITE_LIST.includes(to.path)) {
-  //     next();
-  //   } else {
-  //     skyMsgWarning("账号身份不存在，请先登录🌻");
-  //     next(LOGIN_URL);
-  //   }
-  // }
+  const userStore = useUserStore();
+  // NProgress 开始
+  NProgress.start();
+  // 标题切换，没有防止后置路由，是因为页面路径不存在，title会变成undefined
+  const title = import.meta.env.VITE_WEB_TITLE;
+  document.title = (to.meta.title || title);
+  if (userStore.token) {
+    // 获取token
+    const token = atob(userStore.token.split(".")[1]);
+    // 获取token解析对象
+    const token_str = JSON.parse(token);
+    const time = Date.now();
+    if (token_str.exp * 1000 <= time) {
+      if (to.path === "/login") {
+        next();
+      } else {
+        skyMsgWarning("Token已过期，请先登录！🌻");
+        next(LOGIN_URL);
+      }
+    } else {
+      next();
+    }
+  } else {
+    // 判断访问页面是否在路由白名单地址[静态路由]中，如果存在直接放行。
+    if (ROUTER_WHITE_LIST.includes(to.path)) {
+      next();
+    } else {
+      skyMsgWarning("账号身份不存在，请先登录🌻");
+      next(LOGIN_URL);
+    }
+  }
 });
 
 /**

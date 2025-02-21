@@ -11,7 +11,7 @@
     "github": ""
   },
   "scripts": {
-    "dev": "vite --host",
+    "dev": "vite dev",
     "build": "cross-env NODE_ENV=production NODE_OPTIONS=--max-old-space-size=8192 vite build",
     "build:prod": "NODE_OPTIONS=--max-old-space-size=8192 vite build --mode production",
     "preview": "vite preview"

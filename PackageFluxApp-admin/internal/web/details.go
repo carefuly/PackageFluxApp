@@ -27,8 +27,9 @@ import (
 type DetailsHandler interface {
 	RegisterRoutes(router *gin.RouterGroup)
 	Create(ctx *gin.Context)
-	// Delete(ctx *gin.Context)
-	// FindById(ctx *gin.Context)
+	Delete(ctx *gin.Context)
+	FindById(ctx *gin.Context)
+	ListAll(ctx *gin.Context)
 }
 
 type detailsHandler struct {
