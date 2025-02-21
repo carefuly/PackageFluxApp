@@ -14,9 +14,9 @@ import (
 
 // GetRequestUser 获取请求user
 func GetRequestUser(c *gin.Context) string {
-	email, ok := c.MustGet("email").(string)
+	email, ok := c.Get("email")
 	if !ok {
 		return "AnonymousUser"
 	}
-	return email
+	return email.(string)
 }

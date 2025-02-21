@@ -14,12 +14,14 @@ import (
 	"github.com/carefuly/PackageFluxApp/internal/domain"
 	"github.com/carefuly/PackageFluxApp/internal/service"
 	"github.com/carefuly/PackageFluxApp/model"
+	"github.com/carefuly/PackageFluxApp/pkg/ginx/query/filters"
 	"github.com/carefuly/PackageFluxApp/pkg/models"
 	"github.com/carefuly/PackageFluxApp/pkg/response"
 	validate "github.com/carefuly/PackageFluxApp/pkg/validator"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"net/http"
+	"strconv"
 )
 
 type DetailsHandler interface {
@@ -41,6 +43,11 @@ func NewDetailsHandler(rely config.RelyConfig, svc service.DetailsService) Detai
 	}
 }
 
+type Filters struct {
+	filters.Filters
+	AppName string `json:"appName" binding:"max=50"` // 应用名称
+}
+
 type AppDetailsRequest struct {
 	LogoUrl     string   `json:"logoUrl"`                           // logo地址
 	AppName     string   `json:"appName" binding:"required,max=50"` // 应用名称
@@ -55,7 +62,7 @@ func (h *detailsHandler) RegisterRoutes(router *gin.RouterGroup) {
 	router.DELETE("/details/delete/:id", h.Delete)
 	router.PUT("/details/update/:id", h.Update)
 	router.GET("/details/getById/:id", h.FindById)
-	// router.GET("/userinfo", h.UserInfoHandler)
+	router.GET("/details/listAll", h.ListAll)
 }
 
 func (h *detailsHandler) Create(ctx *gin.Context) {
@@ -204,4 +211,35 @@ func (h *detailsHandler) FindById(ctx *gin.Context) {
 		response.NewResponse().ErrorResponse(ctx, http.StatusInternalServerError, "服务器异常", nil)
 		return
 	}
+}
+
+func (h *detailsHandler) ListAll(ctx *gin.Context) {
+	uid, ok := ctx.MustGet("userId").(uint)
+	if !ok {
+		ctx.Set("internal", uid)
+		zap.S().Error("用户ID获取失败", uid)
+		response.NewResponse().ErrorResponse(ctx, http.StatusInternalServerError, "服务器异常", nil)
+		return
+	}
+
+	statusStr := ctx.DefaultQuery("status", "true")
+	status, _ := strconv.ParseBool(statusStr)
+	appName := ctx.DefaultQuery("appName", "")
+
+	list, err := h.svc.ListAll(ctx, domain.FiltersDetail{
+		Filters: filters.Filters{
+			Status: status,
+		},
+		UserId:  uid,
+		AppName: appName,
+	})
+
+	if err != nil {
+		ctx.Set("internal", err.Error())
+		zap.L().Error("查询应用详情列表异常", zap.Error(err))
+		response.NewResponse().ErrorResponse(ctx, http.StatusInternalServerError, "服务器异常", nil)
+		return
+	}
+
+	response.NewResponse().SuccessResponse(ctx, "查询成功", list)
 }

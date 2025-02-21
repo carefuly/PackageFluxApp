@@ -19,7 +19,7 @@ type Detail struct {
 	Type        string   `gorm:"type:int;default:1;comment:1:APP" json:"type"`
 	Preview     string   `gorm:"type:json;comment:预览图" json:"preview"`
 	UserID      uint     `gorm:"type:int;comment:用户ID" json:"user_id"`
-	User        User     `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	VersionID   *uint    `gorm:"type:int;comment:版本ID" json:"version_id"`
+	User        *User    `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	VersionID   uint     `gorm:"type:int;comment:版本ID" json:"version_id"`
 	Version     *Version `gorm:"foreignKey:VersionID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }

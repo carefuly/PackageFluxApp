@@ -24,6 +24,7 @@ type DetailsService interface {
 	Delete(ctx context.Context, userId uint, recordId string) error
 	Update(ctx context.Context, detail domain.Detail) error
 	FindById(ctx context.Context, userId uint, recordId string) (domain.Detail, error)
+	ListAll(ctx context.Context, f domain.FiltersDetail) ([]domain.Detail, error)
 }
 
 type detailsService struct {
@@ -50,4 +51,8 @@ func (svc *detailsService) Update(ctx context.Context, detail domain.Detail) err
 
 func (svc *detailsService) FindById(ctx context.Context, userId uint, recordId string) (domain.Detail, error) {
 	return svc.repo.FindById(ctx, userId, recordId)
+}
+
+func (svc *detailsService) ListAll(ctx context.Context, f domain.FiltersDetail) ([]domain.Detail, error) {
+	return svc.repo.ListAll(ctx, f)
 }

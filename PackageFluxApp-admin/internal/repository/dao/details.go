@@ -11,6 +11,7 @@ package dao
 import (
 	"context"
 	"errors"
+	"github.com/carefuly/PackageFluxApp/internal/domain"
 	"github.com/carefuly/PackageFluxApp/model"
 	"gorm.io/gorm"
 )
@@ -25,6 +26,7 @@ type DetailsDAO interface {
 	Delete(ctx context.Context, userId uint, recordId string) error
 	Update(ctx context.Context, detail model.Detail) error
 	FindById(ctx context.Context, userId uint, recordId string) (model.Detail, error)
+	ListAll(ctx context.Context, f domain.FiltersDetail) ([]model.Detail, error)
 }
 
 type detailsDAO struct {
@@ -68,13 +70,28 @@ func (dao *detailsDAO) Update(ctx context.Context, detail model.Detail) error {
 
 func (dao *detailsDAO) FindById(ctx context.Context, userId uint, recordId string) (model.Detail, error) {
 	var res model.Detail
-	err := dao.db.WithContext(ctx).Where("user_id = ? AND record_id = ?", userId, recordId).First(&res).Error
+	err := dao.db.WithContext(ctx).Preload("User").Preload("Version").
+		Where("user_id = ? AND record_id = ?", userId, recordId).
+		First(&res).Error
 	if err != nil {
 		if errors.Is(err, ErrRecordNotFound) {
+
 			return model.Detail{}, ErrRecordNotFound
 		} else {
 			return model.Detail{}, err
 		}
 	}
 	return res, err
+}
+
+func (dao *detailsDAO) ListAll(ctx context.Context, f domain.FiltersDetail) ([]model.Detail, error) {
+	query := dao.db.WithContext(ctx).Where("status = ? AND user_id = ?", f.Status, f.UserId)
+	if f.AppName != "" {
+		query = query.Where("app_name LIKE ?", "%"+f.AppName+"%")
+	}
+	var ds []model.Detail
+	if err := query.Find(&ds).Error; err != nil {
+		return []model.Detail{}, err
+	}
+	return ds, nil
 }

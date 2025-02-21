@@ -35,7 +35,7 @@ func (q *QQMailSender) Send(ctx context.Context, to, subject, body string) error
 
 	// QQ 邮箱的 SMTP 服务器
 	smtpServer := "smtp.qq.com"
-	auth := gomail.NewDialer(smtpServer, 25, q.From, q.Password)
+	auth := gomail.NewDialer(smtpServer, 465, q.From, q.Password)
 
 	// 发送邮件
 	err := auth.DialAndSend(e)

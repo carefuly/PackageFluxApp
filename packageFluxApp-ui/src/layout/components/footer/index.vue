@@ -16,7 +16,7 @@ const method = reactive({
 <template>
   <div class="copyright">
     本网站由
-    <span @click="method.goto" style="color: #afaeae; cursor: pointer;">PackageHotApp | </span>
+    <span @click="method.goto" style="color: #afaeae; cursor: pointer;">PackageFluxApp | </span>
     <span @click="method.copy()"
           style="color: #afaeae; cursor: pointer;">蜀ICP备2023008183号-4</span>
     提供技术支持

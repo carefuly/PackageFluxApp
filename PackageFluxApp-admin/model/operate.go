@@ -13,6 +13,7 @@ import (
 	"github.com/carefuly/PackageFluxApp/pkg/models"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 type OperateLogger struct {
@@ -35,8 +36,15 @@ type OperateLogger struct {
 }
 
 func (o *OperateLogger) Insert(ctx context.Context, db *gorm.DB, op OperateLogger) {
+	currentLogger := db.Config.Logger
+	// 临时禁用日志
+	db.Config.Logger = logger.Default.LogMode(logger.Silent)
+
 	err := db.WithContext(ctx).Create(&op).Error
 	if err != nil {
 		zap.L().Error("日志记录异常", zap.String("err", err.Error()))
 	}
+
+	// 恢复日志级别
+	db.Config.Logger = currentLogger
 }

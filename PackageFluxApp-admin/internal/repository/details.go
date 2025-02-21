@@ -28,6 +28,7 @@ type DetailsRepository interface {
 	Delete(ctx context.Context, userId uint, recordId string) error
 	Update(ctx context.Context, detail domain.Detail) error
 	FindById(ctx context.Context, userId uint, recordId string) (domain.Detail, error)
+	ListAll(ctx context.Context, f domain.FiltersDetail) ([]domain.Detail, error)
 }
 
 type detailsRepository struct {
@@ -60,6 +61,18 @@ func (repo *detailsRepository) FindById(ctx context.Context, userId uint, record
 	return repo.toDomain(d), err
 }
 
+func (repo *detailsRepository) ListAll(ctx context.Context, f domain.FiltersDetail) ([]domain.Detail, error) {
+	list, err := repo.dao.ListAll(ctx, f)
+	if err != nil {
+		return nil, err
+	}
+	var details []domain.Detail
+	for _, v := range list {
+		details = append(details, repo.toDomain(v))
+	}
+	return details, err
+}
+
 func (repo *detailsRepository) toDomain(d model.Detail) domain.Detail {
 	var decodedPreview []string
 	_ = json.Unmarshal([]byte(d.Preview), &decodedPreview)
@@ -87,7 +100,6 @@ func (repo *detailsRepository) toEntity(d domain.Detail) model.Detail {
 		Description: d.Description,
 		Preview:     preview.String(),
 		UserID:      d.UserID,
-		VersionID:   nil,
-		Version:     nil,
+		VersionID:   d.VersionID,
 	}
 }

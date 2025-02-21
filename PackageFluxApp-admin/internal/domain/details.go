@@ -10,41 +10,18 @@ package domain
 
 import (
 	"github.com/carefuly/PackageFluxApp/model"
+	"github.com/carefuly/PackageFluxApp/pkg/ginx/query/filters"
 )
+
+type FiltersDetail struct {
+	filters.Filters
+	UserId  uint   `json:"user_id"` // 用户ID
+	AppName string `json:"appName"` // 应用名称
+}
 
 type Detail struct {
 	model.Detail
-	Preview    []string `json:"preview"`
-	CreateTime string   `json:"createTime"`
-	UpdateTime string   `json:"updateTime"`
+	Preview    []string `json:"preview"`    // 预览图
+	CreateTime string   `json:"createTime"` // 创建时间
+	UpdateTime string   `json:"updateTime"` // 更新时间
 }
-
-// type CreateDetail struct {
-// 	LogoUrl     string `json:"logo_url"`
-// 	AppName     string `json:"app_name"`
-// 	AppleId     string `json:"appleId"`
-// 	Description string `json:"description"`
-// 	Preview     []string `json:"preview"`
-// 	UserID      uint   `json:"user_id"`
-// 	Creator     uint   `json:"creator"`
-// 	Modifier    uint   `json:"modifier"`
-// 	Remark      string `json:"remark"`
-// }
-//
-// type Details struct {
-// 	models.CoreModels
-// 	RecordId    string `json:"recordId"`
-// 	LogoUrl     string `json:"logo_url"`
-// 	AppName     string `json:"app_name"`
-// 	AppleId     string `json:"appleId"`
-// 	Description string `json:"description"`
-// 	Type        string `json:"type"`
-// 	Preview     string `json:"preview"`
-// 	UserID      uint   `json:"user_id"`
-// 	VersionID   *uint  `json:"version_id"`
-// 	Creator     uint   `json:"creator"`
-// 	Modifier    uint   `json:"modifier"`
-// 	Remark      string `json:"remark"`
-// 	CreateTime string `json:"createTime"`
-// 	UpdateTime string `json:"updateTime"`
-// }
