@@ -93,7 +93,7 @@
 
 <template>
 	<view class="page">
-		<cl-message ref="message"></cl-message>
+		<cl-message ref="message"></cl-message>2
 		<view class="title">
 			<view>您好，一键登录！</view>
 		</view>

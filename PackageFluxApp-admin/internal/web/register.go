@@ -69,10 +69,10 @@ func (h *registerHandler) SendEmailCaptchaHandler(ctx *gin.Context) {
 	}
 
 	code, err := h.codeSvc.Send(ctx, req.Email, "Package注册", bizRegister)
+	zap.L().Info("验证码发送成功", zap.String("email", req.Email), zap.String("code", code))
 
 	switch {
 	case err == nil:
-		zap.L().Info("验证码发送成功", zap.String("email", req.Email), zap.String("code", code))
 		response.NewResponse().SuccessResponse(ctx, "发送成功, 验证码10分钟有效", nil)
 	case errors.Is(err, service.ErrCodeSendTooMany):
 		response.NewResponse().ErrorResponse(ctx, http.StatusBadRequest, "短信发送太频繁，请稍后再试", nil)

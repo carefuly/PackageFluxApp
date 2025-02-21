@@ -1,22 +1,34 @@
 <script>
 	import {
+		userinfo
+	} from "@/apis/auth/login/index.js";
+	import {
 		getToken,
+		setUser,
 	} from "./store/index.js";
 	import {
 		skyShowToast
 	} from "@/utils/sky.js";
 	export default {
-		onLaunch: async function() {
-			// console.log("App Launch");
-			if (!getToken()) {
-				uni.redirectTo({
-					url: "/pages/auth/login/index",
-				});
-				skyShowToast("用户信息为空，请先登录");
+		methods: {
+			hanldeGetUserInfo: async function() {
+				try {
+					const res = await userinfo();
+					setUser(JSON.stringify(res.data));
+				} catch (err) {
+					uni.redirectTo({
+						url: "/pages/auth/login/index",
+					});
+					skyShowToast(err.msg);
+				}
 			}
 		},
+		onLaunch: async function() {
+			console.log("App Launch");
+			this.hanldeGetUserInfo();
+		},
 		onShow: function() {
-			console.log("App Show");
+			// console.log("App Show");
 		},
 		onHide: function() {
 			console.log("App Hide");

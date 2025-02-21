@@ -31,9 +31,13 @@
 		}]
 	}],
 	"globalStyle": {
+		// "navigationStyle": "custom",
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "首页",
 		"navigationBarBackgroundColor": "#3478F5"
+		// "h5": {
+		// 	"titleNView": true
+		// }
 	},
 	"tabBar": {
 		"selectedColor": "#27B4FD",
