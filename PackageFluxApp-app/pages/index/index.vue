@@ -17,6 +17,7 @@
 		data() {
 			return {
 				userinfo: {},
+				visible: false,
 				searchValue: "",
 				pageParams: {
 					creator: null,
@@ -43,7 +44,6 @@
 					appName: [{
 						required: true,
 						message: "请输入应用名称",
-						trigger: "blur"
 					}],
 				},
 				loading: false,
@@ -61,29 +61,132 @@
 					...options,
 				});
 			},
-
+			/** 添加 */
+			handleAdd() {
+				// 打开弹出框
+				this.visible = true;
+				// 标题
+				this.title = "添加";
+				// 重置该表单项
+				this.resetForm();
+			},
 			/** 删除 */
 			handleDelete(row) {
+				const that = this;
 				const id = row.recordId;
 				if (id === null || id === "") {
 					skyShowToast("请选中需要删除的数据");
 					return;
 				}
-				// skyMsgBox("您确认需要删除名称[" + row.appName + "]么？")
-				//   .then(async () => {
-				//     try {
-				//       await deleteById(id);
-				//       await method.handleListAll();
-				//       skyNoticeSuccess("删除成功🌻");
-				//     } catch (error) {
-				//       skyNoticeError("删除失败，请刷新重试🌻");
-				//     }
-				//   })
-				//   .catch(() => {
-				//     skyMsgError("已取消🌻");
-				//   });
+				this.$refs["confirm"]?.open({
+					title: "温馨提示",
+					message: `您确认需要删除名称` + row.appName + `么？`,
+					async callback(action) {
+						switch (action.action) {
+							case "confirm":
+								try {
+									await deleteById(id);
+									await that.handleListAll();
+									that.handleOpen("success", "删除成功🌻");
+								} catch (error) {
+									console.log(error);
+									that.handleOpen("cancel", "删除失败，请刷新重试🌻");
+								}
+								break;
+							case "cancel":
+								break;
+							case "close":
+								break;
+						}
+					}
+				});
 			},
-
+			/** 修改 */
+			handleUpdate(row) {
+				// 标题
+				this.title = "修改";
+				// 文件数据表格
+				// method.handleFileListAll();
+				// 重置表单
+				this.resetForm();
+				const id = row.recordId;
+				if (id == null || id === "") {
+					skyShowToast("请选中需要修改的数据🌻");
+				}
+				// 回显数据
+				this.handleEcho(id);
+				// 打开弹出框
+				this.visible = true;
+			},
+			/** 回显数据 */
+			async handleEcho(id) {
+				if (id === null || id === "") {
+					skyShowToast("请选择需要修改的数据");
+					return;
+				}
+				try {
+					const res = await getById(id);
+					this.form = res.data;
+				} catch (error) {
+					this.handleOpen("cancel", "数据获取失败，请刷新重试🌻");
+				}
+			},
+			// 重置该表单项，将其值重置为初始值，并移除校验结果
+			resetForm() {
+				this.form = {
+					id: null,
+					recordId: null,
+					logoUrl: "",
+					appName: "",
+					appleId: null,
+					description: null,
+					preview: [],
+					sort: 1,
+					status: true,
+					belong_dept: null,
+					remark: null,
+				};
+			},
+			/** 确定  */
+			handleConfirm() {
+				this.confirmLoading = true;
+				this.$refs["formRef"].validate(async (valid) => {
+					if (valid) {
+						if (this.form.id) {
+							try {
+								await updateById(this.form.recordId, this.form);
+								this.handleOpen("success", "修改成功🌻");
+								this.confirmLoading = false;
+								this.resetForm();
+								await this.handleListAll();
+								this.handleCancel();
+							} catch (error) {
+								this.confirmLoading = false;
+								this.handleOpen("cancel", "修改失败，请刷新重试🌻");
+							}
+						} else {
+							try {
+								await add(this.form);
+								this.handleOpen("success", "添加成功🌻");
+								this.confirmLoading = false;
+								this.resetForm();
+								await this.handleListAll();
+								this.handleCancel();
+							} catch (error) {
+								this.confirmLoading = false;
+								this.handleOpen("cancel", "添加失败，请刷新重试🌻");
+							}
+						}
+					} else {
+						this.handleOpen("cancel", "验证失败，请检查填写内容🌻");
+						this.confirmLoading = false;
+					}
+				});
+			},
+			/** 取消 */
+			handleCancel() {
+				this.visible = false;
+			},
 			/** 数据表格 */
 			async handleListAll() {
 				try {
@@ -118,6 +221,7 @@
 	<view class="page">
 
 		<cl-message ref="message"></cl-message>
+		<cl-confirm ref="confirm"></cl-confirm>
 
 		<cl-card label="温馨提示">
 			<cl-text value="有任何问题请加作者沟通(备注)，避免造成应用发布后无法更新的损失" color="primary"></cl-text>
@@ -128,7 +232,8 @@
 
 		<cl-card label="操作">
 			<view style="display: flex; align-items: center; justify-content: space-evenly;" class="">
-				<cl-button icon="cl-icon-plus" size="mini" type="primary">新增</cl-button>
+				<cl-button icon="cl-icon-plus" size="mini" type="primary" @tap="handleAdd">新增</cl-button>
+				<cl-button size="mini" type="error" @tap="handleListAll">刷新</cl-button>
 				<cl-search style="width: 75%;" v-model="searchValue" placeholder="请输入应用名称"
 					:show-search-button="false"></cl-search>
 			</view>
@@ -147,7 +252,7 @@
 					<view class="operate">
 						<cl-button size="mini" type="warning" plain>统计</cl-button>
 						<cl-button size="mini" type="primary" plain>版本</cl-button>
-						<cl-button size="mini" type="success" plain>修改</cl-button>
+						<cl-button size="mini" type="success" plain @tap="handleUpdate(item)">修改</cl-button>
 						<cl-button size="mini" type="error" plain @tap="handleDelete(item)">删除</cl-button>
 					</view>
 				</view>
@@ -169,6 +274,31 @@
 		</view>
 
 		<view style="height: 10rpx;"></view>
+
+		<cl-dialog :title="title" :visible.sync="visible" :close-on-click-modal="false">
+			<cl-form ref="formRef" :model="form" :rules="rules" label-position="right" label-width="140rpx">
+				<cl-form-item label="应用logo" prop="logoUrl">
+					<cl-input v-model="form.logoUrl" placeholder="将图片url粘贴到此处" clearable></cl-input>
+				</cl-form-item>
+				<cl-form-item label="应用名称" prop="appName">
+					<cl-input v-model="form.appName" placeholder="应用名请勿包含空格" clearable></cl-input>
+				</cl-form-item>
+				<cl-form-item label="appleId" prop="appleId">
+					<cl-input v-model="form.appleId" placeholder="App Store下的app信息" clearable></cl-input>
+				</cl-form-item>
+				<cl-form-item label="应用描述" prop="description">
+					<cl-textarea v-model="form.description" placeholder="请输入应用描述"></cl-textarea>
+				</cl-form-item>
+				<cl-form-item label="预览截图" prop="preview">
+					<cl-select border v-model="form.preview" :options="fileList" placeholder="请选择预览图"></cl-select>
+				</cl-form-item>
+				<cl-form-item label="备注" prop="remark">
+					<cl-textarea v-model="form.remark" placeholder="请输入备注"></cl-textarea>
+				</cl-form-item>
+			</cl-form>
+			<cl-button type="error" @tap="handleCancel">取消</cl-button>
+			<cl-button type="primary" @tap="handleConfirm">保存</cl-button>
+		</cl-dialog>
 	</view>
 </template>
 
