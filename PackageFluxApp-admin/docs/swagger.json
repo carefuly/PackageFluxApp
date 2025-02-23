@@ -1,0 +1,1046 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "PackageFluxApp-admin在线接口文档",
+        "title": "PackageFluxApp-admin",
+        "termsOfService": "http://swagger.io/terms",
+        "contact": {
+            "name": "CJiaの用心",
+            "url": "http://www.swagger.io/support",
+            "email": "2224693191@qq.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "127.0.0.1:8080",
+    "basePath": "/api",
+    "paths": {
+        "/v1/application/details/create": {
+            "post": {
+                "description": "新增应用详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "应用详情"
+                ],
+                "summary": "新增应用详情",
+                "operationId": "新增应用详情",
+                "parameters": [
+                    {
+                        "description": "应用详情参数",
+                        "name": "AppDetailsRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/web.AppDetailsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/application/details/delete/{id}": {
+            "delete": {
+                "description": "删除应用详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "应用详情"
+                ],
+                "summary": "删除应用详情",
+                "operationId": "删除应用详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "详情ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/application/details/getById/{id}": {
+            "get": {
+                "description": "根据ID查询应用详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "应用详情"
+                ],
+                "summary": "根据ID查询应用详情",
+                "operationId": "根据ID查询应用详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "详情ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Detail"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/application/details/listAll": {
+            "get": {
+                "description": "查询应用详情列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "应用详情"
+                ],
+                "summary": "查询应用详情列表",
+                "operationId": "查询应用详情列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "true",
+                        "description": "状态",
+                        "name": "status",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "\"\"",
+                        "description": "应用名称",
+                        "name": "appName",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.DetailsListResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/application/details/update/{id}": {
+            "put": {
+                "description": "更新应用详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "应用详情"
+                ],
+                "summary": "更新应用详情",
+                "operationId": "更新应用详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "详情ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "应用详情参数",
+                        "name": "AppDetailsRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/web.AppDetailsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/application/files/batchUpload": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "批量上传文件",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文件"
+                ],
+                "summary": "批量上传文件",
+                "operationId": "批量上传文件",
+                "parameters": [
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "file"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "文件列表",
+                        "name": "files",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/auth/email-login": {
+            "post": {
+                "description": "邮箱验证码登录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户登录"
+                ],
+                "summary": "邮箱验证码登录",
+                "operationId": "EmailLogin",
+                "parameters": [
+                    {
+                        "description": "登录参数",
+                        "name": "LoginRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/web.LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/auth/email-register": {
+            "post": {
+                "description": "邮箱验证码注册",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户注册"
+                ],
+                "summary": "邮箱验证码注册",
+                "operationId": "EmailRegister",
+                "parameters": [
+                    {
+                        "description": "注册参数",
+                        "name": "RegisterRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/web.RegisterRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/auth/send-login-captcha": {
+            "post": {
+                "description": "发送邮箱登录验证码",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户登录"
+                ],
+                "summary": "发送邮箱登录验证码",
+                "operationId": "SendEmailLoginCaptcha",
+                "parameters": [
+                    {
+                        "description": "验证码参数",
+                        "name": "SendLoginRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/web.SendLoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/auth/send-register-captcha": {
+            "post": {
+                "description": "发送邮箱注册验证码",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户注册"
+                ],
+                "summary": "发送邮箱注册验证码",
+                "operationId": "SendEmailRegisterCaptcha",
+                "parameters": [
+                    {
+                        "description": "验证码参数",
+                        "name": "SendRegisterRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/web.SendRegisterRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/auth/userinfo": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "获取用户信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户登录"
+                ],
+                "summary": "获取用户信息",
+                "operationId": "UserInfo",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.UserInfo"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "domain.Detail": {
+            "type": "object",
+            "properties": {
+                "appName": {
+                    "description": "应用名称",
+                    "type": "string"
+                },
+                "appleId": {
+                    "description": "appleId",
+                    "type": "string"
+                },
+                "belongDept": {
+                    "description": "数据归属部门",
+                    "type": "integer"
+                },
+                "createTime": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "creator": {
+                    "description": "创建人",
+                    "type": "integer"
+                },
+                "description": {
+                    "description": "应用描述",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "主键ID",
+                    "type": "integer"
+                },
+                "logoUrl": {
+                    "description": "logo地址",
+                    "type": "string"
+                },
+                "modifier": {
+                    "description": "修改人",
+                    "type": "integer"
+                },
+                "preview": {
+                    "description": "预览图",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "recordId": {
+                    "description": "记录ID",
+                    "type": "string"
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string"
+                },
+                "sort": {
+                    "description": "显示排序",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "状态",
+                    "type": "boolean"
+                },
+                "type": {
+                    "description": "1:APP",
+                    "type": "string"
+                },
+                "updateTime": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "user": {
+                    "description": "用户",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.User"
+                        }
+                    ]
+                },
+                "user_id": {
+                    "description": "用户ID",
+                    "type": "integer"
+                },
+                "version": {
+                    "description": "版本",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.Version"
+                        }
+                    ]
+                },
+                "version_id": {
+                    "description": "版本ID",
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.UserInfo": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "description": "头像",
+                    "type": "string"
+                },
+                "belongDept": {
+                    "description": "数据归属部门",
+                    "type": "integer"
+                },
+                "createTime": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "creator": {
+                    "description": "创建人",
+                    "type": "integer"
+                },
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "主键ID",
+                    "type": "integer"
+                },
+                "modifier": {
+                    "description": "修改人",
+                    "type": "integer"
+                },
+                "recordId": {
+                    "description": "记录ID",
+                    "type": "string"
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string"
+                },
+                "sort": {
+                    "description": "显示排序",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "状态",
+                    "type": "boolean"
+                },
+                "total": {
+                    "description": "接口总次数",
+                    "type": "integer"
+                },
+                "updateTime": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "usageNumber": {
+                    "description": "接口调用次数",
+                    "type": "integer"
+                },
+                "username": {
+                    "description": "用户名",
+                    "type": "string"
+                }
+            }
+        },
+        "model.Detail": {
+            "type": "object",
+            "properties": {
+                "appName": {
+                    "description": "应用名称",
+                    "type": "string"
+                },
+                "appleId": {
+                    "description": "appleId",
+                    "type": "string"
+                },
+                "belongDept": {
+                    "description": "数据归属部门",
+                    "type": "integer"
+                },
+                "createTime": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "creator": {
+                    "description": "创建人",
+                    "type": "integer"
+                },
+                "description": {
+                    "description": "应用描述",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "主键ID",
+                    "type": "integer"
+                },
+                "logoUrl": {
+                    "description": "logo地址",
+                    "type": "string"
+                },
+                "modifier": {
+                    "description": "修改人",
+                    "type": "integer"
+                },
+                "preview": {
+                    "description": "预览图",
+                    "type": "string"
+                },
+                "recordId": {
+                    "description": "记录ID",
+                    "type": "string"
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string"
+                },
+                "sort": {
+                    "description": "显示排序",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "状态",
+                    "type": "boolean"
+                },
+                "type": {
+                    "description": "1:APP",
+                    "type": "string"
+                },
+                "updateTime": {
+                    "description": "修改时间",
+                    "type": "string"
+                },
+                "user": {
+                    "description": "用户",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.User"
+                        }
+                    ]
+                },
+                "user_id": {
+                    "description": "用户ID",
+                    "type": "integer"
+                },
+                "version": {
+                    "description": "版本",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.Version"
+                        }
+                    ]
+                },
+                "version_id": {
+                    "description": "版本ID",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.User": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "description": "头像",
+                    "type": "string"
+                },
+                "belongDept": {
+                    "description": "数据归属部门",
+                    "type": "integer"
+                },
+                "createTime": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "creator": {
+                    "description": "创建人",
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "主键ID",
+                    "type": "integer"
+                },
+                "modifier": {
+                    "description": "修改人",
+                    "type": "integer"
+                },
+                "recordId": {
+                    "description": "记录ID",
+                    "type": "string"
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string"
+                },
+                "sort": {
+                    "description": "显示排序",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "状态",
+                    "type": "boolean"
+                },
+                "total": {
+                    "description": "接口总次数",
+                    "type": "integer"
+                },
+                "updateTime": {
+                    "description": "修改时间",
+                    "type": "string"
+                },
+                "usageNumber": {
+                    "description": "接口调用次数",
+                    "type": "integer"
+                },
+                "username": {
+                    "description": "用户名",
+                    "type": "string"
+                }
+            }
+        },
+        "model.Version": {
+            "type": "object",
+            "properties": {
+                "apk_url": {
+                    "description": "apk下载地址",
+                    "type": "string"
+                },
+                "belongDept": {
+                    "description": "数据归属部门",
+                    "type": "integer"
+                },
+                "createTime": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "creator": {
+                    "description": "创建人",
+                    "type": "integer"
+                },
+                "description": {
+                    "description": "更新说明",
+                    "type": "string"
+                },
+                "detail": {
+                    "description": "应用详情",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.Detail"
+                        }
+                    ]
+                },
+                "detail_id": {
+                    "description": "应用详情ID",
+                    "type": "integer"
+                },
+                "force_update": {
+                    "description": "是否强制更新",
+                    "type": "boolean"
+                },
+                "formal_version": {
+                    "description": "是否是正式版本",
+                    "type": "boolean"
+                },
+                "h_builder_update": {
+                    "description": "HBuilderX是否更新",
+                    "type": "boolean"
+                },
+                "id": {
+                    "description": "主键ID",
+                    "type": "integer"
+                },
+                "modifier": {
+                    "description": "修改人",
+                    "type": "integer"
+                },
+                "recordId": {
+                    "description": "记录ID",
+                    "type": "string"
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string"
+                },
+                "sort": {
+                    "description": "显示排序",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "状态",
+                    "type": "boolean"
+                },
+                "updateTime": {
+                    "description": "修改时间",
+                    "type": "string"
+                },
+                "versionCode": {
+                    "description": "版本号",
+                    "type": "string"
+                },
+                "wgt_url": {
+                    "description": "wgt下载地址",
+                    "type": "string"
+                }
+            }
+        },
+        "response.Response": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "状态码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "数据"
+                },
+                "msg": {
+                    "description": "提示信息"
+                },
+                "success": {
+                    "description": "是否成功",
+                    "type": "boolean"
+                }
+            }
+        },
+        "web.AppDetailsRequest": {
+            "type": "object",
+            "required": [
+                "appName"
+            ],
+            "properties": {
+                "appName": {
+                    "description": "应用名称",
+                    "type": "string",
+                    "maxLength": 50
+                },
+                "appleId": {
+                    "description": "appleId",
+                    "type": "string",
+                    "maxLength": 50
+                },
+                "description": {
+                    "description": "应用描述",
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "logoUrl": {
+                    "description": "logo地址",
+                    "type": "string"
+                },
+                "preview": {
+                    "description": "预览图",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string",
+                    "maxLength": 255
+                }
+            }
+        },
+        "web.DetailsListResponse": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "description": "列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Detail"
+                    }
+                }
+            }
+        },
+        "web.LoginRequest": {
+            "type": "object",
+            "required": [
+                "code",
+                "email",
+                "password"
+            ],
+            "properties": {
+                "code": {
+                    "description": "验证码",
+                    "type": "string",
+                    "maxLength": 6,
+                    "minLength": 6
+                },
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "密码",
+                    "type": "string",
+                    "maxLength": 16,
+                    "minLength": 6
+                }
+            }
+        },
+        "web.RegisterRequest": {
+            "type": "object",
+            "required": [
+                "code",
+                "email",
+                "password",
+                "username"
+            ],
+            "properties": {
+                "code": {
+                    "description": "验证码",
+                    "type": "string",
+                    "maxLength": 6,
+                    "minLength": 6
+                },
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "密码",
+                    "type": "string",
+                    "maxLength": 16,
+                    "minLength": 6
+                },
+                "username": {
+                    "description": "用户名",
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 3
+                }
+            }
+        },
+        "web.SendLoginRequest": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                }
+            }
+        },
+        "web.SendRegisterRequest": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
