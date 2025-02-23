@@ -92,3 +92,36 @@ func (a *AliYunOSS) BatchUploadFiles(ctx context.Context, path string, files []*
 
 	return fileNames, nil
 }
+
+func (a *AliYunOSS) BatchDeleteFiles(ctx context.Context, paths []string) error {
+	// 从环境变量中获取访问凭证。运行本代码示例之前，请确保已设置环境变量OSS_ACCESS_KEY_ID和OSS_ACCESS_KEY_SECRET
+	provider, err := oss.NewEnvironmentVariableCredentialsProvider()
+	if err != nil {
+		return fmt.Errorf("无法创建凭证提供程序: %v", err)
+	}
+
+	clientOptions := []oss.ClientOption{oss.SetCredentialsProvider(&provider)}
+	clientOptions = append(clientOptions, oss.Region("yourRegion"))
+
+	// 创建 OSS 客户端
+	client, err := oss.New(a.Endpoint, a.AccessKeyID, a.AccessKeySecret, clientOptions...)
+	if err != nil {
+		return fmt.Errorf("无法创建阿里云OSS客户端: %w", err)
+	}
+
+	// 获取存储空间
+	bucket, err := client.Bucket(a.BucketName)
+	if err != nil {
+		return fmt.Errorf("无法获取 bucket: %w", err)
+	}
+
+	for _, path := range paths {
+		fmt.Println("path", path)
+		// 删除文件
+		err = bucket.DeleteObject(path)
+		if err != nil {
+			return fmt.Errorf("无法删除文件: %w", err)
+		}
+	}
+	return nil
+}

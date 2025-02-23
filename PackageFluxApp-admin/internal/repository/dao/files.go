@@ -22,6 +22,7 @@ var (
 
 type FilesDAO interface {
 	BatchCreate(ctx context.Context, files []model.File) error
+	BatchDelete(ctx context.Context, uid uint, ids []string) ([]string, error)
 }
 
 type filesDAO struct {
@@ -39,20 +40,42 @@ func (dao *filesDAO) BatchCreate(ctx context.Context, files []model.File) error 
 	for _, file := range files {
 		// 检查文件是否存在
 		var existingFile model.File
-		if err := dao.db.Where("user_id = ? AND name = ?", file.UserID, file.Name).First(&existingFile).Error; err != nil {
+		if err := dao.db.WithContext(ctx).Where("user_id = ? AND name = ?", file.UserID, file.Name).First(&existingFile).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
-				// 插入新数据
-				if err := dao.db.Create(&file).Error; err != nil {
-					return ErrCreateFile
-				}
-			} else if existingFile.ID != 0 {
-				if err := dao.db.Delete(&existingFile).Error; err != nil {
-					return ErrCreateFile
-				}
-			} else {
-				return err
+
+			}
+		}
+
+		if existingFile.ID != 0 {
+			if err := dao.db.Delete(&existingFile).Error; err != nil {
+				return ErrCreateFile
+			}
+		}
+
+		// 插入新数据
+		if err := dao.db.Create(&file).Error; err != nil {
+			return ErrCreateFile
+		}
+
+	}
+	return nil
+}
+
+func (dao *filesDAO) BatchDelete(ctx context.Context, uid uint, ids []string) ([]string, error) {
+	var pathsToDelete []string
+	// 批量处理
+	for _, id := range ids {
+		// 检查文件是否存在
+		var existingFile model.File
+		if err := dao.db.WithContext(ctx).Where("record_id = ? AND user_id = ?", id, uid).First(&existingFile).Error; err != nil {
+		}
+
+		pathsToDelete = append(pathsToDelete, existingFile.Path)
+
+		if existingFile.ID != 0 {
+			if err := dao.db.Delete(&existingFile).Error; err != nil {
 			}
 		}
 	}
-	return nil
+	return pathsToDelete, nil
 }

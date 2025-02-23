@@ -20,6 +20,7 @@ var (
 
 type FilesService interface {
 	BatchCreate(ctx context.Context, files []domain.Files) error
+	BatchDelete(ctx context.Context, uid uint, ids []string) ([]string, error)
 }
 
 type filesService struct {
@@ -34,4 +35,8 @@ func NewFilesService(repo repository.FilesRepository) FilesService {
 
 func (svc *filesService) BatchCreate(ctx context.Context, files []domain.Files) error {
 	return svc.repo.BatchCreate(ctx, files)
+}
+
+func (svc *filesService) BatchDelete(ctx context.Context, uid uint, ids []string) ([]string, error) {
+	return svc.repo.BatchDelete(ctx, uid, ids)
 }

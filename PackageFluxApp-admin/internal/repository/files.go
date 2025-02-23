@@ -1,6 +1,6 @@
 /**
  * Description：
- * FileName：file.go
+ * FileName：files.go
  * Author：CJiaの用心
  * Create：2025/2/23 20:13:50
  * Remark：
@@ -22,6 +22,7 @@ var (
 
 type FilesRepository interface {
 	BatchCreate(ctx context.Context, files []domain.Files) error
+	BatchDelete(ctx context.Context, uid uint, ids []string) ([]string, error)
 }
 
 type filesRepository struct {
@@ -40,6 +41,10 @@ func (repo *filesRepository) BatchCreate(ctx context.Context, files []domain.Fil
 		filesEntity = append(filesEntity, repo.toEntity(file))
 	}
 	return repo.dao.BatchCreate(ctx, filesEntity)
+}
+
+func (repo *filesRepository) BatchDelete(ctx context.Context, uid uint, ids []string) ([]string, error) {
+	return repo.dao.BatchDelete(ctx, uid, ids)
 }
 
 func (repo *filesRepository) toEntity(d domain.Files) model.File {

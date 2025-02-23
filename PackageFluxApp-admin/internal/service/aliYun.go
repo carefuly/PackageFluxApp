@@ -16,6 +16,7 @@ import (
 
 type AliYunService interface {
 	BatchUploadFiles(ctx context.Context, email string, files []*multipart.FileHeader) ([]*multipart.FileHeader, string, error)
+	BatchDeleteFiles(ctx context.Context, paths []string) error
 }
 
 type aliYunService struct {
@@ -32,4 +33,8 @@ func (svc *aliYunService) BatchUploadFiles(ctx context.Context, email string, fi
 	path := "packageFluxApp" + "/" + email
 	uploadFiles, err := svc.oss.BatchUploadFiles(ctx, path, files)
 	return uploadFiles, path, err
+}
+
+func (svc *aliYunService) BatchDeleteFiles(ctx context.Context, paths []string) error {
+	return svc.oss.BatchDeleteFiles(ctx, paths)
 }
