@@ -1,0 +1,1 @@
+{"version":3,"file":"auto-import.js","sourceRoot":"","sources":["auto-import.ts"],"names":[],"mappings":"AAAA,OAAO,UAAU,MAAM,2BAA2B,CAAC;AAEnD,MAAM,CAAC,OAAO,UAAU,gBAAgB;IACtC,OAAO,UAAU,CAAC;QAChB,uCAAuC;QACvC,OAAO,EAAE;YACP,KAAK;YACL,YAAY;YACZ,OAAO;SACR;QACD,GAAG,EAAE,+BAA+B;KACrC,CAAC,CAAA;AACJ,CAAC"}

@@ -1,0 +1,834 @@
+basePath: /api
+definitions:
+  github_com_carefuly_PackageFluxApp_internal_domain.Detail:
+    properties:
+      appName:
+        description: 应用名称
+        type: string
+      appleId:
+        description: appleId
+        type: string
+      belongDept:
+        description: 数据归属部门
+        type: integer
+      createTime:
+        description: 创建时间
+        type: string
+      creator:
+        description: 创建人
+        type: string
+      description:
+        description: 应用描述
+        type: string
+      id:
+        description: 主键ID
+        type: string
+      logoUrl:
+        description: logo地址
+        type: string
+      modifier:
+        description: 修改人
+        type: string
+      preview:
+        description: 预览图
+        items:
+          type: string
+        type: array
+      remark:
+        description: 备注
+        type: string
+      sort:
+        description: RecordId   string     `gorm:"type:varchar(100);uniqueIndex;comment:记录ID"
+          json:"recordId"` // 记录ID
+        type: integer
+      status:
+        description: 状态
+        type: boolean
+      type:
+        description: 1:APP
+        type: integer
+      updateTime:
+        description: 更新时间
+        type: string
+      user:
+        allOf:
+        - $ref: '#/definitions/model.User'
+        description: 用户详情
+      user_id:
+        description: 用户ID
+        type: string
+    type: object
+  github_com_carefuly_PackageFluxApp_internal_domain.UserInfo:
+    properties:
+      avatar:
+        description: 头像
+        type: string
+      belongDept:
+        description: 数据归属部门
+        type: integer
+      createTime:
+        description: 创建时间
+        type: string
+      creator:
+        description: 创建人
+        type: string
+      email:
+        description: 邮箱
+        type: string
+      id:
+        description: 主键ID
+        type: string
+      modifier:
+        description: 修改人
+        type: string
+      remark:
+        description: 备注
+        type: string
+      sort:
+        description: RecordId   string     `gorm:"type:varchar(100);uniqueIndex;comment:记录ID"
+          json:"recordId"` // 记录ID
+        type: integer
+      status:
+        description: 状态
+        type: boolean
+      total:
+        description: 接口总次数
+        type: integer
+      updateTime:
+        description: 更新时间
+        type: string
+      usageNumber:
+        description: 接口调用次数
+        type: integer
+      username:
+        description: 用户名
+        type: string
+    type: object
+  github_com_carefuly_PackageFluxApp_internal_web.AppDetailsRequest:
+    properties:
+      appName:
+        description: 应用名称
+        maxLength: 50
+        type: string
+      appleId:
+        description: appleId
+        maxLength: 50
+        type: string
+      description:
+        description: 应用描述
+        maxLength: 255
+        type: string
+      logoUrl:
+        description: logo地址
+        type: string
+      preview:
+        description: 预览图
+        items:
+          type: string
+        type: array
+      remark:
+        description: 备注
+        maxLength: 255
+        type: string
+    required:
+    - appName
+    type: object
+  github_com_carefuly_PackageFluxApp_internal_web.DetailsListResponse:
+    properties:
+      list:
+        description: 列表
+        items:
+          $ref: '#/definitions/github_com_carefuly_PackageFluxApp_internal_domain.Detail'
+        type: array
+    type: object
+  github_com_carefuly_PackageFluxApp_internal_web.IdsRequest:
+    properties:
+      ids:
+        description: 文件ID列表
+        items:
+          type: string
+        type: array
+    type: object
+  github_com_carefuly_PackageFluxApp_internal_web.LoginRequest:
+    properties:
+      code:
+        description: 验证码
+        maxLength: 6
+        minLength: 6
+        type: string
+      email:
+        description: 邮箱
+        type: string
+      password:
+        description: 密码
+        maxLength: 16
+        minLength: 6
+        type: string
+    required:
+    - code
+    - email
+    - password
+    type: object
+  github_com_carefuly_PackageFluxApp_internal_web.RegisterRequest:
+    properties:
+      code:
+        description: 验证码
+        maxLength: 6
+        minLength: 6
+        type: string
+      email:
+        description: 邮箱
+        type: string
+      password:
+        description: 密码
+        maxLength: 16
+        minLength: 6
+        type: string
+      username:
+        description: 用户名
+        maxLength: 20
+        minLength: 3
+        type: string
+    required:
+    - code
+    - email
+    - password
+    - username
+    type: object
+  github_com_carefuly_PackageFluxApp_internal_web.SendLoginRequest:
+    properties:
+      email:
+        description: 邮箱
+        type: string
+    required:
+    - email
+    type: object
+  github_com_carefuly_PackageFluxApp_internal_web.SendRegisterRequest:
+    properties:
+      email:
+        description: 邮箱
+        type: string
+    required:
+    - email
+    type: object
+  github_com_carefuly_PackageFluxApp_v1_internal_domain.Detail:
+    properties:
+      appName:
+        description: 应用名称
+        type: string
+      appleId:
+        description: appleId
+        type: string
+      belongDept:
+        description: 数据归属部门
+        type: integer
+      createTime:
+        description: 创建时间
+        type: string
+      creator:
+        description: 创建人
+        type: string
+      description:
+        description: 应用描述
+        type: string
+      id:
+        description: 主键ID
+        type: string
+      logoUrl:
+        description: logo地址
+        type: string
+      modifier:
+        description: 修改人
+        type: string
+      preview:
+        description: 预览图
+        items:
+          type: string
+        type: array
+      remark:
+        description: 备注
+        type: string
+      sort:
+        description: RecordId   string     `gorm:"type:varchar(100);uniqueIndex;comment:记录ID"
+          json:"recordId"` // 记录ID
+        type: integer
+      status:
+        description: 状态
+        type: boolean
+      type:
+        description: 1:APP
+        type: integer
+      updateTime:
+        description: 更新时间
+        type: string
+      user:
+        allOf:
+        - $ref: '#/definitions/model.User'
+        description: 用户详情
+      user_id:
+        description: 用户ID
+        type: string
+    type: object
+  github_com_carefuly_PackageFluxApp_v1_internal_domain.UserInfo:
+    properties:
+      avatar:
+        description: 头像
+        type: string
+      belongDept:
+        description: 数据归属部门
+        type: integer
+      createTime:
+        description: 创建时间
+        type: string
+      creator:
+        description: 创建人
+        type: string
+      email:
+        description: 邮箱
+        type: string
+      id:
+        description: 主键ID
+        type: string
+      modifier:
+        description: 修改人
+        type: string
+      remark:
+        description: 备注
+        type: string
+      sort:
+        description: RecordId   string     `gorm:"type:varchar(100);uniqueIndex;comment:记录ID"
+          json:"recordId"` // 记录ID
+        type: integer
+      status:
+        description: 状态
+        type: boolean
+      total:
+        description: 接口总次数
+        type: integer
+      updateTime:
+        description: 更新时间
+        type: string
+      usageNumber:
+        description: 接口调用次数
+        type: integer
+      username:
+        description: 用户名
+        type: string
+    type: object
+  github_com_carefuly_PackageFluxApp_v1_internal_web.AppDetailsRequest:
+    properties:
+      appName:
+        description: 应用名称
+        maxLength: 50
+        type: string
+      appleId:
+        description: appleId
+        maxLength: 50
+        type: string
+      description:
+        description: 应用描述
+        maxLength: 255
+        type: string
+      logoUrl:
+        description: logo地址
+        type: string
+      preview:
+        description: 预览图
+        items:
+          type: string
+        type: array
+      remark:
+        description: 备注
+        maxLength: 255
+        type: string
+    required:
+    - appName
+    type: object
+  github_com_carefuly_PackageFluxApp_v1_internal_web.DetailsListResponse:
+    properties:
+      list:
+        description: 列表
+        items:
+          $ref: '#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_domain.Detail'
+        type: array
+    type: object
+  github_com_carefuly_PackageFluxApp_v1_internal_web.IdsRequest:
+    properties:
+      ids:
+        description: 文件ID列表
+        items:
+          type: string
+        type: array
+    type: object
+  github_com_carefuly_PackageFluxApp_v1_internal_web.LoginRequest:
+    properties:
+      code:
+        description: 验证码
+        maxLength: 6
+        minLength: 6
+        type: string
+      email:
+        description: 邮箱
+        type: string
+      password:
+        description: 密码
+        maxLength: 16
+        minLength: 6
+        type: string
+    required:
+    - code
+    - email
+    - password
+    type: object
+  github_com_carefuly_PackageFluxApp_v1_internal_web.RegisterRequest:
+    properties:
+      code:
+        description: 验证码
+        maxLength: 6
+        minLength: 6
+        type: string
+      email:
+        description: 邮箱
+        type: string
+      password:
+        description: 密码
+        maxLength: 16
+        minLength: 6
+        type: string
+      username:
+        description: 用户名
+        maxLength: 20
+        minLength: 3
+        type: string
+    required:
+    - code
+    - email
+    - password
+    - username
+    type: object
+  github_com_carefuly_PackageFluxApp_v1_internal_web.SendLoginRequest:
+    properties:
+      email:
+        description: 邮箱
+        type: string
+    required:
+    - email
+    type: object
+  github_com_carefuly_PackageFluxApp_v1_internal_web.SendRegisterRequest:
+    properties:
+      email:
+        description: 邮箱
+        type: string
+    required:
+    - email
+    type: object
+  model.User:
+    properties:
+      avatar:
+        description: 头像
+        type: string
+      belongDept:
+        description: 数据归属部门
+        type: integer
+      createTime:
+        description: 创建时间
+        type: string
+      creator:
+        description: 创建人
+        type: string
+      id:
+        description: 主键ID
+        type: string
+      modifier:
+        description: 修改人
+        type: string
+      remark:
+        description: 备注
+        type: string
+      sort:
+        description: RecordId   string     `gorm:"type:varchar(100);uniqueIndex;comment:记录ID"
+          json:"recordId"` // 记录ID
+        type: integer
+      status:
+        description: 状态
+        type: boolean
+      total:
+        description: 接口总次数
+        type: integer
+      updateTime:
+        description: 修改时间
+        type: string
+      usageNumber:
+        description: 接口调用次数
+        type: integer
+      username:
+        description: 用户名
+        type: string
+    type: object
+  response.Response:
+    properties:
+      code:
+        description: 状态码
+        type: integer
+      data:
+        description: 数据
+      msg:
+        description: 提示信息
+      success:
+        description: 是否成功
+        type: boolean
+    type: object
+host: 127.0.0.1:8080
+info:
+  contact:
+    email: 2224693191@qq.com
+    name: CJiaの用心
+    url: http://www.swagger.io/support
+  description: PackageFluxApp-admin在线接口文档
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms
+  title: PackageFluxApp-admin
+  version: "1.0"
+paths:
+  /v1/application/details/create:
+    post:
+      consumes:
+      - application/json
+      description: 新增应用详情
+      operationId: 新增应用详情
+      parameters:
+      - description: 应用详情参数
+        in: body
+        name: AppDetailsRequest
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_web.AppDetailsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 新增应用详情
+      tags:
+      - 应用详情
+  /v1/application/details/delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: 删除应用详情
+      operationId: 删除应用详情
+      parameters:
+      - description: 详情ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 删除应用详情
+      tags:
+      - 应用详情
+  /v1/application/details/getById/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 根据ID查询应用详情
+      operationId: 根据ID查询应用详情
+      parameters:
+      - description: 详情ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_domain.Detail'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 根据ID查询应用详情
+      tags:
+      - 应用详情
+  /v1/application/details/listAll:
+    get:
+      consumes:
+      - application/json
+      description: 查询应用详情列表
+      operationId: 查询应用详情列表
+      parameters:
+      - default: "true"
+        description: 状态
+        in: query
+        name: status
+        required: true
+        type: string
+      - default: '""'
+        description: 应用名称
+        in: query
+        name: appName
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_web.DetailsListResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 查询应用详情列表
+      tags:
+      - 应用详情
+  /v1/application/details/update/{id}:
+    put:
+      consumes:
+      - application/json
+      description: 更新应用详情
+      operationId: 更新应用详情
+      parameters:
+      - description: 详情ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 应用详情参数
+        in: body
+        name: AppDetailsRequest
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_web.AppDetailsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 更新应用详情
+      tags:
+      - 应用详情
+  /v1/application/files/batchUpload:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 批量上传文件
+      operationId: 批量上传文件
+      parameters:
+      - collectionFormat: csv
+        description: 文件列表
+        in: formData
+        items:
+          type: file
+        name: files
+        required: true
+        type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 批量上传文件
+      tags:
+      - 文件
+  /v1/application/files/deleteUpload:
+    delete:
+      consumes:
+      - application/json
+      description: 批量删除文件
+      operationId: 批量删除文件
+      parameters:
+      - description: 参数
+        in: body
+        name: IdsRequest
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_web.IdsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - token: []
+      summary: 批量删除文件
+      tags:
+      - 文件
+  /v1/auth/email-login:
+    post:
+      consumes:
+      - application/json
+      description: 邮箱验证码登录
+      operationId: EmailLogin
+      parameters:
+      - description: 登录参数
+        in: body
+        name: LoginRequest
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_web.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 邮箱验证码登录
+      tags:
+      - 用户登录
+  /v1/auth/email-register:
+    post:
+      consumes:
+      - application/json
+      description: 邮箱验证码注册
+      operationId: EmailRegister
+      parameters:
+      - description: 注册参数
+        in: body
+        name: RegisterRequest
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_web.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 邮箱验证码注册
+      tags:
+      - 用户注册
+  /v1/auth/send-login-captcha:
+    post:
+      consumes:
+      - application/json
+      description: 发送邮箱登录验证码
+      operationId: SendEmailLoginCaptcha
+      parameters:
+      - description: 验证码参数
+        in: body
+        name: SendLoginRequest
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_web.SendLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 发送邮箱登录验证码
+      tags:
+      - 用户登录
+  /v1/auth/send-register-captcha:
+    post:
+      consumes:
+      - application/json
+      description: 发送邮箱注册验证码
+      operationId: SendEmailRegisterCaptcha
+      parameters:
+      - description: 验证码参数
+        in: body
+        name: SendRegisterRequest
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_web.SendRegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 发送邮箱注册验证码
+      tags:
+      - 用户注册
+  /v1/auth/userinfo:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户信息
+      operationId: UserInfo
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_domain.UserInfo'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取用户信息
+      tags:
+      - 用户登录
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

@@ -1,0 +1,81 @@
+{
+	"pages": [{
+		"path": "pages/index/index",
+		"style": {
+			"navigationBarTitleText": "首页"
+		}
+	}],
+	"subPackages": [{
+			"root": "pages/auth",
+			"pages": [{
+				"path": "register/index",
+				"style": {
+					"navigationBarTitleText": "注册",
+					"navigationStyle": "custom"
+				}
+			}, {
+				"path": "login/index",
+				"style": {
+					"navigationBarTitleText": "登录",
+					"navigationStyle": "custom"
+				}
+			}]
+		},
+		{
+			"root": "pages/center",
+			"pages": [{
+				"path": "index",
+				"style": {
+					"navigationBarTitleText": "个人中心",
+					"navigationStyle": "custom"
+				}
+			}]
+		},
+		{
+			"root": "pages/files",
+			"pages": [{
+				"path": "index",
+				"style": {
+					"navigationBarTitleText": "文件管理"
+				}
+			}]
+		}
+	],
+	"globalStyle": {
+		// "navigationStyle": "custom",
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "首页",
+		"navigationBarBackgroundColor": "#3478F5"
+		// "h5": {
+		// 	"titleNView": true
+		// }
+	},
+	"tabBar": {
+		"selectedColor": "#27B4FD",
+		"list": [{
+				"pagePath": "pages/index/index",
+				"text": "首页",
+				"iconPath": "static/tabBar/home.png",
+				"selectedIconPath": "static/tabBar/home-active.png"
+			},
+			{
+				"pagePath": "pages/files/index",
+				"text": "文件管理",
+				"iconPath": "static/tabBar/upload.png",
+				"selectedIconPath": "static/tabBar/upload-active.png"
+			},
+			{
+				"pagePath": "pages/center/index",
+				"text": "个人中心",
+				"iconPath": "static/tabBar/my.png",
+				"selectedIconPath": "static/tabBar/my-active.png"
+			}
+		]
+	},
+	"easycom": {
+		"autoscan": true,
+		"custom": {
+			"cl-(.*)": "@/cl-uni/components/cl-$1/cl-$1.vue"
+		}
+	}
+}

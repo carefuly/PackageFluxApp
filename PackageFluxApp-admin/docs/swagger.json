@@ -1,0 +1,1189 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "PackageFluxApp-admin在线接口文档",
+        "title": "PackageFluxApp-admin",
+        "termsOfService": "http://swagger.io/terms",
+        "contact": {
+            "name": "CJiaの用心",
+            "url": "http://www.swagger.io/support",
+            "email": "2224693191@qq.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "127.0.0.1:8080",
+    "basePath": "/api",
+    "paths": {
+        "/v1/application/details/create": {
+            "post": {
+                "description": "新增应用详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "应用详情"
+                ],
+                "summary": "新增应用详情",
+                "operationId": "新增应用详情",
+                "parameters": [
+                    {
+                        "description": "应用详情参数",
+                        "name": "AppDetailsRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_web.AppDetailsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/application/details/delete/{id}": {
+            "delete": {
+                "description": "删除应用详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "应用详情"
+                ],
+                "summary": "删除应用详情",
+                "operationId": "删除应用详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "详情ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/application/details/getById/{id}": {
+            "get": {
+                "description": "根据ID查询应用详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "应用详情"
+                ],
+                "summary": "根据ID查询应用详情",
+                "operationId": "根据ID查询应用详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "详情ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_domain.Detail"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/application/details/listAll": {
+            "get": {
+                "description": "查询应用详情列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "应用详情"
+                ],
+                "summary": "查询应用详情列表",
+                "operationId": "查询应用详情列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "true",
+                        "description": "状态",
+                        "name": "status",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "\"\"",
+                        "description": "应用名称",
+                        "name": "appName",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_web.DetailsListResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/application/details/update/{id}": {
+            "put": {
+                "description": "更新应用详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "应用详情"
+                ],
+                "summary": "更新应用详情",
+                "operationId": "更新应用详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "详情ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "应用详情参数",
+                        "name": "AppDetailsRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_web.AppDetailsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/application/files/batchUpload": {
+            "post": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "description": "批量上传文件",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文件"
+                ],
+                "summary": "批量上传文件",
+                "operationId": "批量上传文件",
+                "parameters": [
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "file"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "文件列表",
+                        "name": "files",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/application/files/deleteUpload": {
+            "delete": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "description": "批量删除文件",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文件"
+                ],
+                "summary": "批量删除文件",
+                "operationId": "批量删除文件",
+                "parameters": [
+                    {
+                        "description": "参数",
+                        "name": "IdsRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_web.IdsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/auth/email-login": {
+            "post": {
+                "description": "邮箱验证码登录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户登录"
+                ],
+                "summary": "邮箱验证码登录",
+                "operationId": "EmailLogin",
+                "parameters": [
+                    {
+                        "description": "登录参数",
+                        "name": "LoginRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_web.LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/auth/email-register": {
+            "post": {
+                "description": "邮箱验证码注册",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户注册"
+                ],
+                "summary": "邮箱验证码注册",
+                "operationId": "EmailRegister",
+                "parameters": [
+                    {
+                        "description": "注册参数",
+                        "name": "RegisterRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_web.RegisterRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/auth/send-login-captcha": {
+            "post": {
+                "description": "发送邮箱登录验证码",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户登录"
+                ],
+                "summary": "发送邮箱登录验证码",
+                "operationId": "SendEmailLoginCaptcha",
+                "parameters": [
+                    {
+                        "description": "验证码参数",
+                        "name": "SendLoginRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_web.SendLoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/auth/send-register-captcha": {
+            "post": {
+                "description": "发送邮箱注册验证码",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户注册"
+                ],
+                "summary": "发送邮箱注册验证码",
+                "operationId": "SendEmailRegisterCaptcha",
+                "parameters": [
+                    {
+                        "description": "验证码参数",
+                        "name": "SendRegisterRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_web.SendRegisterRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/auth/userinfo": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "获取用户信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户登录"
+                ],
+                "summary": "获取用户信息",
+                "operationId": "UserInfo",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_domain.UserInfo"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "github_com_carefuly_PackageFluxApp_internal_domain.Detail": {
+            "type": "object",
+            "properties": {
+                "appName": {
+                    "description": "应用名称",
+                    "type": "string"
+                },
+                "appleId": {
+                    "description": "appleId",
+                    "type": "string"
+                },
+                "belongDept": {
+                    "description": "数据归属部门",
+                    "type": "integer"
+                },
+                "createTime": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "creator": {
+                    "description": "创建人",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "应用描述",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "主键ID",
+                    "type": "string"
+                },
+                "logoUrl": {
+                    "description": "logo地址",
+                    "type": "string"
+                },
+                "modifier": {
+                    "description": "修改人",
+                    "type": "string"
+                },
+                "preview": {
+                    "description": "预览图",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string"
+                },
+                "sort": {
+                    "description": "RecordId   string     `gorm:\"type:varchar(100);uniqueIndex;comment:记录ID\" json:\"recordId\"` // 记录ID",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "状态",
+                    "type": "boolean"
+                },
+                "type": {
+                    "description": "1:APP",
+                    "type": "integer"
+                },
+                "updateTime": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "user": {
+                    "description": "用户详情",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.User"
+                        }
+                    ]
+                },
+                "user_id": {
+                    "description": "用户ID",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_carefuly_PackageFluxApp_internal_domain.UserInfo": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "description": "头像",
+                    "type": "string"
+                },
+                "belongDept": {
+                    "description": "数据归属部门",
+                    "type": "integer"
+                },
+                "createTime": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "creator": {
+                    "description": "创建人",
+                    "type": "string"
+                },
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "主键ID",
+                    "type": "string"
+                },
+                "modifier": {
+                    "description": "修改人",
+                    "type": "string"
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string"
+                },
+                "sort": {
+                    "description": "RecordId   string     `gorm:\"type:varchar(100);uniqueIndex;comment:记录ID\" json:\"recordId\"` // 记录ID",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "状态",
+                    "type": "boolean"
+                },
+                "total": {
+                    "description": "接口总次数",
+                    "type": "integer"
+                },
+                "updateTime": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "usageNumber": {
+                    "description": "接口调用次数",
+                    "type": "integer"
+                },
+                "username": {
+                    "description": "用户名",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_carefuly_PackageFluxApp_internal_web.AppDetailsRequest": {
+            "type": "object",
+            "required": [
+                "appName"
+            ],
+            "properties": {
+                "appName": {
+                    "description": "应用名称",
+                    "type": "string",
+                    "maxLength": 50
+                },
+                "appleId": {
+                    "description": "appleId",
+                    "type": "string",
+                    "maxLength": 50
+                },
+                "description": {
+                    "description": "应用描述",
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "logoUrl": {
+                    "description": "logo地址",
+                    "type": "string"
+                },
+                "preview": {
+                    "description": "预览图",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string",
+                    "maxLength": 255
+                }
+            }
+        },
+        "github_com_carefuly_PackageFluxApp_internal_web.DetailsListResponse": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "description": "列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_carefuly_PackageFluxApp_internal_domain.Detail"
+                    }
+                }
+            }
+        },
+        "github_com_carefuly_PackageFluxApp_internal_web.IdsRequest": {
+            "type": "object",
+            "properties": {
+                "ids": {
+                    "description": "文件ID列表",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "github_com_carefuly_PackageFluxApp_internal_web.LoginRequest": {
+            "type": "object",
+            "required": [
+                "code",
+                "email",
+                "password"
+            ],
+            "properties": {
+                "code": {
+                    "description": "验证码",
+                    "type": "string",
+                    "maxLength": 6,
+                    "minLength": 6
+                },
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "密码",
+                    "type": "string",
+                    "maxLength": 16,
+                    "minLength": 6
+                }
+            }
+        },
+        "github_com_carefuly_PackageFluxApp_internal_web.RegisterRequest": {
+            "type": "object",
+            "required": [
+                "code",
+                "email",
+                "password",
+                "username"
+            ],
+            "properties": {
+                "code": {
+                    "description": "验证码",
+                    "type": "string",
+                    "maxLength": 6,
+                    "minLength": 6
+                },
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "密码",
+                    "type": "string",
+                    "maxLength": 16,
+                    "minLength": 6
+                },
+                "username": {
+                    "description": "用户名",
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 3
+                }
+            }
+        },
+        "github_com_carefuly_PackageFluxApp_internal_web.SendLoginRequest": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_carefuly_PackageFluxApp_internal_web.SendRegisterRequest": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_carefuly_PackageFluxApp_v1_internal_domain.Detail": {
+            "type": "object",
+            "properties": {
+                "appName": {
+                    "description": "应用名称",
+                    "type": "string"
+                },
+                "appleId": {
+                    "description": "appleId",
+                    "type": "string"
+                },
+                "belongDept": {
+                    "description": "数据归属部门",
+                    "type": "integer"
+                },
+                "createTime": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "creator": {
+                    "description": "创建人",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "应用描述",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "主键ID",
+                    "type": "string"
+                },
+                "logoUrl": {
+                    "description": "logo地址",
+                    "type": "string"
+                },
+                "modifier": {
+                    "description": "修改人",
+                    "type": "string"
+                },
+                "preview": {
+                    "description": "预览图",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string"
+                },
+                "sort": {
+                    "description": "RecordId   string     `gorm:\"type:varchar(100);uniqueIndex;comment:记录ID\" json:\"recordId\"` // 记录ID",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "状态",
+                    "type": "boolean"
+                },
+                "type": {
+                    "description": "1:APP",
+                    "type": "integer"
+                },
+                "updateTime": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "user": {
+                    "description": "用户详情",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.User"
+                        }
+                    ]
+                },
+                "user_id": {
+                    "description": "用户ID",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_carefuly_PackageFluxApp_v1_internal_domain.UserInfo": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "description": "头像",
+                    "type": "string"
+                },
+                "belongDept": {
+                    "description": "数据归属部门",
+                    "type": "integer"
+                },
+                "createTime": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "creator": {
+                    "description": "创建人",
+                    "type": "string"
+                },
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "主键ID",
+                    "type": "string"
+                },
+                "modifier": {
+                    "description": "修改人",
+                    "type": "string"
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string"
+                },
+                "sort": {
+                    "description": "RecordId   string     `gorm:\"type:varchar(100);uniqueIndex;comment:记录ID\" json:\"recordId\"` // 记录ID",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "状态",
+                    "type": "boolean"
+                },
+                "total": {
+                    "description": "接口总次数",
+                    "type": "integer"
+                },
+                "updateTime": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "usageNumber": {
+                    "description": "接口调用次数",
+                    "type": "integer"
+                },
+                "username": {
+                    "description": "用户名",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_carefuly_PackageFluxApp_v1_internal_web.AppDetailsRequest": {
+            "type": "object",
+            "required": [
+                "appName"
+            ],
+            "properties": {
+                "appName": {
+                    "description": "应用名称",
+                    "type": "string",
+                    "maxLength": 50
+                },
+                "appleId": {
+                    "description": "appleId",
+                    "type": "string",
+                    "maxLength": 50
+                },
+                "description": {
+                    "description": "应用描述",
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "logoUrl": {
+                    "description": "logo地址",
+                    "type": "string"
+                },
+                "preview": {
+                    "description": "预览图",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string",
+                    "maxLength": 255
+                }
+            }
+        },
+        "github_com_carefuly_PackageFluxApp_v1_internal_web.DetailsListResponse": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "description": "列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_domain.Detail"
+                    }
+                }
+            }
+        },
+        "github_com_carefuly_PackageFluxApp_v1_internal_web.IdsRequest": {
+            "type": "object",
+            "properties": {
+                "ids": {
+                    "description": "文件ID列表",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "github_com_carefuly_PackageFluxApp_v1_internal_web.LoginRequest": {
+            "type": "object",
+            "required": [
+                "code",
+                "email",
+                "password"
+            ],
+            "properties": {
+                "code": {
+                    "description": "验证码",
+                    "type": "string",
+                    "maxLength": 6,
+                    "minLength": 6
+                },
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "密码",
+                    "type": "string",
+                    "maxLength": 16,
+                    "minLength": 6
+                }
+            }
+        },
+        "github_com_carefuly_PackageFluxApp_v1_internal_web.RegisterRequest": {
+            "type": "object",
+            "required": [
+                "code",
+                "email",
+                "password",
+                "username"
+            ],
+            "properties": {
+                "code": {
+                    "description": "验证码",
+                    "type": "string",
+                    "maxLength": 6,
+                    "minLength": 6
+                },
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "密码",
+                    "type": "string",
+                    "maxLength": 16,
+                    "minLength": 6
+                },
+                "username": {
+                    "description": "用户名",
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 3
+                }
+            }
+        },
+        "github_com_carefuly_PackageFluxApp_v1_internal_web.SendLoginRequest": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_carefuly_PackageFluxApp_v1_internal_web.SendRegisterRequest": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                }
+            }
+        },
+        "model.User": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "description": "头像",
+                    "type": "string"
+                },
+                "belongDept": {
+                    "description": "数据归属部门",
+                    "type": "integer"
+                },
+                "createTime": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "creator": {
+                    "description": "创建人",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "主键ID",
+                    "type": "string"
+                },
+                "modifier": {
+                    "description": "修改人",
+                    "type": "string"
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string"
+                },
+                "sort": {
+                    "description": "RecordId   string     `gorm:\"type:varchar(100);uniqueIndex;comment:记录ID\" json:\"recordId\"` // 记录ID",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "状态",
+                    "type": "boolean"
+                },
+                "total": {
+                    "description": "接口总次数",
+                    "type": "integer"
+                },
+                "updateTime": {
+                    "description": "修改时间",
+                    "type": "string"
+                },
+                "usageNumber": {
+                    "description": "接口调用次数",
+                    "type": "integer"
+                },
+                "username": {
+                    "description": "用户名",
+                    "type": "string"
+                }
+            }
+        },
+        "response.Response": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "状态码",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "数据"
+                },
+                "msg": {
+                    "description": "提示信息"
+                },
+                "success": {
+                    "description": "是否成功",
+                    "type": "boolean"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
