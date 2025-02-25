@@ -25,6 +25,7 @@ type DetailsDAO interface {
 	Create(ctx context.Context, detail model.Detail) error
 	Delete(ctx context.Context, id, userId string) error
 	Update(ctx context.Context, id string, detail model.Detail) error
+	Formal(ctx context.Context, id, versionId string) error
 	FindById(ctx context.Context, id, userId string) (model.Detail, error)
 	FindListAll(ctx context.Context, f domain.FiltersDetail) ([]model.Detail, error)
 }
@@ -66,6 +67,11 @@ func (dao *detailsDAO) Update(ctx context.Context, id string, detail model.Detai
 			"modifier":    detail.Modifier,
 			"remark":      detail.Remark,
 		}).Error
+}
+
+func (dao *detailsDAO) Formal(ctx context.Context, id, versionId string) error {
+	return dao.db.WithContext(ctx).Model(&model.Detail{}).Where("id = ?", id).
+		Update("version_id", versionId).Error
 }
 
 func (dao *detailsDAO) FindById(ctx context.Context, id, userId string) (model.Detail, error) {

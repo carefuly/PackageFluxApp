@@ -27,6 +27,7 @@ type DetailsRepository interface {
 	Create(ctx context.Context, detail domain.Detail) error
 	Delete(ctx context.Context, id, userId string) error
 	Update(ctx context.Context, id string, detail domain.Detail) error
+	Formal(ctx context.Context, id, versionId string) error
 	FindById(ctx context.Context, id, userId string) (domain.Detail, error)
 	FindListAll(ctx context.Context, f domain.FiltersDetail) ([]domain.Detail, error)
 }
@@ -51,6 +52,10 @@ func (repo *detailsRepository) Delete(ctx context.Context, id, userId string) er
 
 func (repo *detailsRepository) Update(ctx context.Context, id string, detail domain.Detail) error {
 	return repo.dao.Update(ctx, id, repo.toEntity(detail))
+}
+
+func (repo *detailsRepository) Formal(ctx context.Context, id, versionId string) error {
+	return repo.dao.Formal(ctx, id, versionId)
 }
 
 func (repo *detailsRepository) FindById(ctx context.Context, id, userId string) (domain.Detail, error) {

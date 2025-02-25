@@ -3,12 +3,12 @@ import sky from "@/utils/axios";
 
 // 统一管理接口
 enum API {
-  ADD = "/application/app/version/add",
-  DELETE = "/application/app/version/del/",
-  UPDATE = "/application/app/version/update/",
-  SET_FORMAL = "/application/app/version/appFormal",
-  LIST_ALL = "/application/app/version/listAll",
-  GET_BY_ID = "/application/app/version/getById/",
+  ADD = "/v1/application/version/create",
+  DELETE = "/v1/application/version/delete/",
+  UPDATE = "/v1/application/version/update/",
+  SET_FORMAL = "/v1/application/version/appFormal",
+  LIST_ALL = "/v1/application/version/listAll",
+  GET_BY_ID = "/v1/application/version/getById/",
 }
 
 // 添加

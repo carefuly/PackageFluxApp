@@ -41,11 +41,11 @@ func (r *ApplicationRouter) RegisterAuthRouter(router *gin.RouterGroup) {
 	detailsHandler := web.NewDetailsHandler(r.rely, detailsService)
 	detailsHandler.RegisterRoutes(applicationRouter)
 
-	// versionDAO := dao2.NewVersionDAO(r.rely.Db)
-	// versionRepository := repository2.NewVersionRepository(versionDAO)
-	// versionService := service2.NewVersionService(versionRepository)
-	// versionHandler := web2.NewVersionHandler(r.rely, versionService)
-	// versionHandler.RegisterRoutes(applicationRouter)
+	versionDAO := dao.NewVersionDAO(r.rely.Db)
+	versionRepository := repository.NewVersionRepository(versionDAO)
+	versionService := service.NewVersionService(versionRepository, detailsRepository)
+	versionHandler := web.NewVersionHandler(r.rely, versionService)
+	versionHandler.RegisterRoutes(applicationRouter)
 
 	filesDAO := dao.NewFilesDAO(r.rely.Db)
 	filesRepository := repository.NewFilesRepository(filesDAO)

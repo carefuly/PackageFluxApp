@@ -9,9 +9,9 @@ export const layoutRouter: RouteRecordRaw[] = [
   {
     path: "/",
     name: "Layout",
-    component: Layout,
-    redirect: HOME_URL,
-    children: [
+  component: Layout,
+  redirect: HOME_URL,
+  children: [
       {
         path: HOME_URL, // [唯一]
         component: () => import("@/views/application/details/index.vue"),
@@ -27,14 +27,14 @@ export const layoutRouter: RouteRecordRaw[] = [
       //     title: "应用统计",
       //   },
       // },
-      // {
-      //   path: "/application/version/:id",
-      //   name: 'Version',
-      //   component: () => import("@/views/application/version/index.vue"),
-      //   meta: {
-      //     title: "应用版本",
-      //   },
-      // },
+      {
+        path: "/application/version/:id",
+        name: 'Version',
+        component: () => import("@/views/application/version/index.vue"),
+        meta: {
+          title: "应用版本",
+        },
+      },
       // {
       //   path: "/application/log/:id",
       //   name: 'Log',
