@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {skyMsgBox, skyMsgError, skyMsgInfo, skyMsgWarning, skyNoticeError, skyNoticeSuccess} from "@/utils/sky";
-import {deleteById, batchDelete, updateById, listPage, getById} from "@/apis/application/file";
+import {batchDelete, listPage, getById} from "@/apis/application/file";
 
 const skyDialogRef = ref();
 const formRef = ref();
@@ -54,11 +54,10 @@ const method = reactive({
     skyMsgBox("您确认需要删除名称[" + row.name + "]么？")
       .then(async () => {
         try {
-          await deleteById(id);
+          await batchDelete([id]);
           await method.handleListPage();
           skyNoticeSuccess("删除成功🌻");
         } catch (error) {
-          await method.handleListPage();
           skyNoticeError("删除失败，请刷新重试🌻");
         }
       })
@@ -79,7 +78,6 @@ const method = reactive({
           await method.handleListPage();
           skyNoticeSuccess(`${res.msg}🌻`);
         } catch (error) {
-          await method.handleListPage();
           skyNoticeSuccess("批量删除失败，请刷新重试🌻");
         }
       })
@@ -121,17 +119,7 @@ const method = reactive({
     (formRef.value).validate(async (valid: any) => {
       if (valid) {
         if (pageData.value.form.id) {
-          try {
-            await updateById(pageData.value.form.id, pageData.value.form);
-            skyNoticeSuccess("修改成功🌻");
-            pageData.value.confirmLoading = false;
-            skyDialogRef.value.skyQuickClose();
-            method.resetForm();
-            await method.handleListPage();
-          } catch (error) {
-            pageData.value.confirmLoading = false;
-            skyNoticeError("修改失败，请刷新重试🌻");
-          }
+
         }
       } else {
         skyMsgError("验证失败，请检查填写内容🌻");
@@ -191,7 +179,7 @@ const method = reactive({
       pageData.value.loading = true;
       pageData.value.tableList = [];
       const res: any = await listPage(pageData.value.pageParams);
-      pageData.value.tableList = res.data.items;
+      pageData.value.tableList = res.data.list;
       pageData.value.total = res.data.total;
       pageData.value.loading = false;
     } catch (error) {
@@ -236,9 +224,9 @@ const method = reactive({
             @selection-change="method.handleSelectionChange"
           >
             <el-table-column type="selection" width="55" align="center" fixed="left"/>
-            <el-table-column label="文件标识" prop="id" width="110" align="center"
+            <el-table-column label="文件标识" prop="id" width="150" align="center"
                              :show-overflow-tooltip="true"></el-table-column>
-            <el-table-column label="文件名称" prop="name" width="180" align="center"
+            <el-table-column label="文件名称" prop="name" width="210" align="center"
                              :show-overflow-tooltip="true">
               <template #default="scope">
                 <a :href="scope.row.url" target="_blank">
@@ -246,10 +234,10 @@ const method = reactive({
                 </a>
               </template>
             </el-table-column>
-            <el-table-column label="文件大小(KB)" prop="size" width="160" align="center"
+            <el-table-column label="文件大小(MB)" prop="size" width="160" align="center"
                              :show-overflow-tooltip="true">
               <template #default="scope">
-                {{ (scope.row.size / 1024).toFixed(2) }} KB
+                {{ scope.row.size }} MB
               </template>
             </el-table-column>
             <el-table-column label="文件后缀(类型)" prop="suffix" width="160" align="center"

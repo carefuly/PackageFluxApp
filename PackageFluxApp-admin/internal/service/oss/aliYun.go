@@ -116,7 +116,6 @@ func (a *AliYunOSS) BatchDeleteFiles(ctx context.Context, paths []string) error 
 	}
 
 	for _, path := range paths {
-		fmt.Println("path", path)
 		// 删除文件
 		err = bucket.DeleteObject(path)
 		if err != nil {

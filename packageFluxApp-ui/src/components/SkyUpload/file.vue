@@ -61,7 +61,7 @@ const handleConfirm = async () => {
     // 统一调用上传接口
     let fileFormData = new FormData();
     for (const f of file.value) {
-      fileFormData.append("file", f);
+      fileFormData.append("files", f);
     }
     const res: any = await sky.upload(skyParams.value.importApi, fileFormData);
     if (res?.code != 200) {

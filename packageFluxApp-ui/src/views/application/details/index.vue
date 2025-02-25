@@ -66,7 +66,7 @@ const method = reactive({
     // 标题
     pageData.value.title = "添加";
     // 文件数据表格
-    // method.handleFileListAll();
+    method.handleFileListAll();
     // 重置表单
     accomplish.resetForm(formRef, pageData.value.form);
     // 打开弹出框
@@ -106,7 +106,7 @@ const method = reactive({
     // 标题
     pageData.value.title = "修改";
     // 文件数据表格
-    // method.handleFileListAll();
+    method.handleFileListAll();
     // 重置表单
     accomplish.resetForm(formRef, pageData.value.form);
     const id = row.id;
@@ -205,7 +205,6 @@ const filterList = computed(() => {
 });
 
 onMounted(() => {
-  // method.handleFileListAll();
   method.handleListAll();
 });
 </script>
@@ -409,7 +408,7 @@ onMounted(() => {
                     <el-option
                       v-for="item in pageData.fileList"
                       :key="item.id"
-                      :label="item.name + `.${item.suffix}`"
+                      :label="item.name"
                       :value="item.url"
                     />
                   </el-select>

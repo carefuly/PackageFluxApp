@@ -1,6 +1,6 @@
 basePath: /api
 definitions:
-  github_com_carefuly_PackageFluxApp_internal_domain.Detail:
+  domain.Detail:
     properties:
       appName:
         description: 应用名称
@@ -58,10 +58,10 @@ definitions:
         description: 用户ID
         type: string
     type: object
-  github_com_carefuly_PackageFluxApp_internal_domain.UserInfo:
+  domain.Files:
     properties:
-      avatar:
-        description: 头像
+      base_dir:
+        description: 项目根目录
         type: string
       belongDept:
         description: 数据归属部门
@@ -72,8 +72,8 @@ definitions:
       creator:
         description: 创建人
         type: string
-      email:
-        description: 邮箱
+      file_dir:
+        description: 文件绝对路径
         type: string
       id:
         description: 主键ID
@@ -81,8 +81,17 @@ definitions:
       modifier:
         description: 修改人
         type: string
+      name:
+        description: 原文件名
+        type: string
+      path:
+        description: 文件所在路径
+        type: string
       remark:
         description: 备注
+        type: string
+      size:
+        description: 原文件大小
         type: string
       sort:
         description: RecordId   string     `gorm:"type:varchar(100);uniqueIndex;comment:记录ID"
@@ -91,185 +100,24 @@ definitions:
       status:
         description: 状态
         type: boolean
-      total:
-        description: 接口总次数
-        type: integer
+      suffix:
+        description: 原文件后缀
+        type: string
       updateTime:
         description: 更新时间
         type: string
-      usageNumber:
-        description: 接口调用次数
-        type: integer
-      username:
-        description: 用户名
-        type: string
-    type: object
-  github_com_carefuly_PackageFluxApp_internal_web.AppDetailsRequest:
-    properties:
-      appName:
-        description: 应用名称
-        maxLength: 50
-        type: string
-      appleId:
-        description: appleId
-        maxLength: 50
-        type: string
-      description:
-        description: 应用描述
-        maxLength: 255
-        type: string
-      logoUrl:
-        description: logo地址
-        type: string
-      preview:
-        description: 预览图
-        items:
-          type: string
-        type: array
-      remark:
-        description: 备注
-        maxLength: 255
-        type: string
-    required:
-    - appName
-    type: object
-  github_com_carefuly_PackageFluxApp_internal_web.DetailsListResponse:
-    properties:
-      list:
-        description: 列表
-        items:
-          $ref: '#/definitions/github_com_carefuly_PackageFluxApp_internal_domain.Detail'
-        type: array
-    type: object
-  github_com_carefuly_PackageFluxApp_internal_web.IdsRequest:
-    properties:
-      ids:
-        description: 文件ID列表
-        items:
-          type: string
-        type: array
-    type: object
-  github_com_carefuly_PackageFluxApp_internal_web.LoginRequest:
-    properties:
-      code:
-        description: 验证码
-        maxLength: 6
-        minLength: 6
-        type: string
-      email:
-        description: 邮箱
-        type: string
-      password:
-        description: 密码
-        maxLength: 16
-        minLength: 6
-        type: string
-    required:
-    - code
-    - email
-    - password
-    type: object
-  github_com_carefuly_PackageFluxApp_internal_web.RegisterRequest:
-    properties:
-      code:
-        description: 验证码
-        maxLength: 6
-        minLength: 6
-        type: string
-      email:
-        description: 邮箱
-        type: string
-      password:
-        description: 密码
-        maxLength: 16
-        minLength: 6
-        type: string
-      username:
-        description: 用户名
-        maxLength: 20
-        minLength: 3
-        type: string
-    required:
-    - code
-    - email
-    - password
-    - username
-    type: object
-  github_com_carefuly_PackageFluxApp_internal_web.SendLoginRequest:
-    properties:
-      email:
-        description: 邮箱
-        type: string
-    required:
-    - email
-    type: object
-  github_com_carefuly_PackageFluxApp_internal_web.SendRegisterRequest:
-    properties:
-      email:
-        description: 邮箱
-        type: string
-    required:
-    - email
-    type: object
-  github_com_carefuly_PackageFluxApp_v1_internal_domain.Detail:
-    properties:
-      appName:
-        description: 应用名称
-        type: string
-      appleId:
-        description: appleId
-        type: string
-      belongDept:
-        description: 数据归属部门
-        type: integer
-      createTime:
-        description: 创建时间
-        type: string
-      creator:
-        description: 创建人
-        type: string
-      description:
-        description: 应用描述
-        type: string
-      id:
-        description: 主键ID
-        type: string
-      logoUrl:
-        description: logo地址
-        type: string
-      modifier:
-        description: 修改人
-        type: string
-      preview:
-        description: 预览图
-        items:
-          type: string
-        type: array
-      remark:
-        description: 备注
-        type: string
-      sort:
-        description: RecordId   string     `gorm:"type:varchar(100);uniqueIndex;comment:记录ID"
-          json:"recordId"` // 记录ID
-        type: integer
-      status:
-        description: 状态
-        type: boolean
-      type:
-        description: 1:APP
-        type: integer
-      updateTime:
-        description: 更新时间
+      url:
+        description: 文件地址
         type: string
       user:
         allOf:
         - $ref: '#/definitions/model.User'
-        description: 用户详情
+        description: 用户
       user_id:
         description: 用户ID
         type: string
     type: object
-  github_com_carefuly_PackageFluxApp_v1_internal_domain.UserInfo:
+  domain.UserInfo:
     properties:
       avatar:
         description: 头像
@@ -314,113 +162,6 @@ definitions:
       username:
         description: 用户名
         type: string
-    type: object
-  github_com_carefuly_PackageFluxApp_v1_internal_web.AppDetailsRequest:
-    properties:
-      appName:
-        description: 应用名称
-        maxLength: 50
-        type: string
-      appleId:
-        description: appleId
-        maxLength: 50
-        type: string
-      description:
-        description: 应用描述
-        maxLength: 255
-        type: string
-      logoUrl:
-        description: logo地址
-        type: string
-      preview:
-        description: 预览图
-        items:
-          type: string
-        type: array
-      remark:
-        description: 备注
-        maxLength: 255
-        type: string
-    required:
-    - appName
-    type: object
-  github_com_carefuly_PackageFluxApp_v1_internal_web.DetailsListResponse:
-    properties:
-      list:
-        description: 列表
-        items:
-          $ref: '#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_domain.Detail'
-        type: array
-    type: object
-  github_com_carefuly_PackageFluxApp_v1_internal_web.IdsRequest:
-    properties:
-      ids:
-        description: 文件ID列表
-        items:
-          type: string
-        type: array
-    type: object
-  github_com_carefuly_PackageFluxApp_v1_internal_web.LoginRequest:
-    properties:
-      code:
-        description: 验证码
-        maxLength: 6
-        minLength: 6
-        type: string
-      email:
-        description: 邮箱
-        type: string
-      password:
-        description: 密码
-        maxLength: 16
-        minLength: 6
-        type: string
-    required:
-    - code
-    - email
-    - password
-    type: object
-  github_com_carefuly_PackageFluxApp_v1_internal_web.RegisterRequest:
-    properties:
-      code:
-        description: 验证码
-        maxLength: 6
-        minLength: 6
-        type: string
-      email:
-        description: 邮箱
-        type: string
-      password:
-        description: 密码
-        maxLength: 16
-        minLength: 6
-        type: string
-      username:
-        description: 用户名
-        maxLength: 20
-        minLength: 3
-        type: string
-    required:
-    - code
-    - email
-    - password
-    - username
-    type: object
-  github_com_carefuly_PackageFluxApp_v1_internal_web.SendLoginRequest:
-    properties:
-      email:
-        description: 邮箱
-        type: string
-    required:
-    - email
-    type: object
-  github_com_carefuly_PackageFluxApp_v1_internal_web.SendRegisterRequest:
-    properties:
-      email:
-        description: 邮箱
-        type: string
-    required:
-    - email
     type: object
   model.User:
     properties:
@@ -478,6 +219,121 @@ definitions:
         description: 是否成功
         type: boolean
     type: object
+  web.AppDetailsRequest:
+    properties:
+      appName:
+        description: 应用名称
+        maxLength: 50
+        type: string
+      appleId:
+        description: appleId
+        maxLength: 50
+        type: string
+      description:
+        description: 应用描述
+        maxLength: 255
+        type: string
+      logoUrl:
+        description: logo地址
+        type: string
+      preview:
+        description: 预览图
+        items:
+          type: string
+        type: array
+      remark:
+        description: 备注
+        maxLength: 255
+        type: string
+    required:
+    - appName
+    type: object
+  web.DetailsListResponse:
+    properties:
+      list:
+        description: 列表
+        items:
+          $ref: '#/definitions/domain.Detail'
+        type: array
+    type: object
+  web.IdsRequest:
+    properties:
+      ids:
+        description: 文件ID列表
+        items:
+          type: string
+        type: array
+    type: object
+  web.ListResponse:
+    properties:
+      list:
+        description: 列表
+        items:
+          $ref: '#/definitions/domain.Files'
+        type: array
+    type: object
+  web.LoginRequest:
+    properties:
+      code:
+        description: 验证码
+        maxLength: 6
+        minLength: 6
+        type: string
+      email:
+        description: 邮箱
+        type: string
+      password:
+        description: 密码
+        maxLength: 16
+        minLength: 6
+        type: string
+    required:
+    - code
+    - email
+    - password
+    type: object
+  web.RegisterRequest:
+    properties:
+      code:
+        description: 验证码
+        maxLength: 6
+        minLength: 6
+        type: string
+      email:
+        description: 邮箱
+        type: string
+      password:
+        description: 密码
+        maxLength: 16
+        minLength: 6
+        type: string
+      username:
+        description: 用户名
+        maxLength: 20
+        minLength: 3
+        type: string
+    required:
+    - code
+    - email
+    - password
+    - username
+    type: object
+  web.SendLoginRequest:
+    properties:
+      email:
+        description: 邮箱
+        type: string
+    required:
+    - email
+    type: object
+  web.SendRegisterRequest:
+    properties:
+      email:
+        description: 邮箱
+        type: string
+    required:
+    - email
+    type: object
 host: 127.0.0.1:8080
 info:
   contact:
@@ -504,7 +360,7 @@ paths:
         name: AppDetailsRequest
         required: true
         schema:
-          $ref: '#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_web.AppDetailsRequest'
+          $ref: '#/definitions/web.AppDetailsRequest'
       produces:
       - application/json
       responses:
@@ -563,7 +419,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_domain.Detail'
+            $ref: '#/definitions/domain.Detail'
         "400":
           description: Bad Request
           schema:
@@ -596,7 +452,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_web.DetailsListResponse'
+            $ref: '#/definitions/web.DetailsListResponse'
         "400":
           description: Bad Request
           schema:
@@ -621,7 +477,7 @@ paths:
         name: AppDetailsRequest
         required: true
         schema:
-          $ref: '#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_web.AppDetailsRequest'
+          $ref: '#/definitions/web.AppDetailsRequest'
       produces:
       - application/json
       responses:
@@ -679,7 +535,7 @@ paths:
         name: IdsRequest
         required: true
         schema:
-          $ref: '#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_web.IdsRequest'
+          $ref: '#/definitions/web.IdsRequest'
       produces:
       - application/json
       responses:
@@ -696,6 +552,72 @@ paths:
       summary: 批量删除文件
       tags:
       - 文件
+  /v1/application/files/listAll:
+    get:
+      consumes:
+      - application/json
+      description: 查询文件列表
+      operationId: 查询文件列表
+      parameters:
+      - default: "true"
+        description: 状态
+        in: query
+        name: status
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.ListResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 查询文件列表
+      tags:
+      - 文件
+  /v1/application/files/listPage:
+    get:
+      consumes:
+      - application/json
+      description: 分页查询文件列表
+      operationId: 分页查询文件列表
+      parameters:
+      - default: "true"
+        description: 状态
+        in: query
+        name: status
+        required: true
+        type: string
+      - default: 1
+        description: 当前页
+        in: query
+        name: page
+        required: true
+        type: integer
+      - default: 10
+        description: 每页显示的条数
+        in: query
+        name: pageSize
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.ListResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 分页查询文件列表
+      tags:
+      - 文件
   /v1/auth/email-login:
     post:
       consumes:
@@ -708,7 +630,7 @@ paths:
         name: LoginRequest
         required: true
         schema:
-          $ref: '#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_web.LoginRequest'
+          $ref: '#/definitions/web.LoginRequest'
       produces:
       - application/json
       responses:
@@ -735,7 +657,7 @@ paths:
         name: RegisterRequest
         required: true
         schema:
-          $ref: '#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_web.RegisterRequest'
+          $ref: '#/definitions/web.RegisterRequest'
       produces:
       - application/json
       responses:
@@ -762,7 +684,7 @@ paths:
         name: SendLoginRequest
         required: true
         schema:
-          $ref: '#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_web.SendLoginRequest'
+          $ref: '#/definitions/web.SendLoginRequest'
       produces:
       - application/json
       responses:
@@ -789,7 +711,7 @@ paths:
         name: SendRegisterRequest
         required: true
         schema:
-          $ref: '#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_web.SendRegisterRequest'
+          $ref: '#/definitions/web.SendRegisterRequest'
       produces:
       - application/json
       responses:
@@ -816,7 +738,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_carefuly_PackageFluxApp_v1_internal_domain.UserInfo'
+            $ref: '#/definitions/domain.UserInfo'
         "400":
           description: Bad Request
           schema:

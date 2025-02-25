@@ -163,8 +163,8 @@ class Sky {
   }
 
   // Delete请求  /system/role/1
-  delete(url: string) {
-    return this.instance.delete(url);
+  delete(url: string, data?: object) {
+    return this.instance.delete(url, data);
   }
 
   // 图片上传

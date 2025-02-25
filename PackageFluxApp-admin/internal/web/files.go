@@ -39,6 +39,8 @@ type filesHandler struct {
 	aliYun service.AliYunService
 }
 
+type Ids []string // 文件ID列表
+
 type IdsRequest struct {
 	Ids []string `json:"ids"` // 文件ID列表
 }
@@ -64,7 +66,7 @@ func NewFilesHandler(rely config.RelyConfig, svc service.FilesService, aliYun se
 
 func (h *filesHandler) RegisterRoutes(router *gin.RouterGroup) {
 	router.POST("/files/batchUpload", h.BatchUpload)
-	router.DELETE("/files/batchDelete", h.BatchDelete)
+	router.POST("/files/batchDelete", h.BatchDelete)
 	router.GET("/files/listPage", h.FindListAllWithPage)
 	router.GET("/files/listAll", h.FindListAll)
 }
@@ -166,13 +168,13 @@ func (h *filesHandler) BatchDelete(ctx *gin.Context) {
 		return
 	}
 
-	var req IdsRequest
+	var req Ids
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		validate.NewValidatorError(h.rely.Trans).HandleValidatorError(ctx, err)
 		return
 	}
 
-	paths, err := h.svc.BatchDelete(ctx, uid, req.Ids)
+	paths, err := h.svc.BatchDelete(ctx, uid, req)
 	if err != nil {
 		ctx.Set("internal", err.Error())
 		zap.L().Error("删除文件异常", zap.Error(err))
@@ -192,6 +194,19 @@ func (h *filesHandler) BatchDelete(ctx *gin.Context) {
 
 }
 
+// FindListAllWithPage
+// @id 分页查询文件列表
+// @Summary 分页查询文件列表
+// @Description 分页查询文件列表
+// @Tags 文件
+// @Accept application/json
+// @Produce application/json
+// @Param status query string true "状态" default(true)
+// @Param page query int true "当前页" default(1)
+// @Param pageSize query int true "每页显示的条数" default(10)
+// @Success 200 {object} ListResponse
+// @Failure 400 {object} response.Response
+// @Router /v1/application/files/listPage [get]
 func (h *filesHandler) FindListAllWithPage(ctx *gin.Context) {
 	uid, ok := ctx.MustGet("userId").(string)
 	if !ok {
@@ -233,6 +248,17 @@ func (h *filesHandler) FindListAllWithPage(ctx *gin.Context) {
 	})
 }
 
+// FindListAll
+// @id 查询文件列表
+// @Summary 查询文件列表
+// @Description 查询文件列表
+// @Tags 文件
+// @Accept application/json
+// @Produce application/json
+// @Param status query string true "状态" default(true)
+// @Success 200 {object} ListResponse
+// @Failure 400 {object} response.Response
+// @Router /v1/application/files/listAll [get]
 func (h *filesHandler) FindListAll(ctx *gin.Context) {
 	uid, ok := ctx.MustGet("userId").(string)
 	if !ok {
