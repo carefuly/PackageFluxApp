@@ -39,22 +39,16 @@ type filesHandler struct {
 	aliYun service.AliYunService
 }
 
-type Ids []string // 文件ID列表
+type IdsRequest []string // 文件ID列表
 
-type IdsRequest struct {
-	Ids []string `json:"ids"` // 文件ID列表
-}
-
-type ListPageResponse struct {
+type FilesListPageResponse struct {
 	List     []domain.Files
 	Total    int64
 	Page     int64
 	PageSize int64
 }
 
-type ListResponse struct {
-	List []domain.Files // 列表
-}
+type FilesListResponse []domain.Files // 列表
 
 func NewFilesHandler(rely config.RelyConfig, svc service.FilesService, aliYun service.AliYunService) FilesHandler {
 	return &filesHandler{
@@ -82,7 +76,7 @@ func (h *filesHandler) RegisterRoutes(router *gin.RouterGroup) {
 // @Success 200 {object} response.Response
 // @Failure 400 {object} response.Response
 // @Router /v1/application/files/batchUpload [post]
-// @Security token
+// @Security ApiKeyAuth
 func (h *filesHandler) BatchUpload(ctx *gin.Context) {
 	uid, ok := ctx.MustGet("userId").(string)
 	if !ok {
@@ -157,8 +151,8 @@ func (h *filesHandler) BatchUpload(ctx *gin.Context) {
 // @Param IdsRequest body IdsRequest true "参数"
 // @Success 200 {object} response.Response
 // @Failure 400 {object} response.Response
-// @Router /v1/application/files/deleteUpload [delete]
-// @Security token
+// @Router /v1/application/files/batchDelete [post]
+// @Security ApiKeyAuth
 func (h *filesHandler) BatchDelete(ctx *gin.Context) {
 	uid, ok := ctx.MustGet("userId").(string)
 	if !ok {
@@ -168,12 +162,11 @@ func (h *filesHandler) BatchDelete(ctx *gin.Context) {
 		return
 	}
 
-	var req Ids
+	var req IdsRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		validate.NewValidatorError(h.rely.Trans).HandleValidatorError(ctx, err)
 		return
 	}
-
 	paths, err := h.svc.BatchDelete(ctx, uid, req)
 	if err != nil {
 		ctx.Set("internal", err.Error())
@@ -191,7 +184,6 @@ func (h *filesHandler) BatchDelete(ctx *gin.Context) {
 	}
 
 	response.NewResponse().SuccessResponse(ctx, "删除成功", nil)
-
 }
 
 // FindListAllWithPage
@@ -204,9 +196,10 @@ func (h *filesHandler) BatchDelete(ctx *gin.Context) {
 // @Param status query string true "状态" default(true)
 // @Param page query int true "当前页" default(1)
 // @Param pageSize query int true "每页显示的条数" default(10)
-// @Success 200 {object} ListResponse
+// @Success 200 {object} web.FilesListPageResponse
 // @Failure 400 {object} response.Response
 // @Router /v1/application/files/listPage [get]
+// @Security ApiKeyAuth
 func (h *filesHandler) FindListAllWithPage(ctx *gin.Context) {
 	uid, ok := ctx.MustGet("userId").(string)
 	if !ok {
@@ -256,9 +249,10 @@ func (h *filesHandler) FindListAllWithPage(ctx *gin.Context) {
 // @Accept application/json
 // @Produce application/json
 // @Param status query string true "状态" default(true)
-// @Success 200 {object} ListResponse
+// @Success 200 {object} web.FilesListResponse
 // @Failure 400 {object} response.Response
 // @Router /v1/application/files/listAll [get]
+// @Security ApiKeyAuth
 func (h *filesHandler) FindListAll(ctx *gin.Context) {
 	uid, ok := ctx.MustGet("userId").(string)
 	if !ok {

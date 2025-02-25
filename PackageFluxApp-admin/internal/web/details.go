@@ -49,7 +49,7 @@ type Filters struct {
 	AppName string `json:"appName" binding:"max=50"` // 应用名称
 }
 
-type AppDetailsRequest struct {
+type DetailsRequest struct {
 	LogoUrl     string   `json:"logoUrl"`                           // logo地址
 	AppName     string   `json:"appName" binding:"required,max=50"` // 应用名称
 	AppleId     string   `json:"appleId" binding:"max=50"`          // appleId
@@ -58,9 +58,7 @@ type AppDetailsRequest struct {
 	Remark      string   `json:"remark" binding:"max=255"`          // 备注
 }
 
-type DetailsListResponse struct {
-	List []domain.Detail // 列表
-}
+type DetailsListResponse []domain.Detail // 列表
 
 func (h *detailsHandler) RegisterRoutes(router *gin.RouterGroup) {
 	router.POST("/details/create", h.Create)
@@ -77,10 +75,11 @@ func (h *detailsHandler) RegisterRoutes(router *gin.RouterGroup) {
 // @Tags 应用详情
 // @Accept application/json
 // @Produce application/json
-// @Param AppDetailsRequest body AppDetailsRequest true "应用详情参数"
+// @Param DetailsRequest body DetailsRequest true "应用详情参数"
 // @Success 200 {object} response.Response
 // @Failure 400 {object} response.Response
 // @Router /v1/application/details/create [post]
+// @Security ApiKeyAuth
 func (h *detailsHandler) Create(ctx *gin.Context) {
 	uid, ok := ctx.MustGet("userId").(string)
 	if !ok {
@@ -90,7 +89,7 @@ func (h *detailsHandler) Create(ctx *gin.Context) {
 		return
 	}
 
-	var req AppDetailsRequest
+	var req DetailsRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		validate.NewValidatorError(h.rely.Trans).HandleValidatorError(ctx, err)
 		return
@@ -136,6 +135,7 @@ func (h *detailsHandler) Create(ctx *gin.Context) {
 // @Success 200 {object} response.Response
 // @Failure 400 {object} response.Response
 // @Router /v1/application/details/delete/{id} [delete]
+// @Security ApiKeyAuth
 func (h *detailsHandler) Delete(ctx *gin.Context) {
 	uid, ok := ctx.MustGet("userId").(string)
 	if !ok {
@@ -171,10 +171,11 @@ func (h *detailsHandler) Delete(ctx *gin.Context) {
 // @Accept application/json
 // @Produce application/json
 // @Param id path string true "详情ID"
-// @Param AppDetailsRequest body AppDetailsRequest true "应用详情参数"
+// @Param DetailsRequest body DetailsRequest true "应用详情参数"
 // @Success 200 {object} response.Response
 // @Failure 400 {object} response.Response
 // @Router /v1/application/details/update/{id} [put]
+// @Security ApiKeyAuth
 func (h *detailsHandler) Update(ctx *gin.Context) {
 	uid, ok := ctx.MustGet("userId").(string)
 	if !ok {
@@ -190,7 +191,7 @@ func (h *detailsHandler) Update(ctx *gin.Context) {
 		return
 	}
 
-	var req AppDetailsRequest
+	var req DetailsRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		validate.NewValidatorError(h.rely.Trans).HandleValidatorError(ctx, err)
 		return
@@ -232,6 +233,7 @@ func (h *detailsHandler) Update(ctx *gin.Context) {
 // @Success 200 {object} domain.Detail
 // @Failure 400 {object} response.Response
 // @Router /v1/application/details/getById/{id} [get]
+// @Security ApiKeyAuth
 func (h *detailsHandler) FindById(ctx *gin.Context) {
 	uid, ok := ctx.MustGet("userId").(string)
 	if !ok {
@@ -271,9 +273,10 @@ func (h *detailsHandler) FindById(ctx *gin.Context) {
 // @Produce application/json
 // @Param status query string true "状态" default(true)
 // @Param appName query string true "应用名称" default("")
-// @Success 200 {object} DetailsListResponse
+// @Success 200 {object} web.DetailsListResponse
 // @Failure 400 {object} response.Response
 // @Router /v1/application/details/listAll [get]
+// @Security ApiKeyAuth
 func (h *detailsHandler) FindListAll(ctx *gin.Context) {
 	uid, ok := ctx.MustGet("userId").(string)
 	if !ok {

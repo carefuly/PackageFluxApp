@@ -20,6 +20,11 @@
     "paths": {
         "/v1/application/details/create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "新增应用详情",
                 "consumes": [
                     "application/json"
@@ -35,11 +40,11 @@
                 "parameters": [
                     {
                         "description": "应用详情参数",
-                        "name": "AppDetailsRequest",
+                        "name": "DetailsRequest",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/web.AppDetailsRequest"
+                            "$ref": "#/definitions/web.DetailsRequest"
                         }
                     }
                 ],
@@ -61,6 +66,11 @@
         },
         "/v1/application/details/delete/{id}": {
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "删除应用详情",
                 "consumes": [
                     "application/json"
@@ -100,6 +110,11 @@
         },
         "/v1/application/details/getById/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "根据ID查询应用详情",
                 "consumes": [
                     "application/json"
@@ -139,6 +154,11 @@
         },
         "/v1/application/details/listAll": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "查询应用详情列表",
                 "consumes": [
                     "application/json"
@@ -173,7 +193,10 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/web.DetailsListResponse"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.Detail"
+                            }
                         }
                     },
                     "400": {
@@ -187,6 +210,11 @@
         },
         "/v1/application/details/update/{id}": {
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "更新应用详情",
                 "consumes": [
                     "application/json"
@@ -209,11 +237,60 @@
                     },
                     {
                         "description": "应用详情参数",
-                        "name": "AppDetailsRequest",
+                        "name": "DetailsRequest",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/web.AppDetailsRequest"
+                            "$ref": "#/definitions/web.DetailsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/application/files/batchDelete": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "批量删除文件",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文件"
+                ],
+                "summary": "批量删除文件",
+                "operationId": "批量删除文件",
+                "parameters": [
+                    {
+                        "description": "参数",
+                        "name": "IdsRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
                         }
                     }
                 ],
@@ -237,7 +314,7 @@
             "post": {
                 "security": [
                     {
-                        "token": []
+                        "ApiKeyAuth": []
                     }
                 ],
                 "description": "批量上传文件",
@@ -281,54 +358,13 @@
                 }
             }
         },
-        "/v1/application/files/deleteUpload": {
-            "delete": {
-                "security": [
-                    {
-                        "token": []
-                    }
-                ],
-                "description": "批量删除文件",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "文件"
-                ],
-                "summary": "批量删除文件",
-                "operationId": "批量删除文件",
-                "parameters": [
-                    {
-                        "description": "参数",
-                        "name": "IdsRequest",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/web.IdsRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/response.Response"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.Response"
-                        }
-                    }
-                }
-            }
-        },
         "/v1/application/files/listAll": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "查询文件列表",
                 "consumes": [
                     "application/json"
@@ -355,7 +391,10 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/web.ListResponse"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.Files"
+                            }
                         }
                     },
                     "400": {
@@ -369,6 +408,11 @@
         },
         "/v1/application/files/listPage": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "分页查询文件列表",
                 "consumes": [
                     "application/json"
@@ -411,7 +455,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/web.ListResponse"
+                            "$ref": "#/definitions/web.FilesListPageResponse"
                         }
                     },
                     "400": {
@@ -707,7 +751,7 @@
         "domain.Files": {
             "type": "object",
             "properties": {
-                "base_dir": {
+                "baseDir": {
                     "description": "项目根目录",
                     "type": "string"
                 },
@@ -723,7 +767,7 @@
                     "description": "创建人",
                     "type": "string"
                 },
-                "file_dir": {
+                "fileDir": {
                     "description": "文件绝对路径",
                     "type": "string"
                 },
@@ -922,7 +966,7 @@
                 }
             }
         },
-        "web.AppDetailsRequest": {
+        "web.DetailsRequest": {
             "type": "object",
             "required": [
                 "appName"
@@ -961,39 +1005,23 @@
                 }
             }
         },
-        "web.DetailsListResponse": {
+        "web.FilesListPageResponse": {
             "type": "object",
             "properties": {
                 "list": {
-                    "description": "列表",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/domain.Detail"
-                    }
-                }
-            }
-        },
-        "web.IdsRequest": {
-            "type": "object",
-            "properties": {
-                "ids": {
-                    "description": "文件ID列表",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
-            }
-        },
-        "web.ListResponse": {
-            "type": "object",
-            "properties": {
-                "list": {
-                    "description": "列表",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/domain.Files"
                     }
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "pageSize": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
                 }
             }
         },

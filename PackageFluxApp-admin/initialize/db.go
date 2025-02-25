@@ -11,7 +11,6 @@ package initialize
 import (
 	"fmt"
 	"github.com/carefuly/PackageFluxApp/config"
-	"github.com/carefuly/PackageFluxApp/model"
 	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -67,7 +66,7 @@ func (i DbPool) InitDb(database config.DatabaseConfig) *gorm.DB {
 	// i.db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.Detail{})
 	// i.db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.Version{})
 	// i.db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.Logger{})
-	i.db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.File{})
+	// i.db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.File{})
 	// i.db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&model.OperateLogger{})
 
 	return i.db

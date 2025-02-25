@@ -60,7 +60,7 @@ definitions:
     type: object
   domain.Files:
     properties:
-      base_dir:
+      baseDir:
         description: 项目根目录
         type: string
       belongDept:
@@ -72,7 +72,7 @@ definitions:
       creator:
         description: 创建人
         type: string
-      file_dir:
+      fileDir:
         description: 文件绝对路径
         type: string
       id:
@@ -219,7 +219,7 @@ definitions:
         description: 是否成功
         type: boolean
     type: object
-  web.AppDetailsRequest:
+  web.DetailsRequest:
     properties:
       appName:
         description: 应用名称
@@ -248,29 +248,18 @@ definitions:
     required:
     - appName
     type: object
-  web.DetailsListResponse:
+  web.FilesListPageResponse:
     properties:
       list:
-        description: 列表
-        items:
-          $ref: '#/definitions/domain.Detail'
-        type: array
-    type: object
-  web.IdsRequest:
-    properties:
-      ids:
-        description: 文件ID列表
-        items:
-          type: string
-        type: array
-    type: object
-  web.ListResponse:
-    properties:
-      list:
-        description: 列表
         items:
           $ref: '#/definitions/domain.Files'
         type: array
+      page:
+        type: integer
+      pageSize:
+        type: integer
+      total:
+        type: integer
     type: object
   web.LoginRequest:
     properties:
@@ -357,10 +346,10 @@ paths:
       parameters:
       - description: 应用详情参数
         in: body
-        name: AppDetailsRequest
+        name: DetailsRequest
         required: true
         schema:
-          $ref: '#/definitions/web.AppDetailsRequest'
+          $ref: '#/definitions/web.DetailsRequest'
       produces:
       - application/json
       responses:
@@ -372,6 +361,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/response.Response'
+      security:
+      - ApiKeyAuth: []
       summary: 新增应用详情
       tags:
       - 应用详情
@@ -398,6 +389,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/response.Response'
+      security:
+      - ApiKeyAuth: []
       summary: 删除应用详情
       tags:
       - 应用详情
@@ -424,6 +417,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/response.Response'
+      security:
+      - ApiKeyAuth: []
       summary: 根据ID查询应用详情
       tags:
       - 应用详情
@@ -452,11 +447,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/web.DetailsListResponse'
+            items:
+              $ref: '#/definitions/domain.Detail'
+            type: array
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/response.Response'
+      security:
+      - ApiKeyAuth: []
       summary: 查询应用详情列表
       tags:
       - 应用详情
@@ -474,10 +473,10 @@ paths:
         type: string
       - description: 应用详情参数
         in: body
-        name: AppDetailsRequest
+        name: DetailsRequest
         required: true
         schema:
-          $ref: '#/definitions/web.AppDetailsRequest'
+          $ref: '#/definitions/web.DetailsRequest'
       produces:
       - application/json
       responses:
@@ -489,9 +488,42 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/response.Response'
+      security:
+      - ApiKeyAuth: []
       summary: 更新应用详情
       tags:
       - 应用详情
+  /v1/application/files/batchDelete:
+    post:
+      consumes:
+      - application/json
+      description: 批量删除文件
+      operationId: 批量删除文件
+      parameters:
+      - description: 参数
+        in: body
+        name: IdsRequest
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 批量删除文件
+      tags:
+      - 文件
   /v1/application/files/batchUpload:
     post:
       consumes:
@@ -519,37 +551,8 @@ paths:
           schema:
             $ref: '#/definitions/response.Response'
       security:
-      - token: []
+      - ApiKeyAuth: []
       summary: 批量上传文件
-      tags:
-      - 文件
-  /v1/application/files/deleteUpload:
-    delete:
-      consumes:
-      - application/json
-      description: 批量删除文件
-      operationId: 批量删除文件
-      parameters:
-      - description: 参数
-        in: body
-        name: IdsRequest
-        required: true
-        schema:
-          $ref: '#/definitions/web.IdsRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/response.Response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.Response'
-      security:
-      - token: []
-      summary: 批量删除文件
       tags:
       - 文件
   /v1/application/files/listAll:
@@ -571,11 +574,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/web.ListResponse'
+            items:
+              $ref: '#/definitions/domain.Files'
+            type: array
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/response.Response'
+      security:
+      - ApiKeyAuth: []
       summary: 查询文件列表
       tags:
       - 文件
@@ -610,11 +617,13 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/web.ListResponse'
+            $ref: '#/definitions/web.FilesListPageResponse'
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/response.Response'
+      security:
+      - ApiKeyAuth: []
       summary: 分页查询文件列表
       tags:
       - 文件
