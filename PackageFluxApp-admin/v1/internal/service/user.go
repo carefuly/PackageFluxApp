@@ -13,6 +13,7 @@ import (
 	"errors"
 	"github.com/carefuly/PackageFluxApp/internal/domain"
 	"github.com/carefuly/PackageFluxApp/internal/repository"
+	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -35,6 +36,13 @@ func NewUserService(repo repository.UserRepository) UserService {
 	return &userService{
 		repo: repo,
 	}
+}
+
+type UserClaims struct {
+	jwt.RegisteredClaims
+	UId       string
+	Email     string
+	UserAgent string
 }
 
 func (svc *userService) Register(ctx context.Context, u domain.Register) error {

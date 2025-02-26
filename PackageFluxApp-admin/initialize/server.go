@@ -31,12 +31,12 @@ import (
 func InitGinMiddlewares(rely config.RelyConfig) []gin.HandlerFunc {
 	return []gin.HandlerFunc{
 		middleware2.Cors(),
-		// middleware2.NewLoginJWTMiddlewareBuilder().
-		// 	IgnorePaths("/api/v1/auth/send-register-captcha").
-		// 	IgnorePaths("/api/v1/auth/email-register").
-		// 	IgnorePaths("/api/v1/auth/send-login-captcha").
-		// 	IgnorePaths("/api/v1/auth/email-login").
-		// 	Build(),
+		middleware2.NewLoginJWTMiddlewareBuilder(rely).
+			IgnorePaths("/api/v1/auth/send-register-captcha").
+			IgnorePaths("/api/v1/auth/email-register").
+			IgnorePaths("/api/v1/auth/send-login-captcha").
+			IgnorePaths("/api/v1/auth/email-login").
+			Build(),
 		middleware2.NewLogger(rely.Logger).Logger(),
 		// middleware2.NewStorage().StorageLogger(rely.Db),
 	}

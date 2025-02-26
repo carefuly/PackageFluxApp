@@ -9,12 +9,19 @@
 package cache
 
 import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"github.com/carefuly/PackageFluxApp/internal/domain"
 	"github.com/redis/go-redis/v9"
 	"time"
 )
 
+var ErrKeyNotExist = redis.Nil
+
 type UserCache interface {
-	// Set(ctx context.Context, du domain.User) error
+	Get(ctx context.Context, id string) (*domain.User, error)
+	Set(ctx context.Context, d domain.User) error
 }
 
 type RedisUserCache struct {
@@ -27,4 +34,31 @@ func NewRedisUserCache(cmd redis.Cmdable) UserCache {
 		cmd:        cmd,
 		expiration: time.Minute * 15,
 	}
+}
+
+func (c *RedisUserCache) Get(ctx context.Context, id string) (*domain.User, error) {
+	key := c.key(id)
+
+	data, err := c.cmd.Get(ctx, key).Result()
+	if err != nil {
+		return nil, err
+	}
+
+	var u domain.User
+	err = json.Unmarshal([]byte(data), &u)
+	return &u, err
+}
+
+func (c *RedisUserCache) Set(ctx context.Context, d domain.User) error {
+	key := c.key(d.Id)
+	data, err := json.Marshal(d)
+	if err != nil {
+		return err
+	}
+	return c.cmd.Set(ctx, key, data, c.expiration).Err()
+}
+
+func (c *RedisUserCache) key(id string) string {
+	// user:info:
+	return fmt.Sprintf("user:info:%s", id)
 }

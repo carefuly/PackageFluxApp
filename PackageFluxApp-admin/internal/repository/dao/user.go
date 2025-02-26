@@ -17,11 +17,14 @@ import (
 
 var (
 	ErrDuplicateEmail = errors.New("邮箱已存在")
-	ErrUserNotFound = gorm.ErrRecordNotFound
+	ErrUserIdNotFound   = gorm.ErrRecordNotFound
+	ErrUserNotFound   = gorm.ErrRecordNotFound
 )
 
 type UserDAO interface {
 	Insert(ctx context.Context, u model.User) error
+	FindById(ctx context.Context, id string) (*model.User, error)
+	FindByEmail(ctx context.Context, email string) (*model.User, error)
 	ExistsByEmail(ctx context.Context, email string) (bool, error)
 }
 
@@ -37,6 +40,18 @@ func NewGORMUserDAO(db *gorm.DB) UserDAO {
 
 func (dao *GORMUserDAO) Insert(ctx context.Context, u model.User) error {
 	return dao.db.WithContext(ctx).Create(&u).Error
+}
+
+func (dao *GORMUserDAO) FindById(ctx context.Context, id string) (*model.User, error) {
+	var user model.User
+	err := dao.db.WithContext(ctx).Where("id = ?", id).First(&user).Error
+	return &user, err
+}
+
+func (dao *GORMUserDAO) FindByEmail(ctx context.Context, email string) (*model.User, error) {
+	var user model.User
+	err := dao.db.WithContext(ctx).Where("email = ?", email).First(&user).Error
+	return &user, err
 }
 
 func (dao *GORMUserDAO) ExistsByEmail(ctx context.Context, email string) (bool, error) {

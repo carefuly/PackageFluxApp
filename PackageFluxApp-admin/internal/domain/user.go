@@ -8,6 +8,8 @@
 
 package domain
 
+import "github.com/carefuly/PackageFluxApp/internal/model"
+
 type Register struct {
 	Username    string `json:"username"`    // 用户名
 	Email       string `json:"email"`       // 邮箱
@@ -16,8 +18,14 @@ type Register struct {
 }
 
 type Login struct {
-	ID       string `json:"id"`       // 主键id
-	RecordId string `json:"recordId"` // 记录id
 	Email    string `json:"email"`    // 邮箱
 	Password string `json:"password"` // 密码
+}
+
+type User struct {
+	model.User
+	Email      string `json:"email"`      // 邮箱
+	Phone      string `json:"phone"`      // 手机号
+	CreateTime string `json:"createTime"` // 创建时间
+	UpdateTime string `json:"updateTime"` // 更新时间
 }

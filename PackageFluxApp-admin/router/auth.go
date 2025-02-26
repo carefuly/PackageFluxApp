@@ -37,13 +37,14 @@ func (r *AuthRouter) RegisterAuthRouter(router *gin.RouterGroup) {
 	qqMailSender := mail.NewQQMailSender(r.rely.Mail.Username, r.rely.Mail.Password)
 	codeService := service.NewCodeService(codeRepository, qqMailSender)
 
+	redisUserCache := cache.NewRedisUserCache(r.rely.Redis)
 	userDAO := dao.NewGORMUserDAO(r.rely.Db)
-	userRepository := repository.NewUserRepository(userDAO)
+	userRepository := repository.NewUserRepository(userDAO, redisUserCache)
 	userService := service.NewUserService(userRepository)
 
 	registerHandler := web.NewRegisterHandler(r.rely, userService, codeService)
 	registerHandler.RegisterRoutes(authRouter)
 
-	// loginHandler := web.NewLoginHandler(r.rely, userService, codeService)
-	// loginHandler.RegisterRoutes(authRouter)
+	loginHandler := web.NewLoginHandler(r.rely, userService, codeService)
+	loginHandler.RegisterRoutes(authRouter)
 }
