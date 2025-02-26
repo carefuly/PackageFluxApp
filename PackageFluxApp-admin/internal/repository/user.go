@@ -10,6 +10,7 @@ package repository
 
 import (
 	"context"
+	"database/sql"
 	"github.com/carefuly/PackageFluxApp/internal/domain"
 	"github.com/carefuly/PackageFluxApp/internal/model"
 	"github.com/carefuly/PackageFluxApp/internal/repository/cache"
@@ -32,7 +33,7 @@ type userRepository struct {
 
 func NewUserRepository(dao dao.UserDAO) UserRepository {
 	return &userRepository{
-		dao:   dao,
+		dao: dao,
 		// cache: cache,
 	}
 }
@@ -55,8 +56,11 @@ func (repo *userRepository) ExistsByEmail(ctx context.Context, email string) (bo
 
 func (repo *userRepository) toEntity(d domain.Register) model.User {
 	return model.User{
-		Username:    d.Username,
-		Email:       d.Email,
+		Username: d.Username,
+		Email: sql.NullString{
+			String: d.Email,
+			Valid:  d.Email != "",
+		},
 		Password:    d.Password,
 		PasswordStr: d.PasswordStr,
 	}

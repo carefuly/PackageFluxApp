@@ -11,8 +11,10 @@ package router
 import (
 	"github.com/carefuly/PackageFluxApp/config"
 	"github.com/carefuly/PackageFluxApp/internal/repository"
+	"github.com/carefuly/PackageFluxApp/internal/repository/cache"
 	"github.com/carefuly/PackageFluxApp/internal/repository/dao"
 	"github.com/carefuly/PackageFluxApp/internal/service"
+	"github.com/carefuly/PackageFluxApp/internal/service/mail"
 	"github.com/carefuly/PackageFluxApp/internal/web"
 	"github.com/gin-gonic/gin"
 )
@@ -30,18 +32,18 @@ func NewAuthRouter(rely config.RelyConfig) *AuthRouter {
 func (r *AuthRouter) RegisterAuthRouter(router *gin.RouterGroup) {
 	authRouter := router.Group("/auth")
 
-	// codeCache := cache.NewCodeCache(r.rely.Redis)
-	// codeRepository := repository.NewCodeRepository(codeCache)
-	// qqMailSender := mail.NewQQMailSender(r.rely.Mail.Username, r.rely.Mail.Password)
-	// codeService := service.NewCodeService(codeRepository, qqMailSender)
+	codeCache := cache.NewCodeCache(r.rely.Redis)
+	codeRepository := repository.NewCodeRepository(codeCache)
+	qqMailSender := mail.NewQQMailSender(r.rely.Mail.Username, r.rely.Mail.Password)
+	codeService := service.NewCodeService(codeRepository, qqMailSender)
 
 	userDAO := dao.NewGORMUserDAO(r.rely.Db)
 	userRepository := repository.NewUserRepository(userDAO)
 	userService := service.NewUserService(userRepository)
 
-	registerHandler := web.NewRegisterHandler(r.rely, userService)
+	registerHandler := web.NewRegisterHandler(r.rely, userService, codeService)
 	registerHandler.RegisterRoutes(authRouter)
-	//
+
 	// loginHandler := web.NewLoginHandler(r.rely, userService, codeService)
 	// loginHandler.RegisterRoutes(authRouter)
 }
