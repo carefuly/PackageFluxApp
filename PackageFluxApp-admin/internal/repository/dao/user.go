@@ -2,7 +2,7 @@
  * Description：
  * FileName：user.go
  * Author：CJiaの用心
- * Create：2025/2/24 15:40:06
+ * Create：2025/2/26 11:35:37
  * Remark：
  */
 
@@ -11,53 +11,38 @@ package dao
 import (
 	"context"
 	"errors"
-	"github.com/carefuly/PackageFluxApp/model"
-	"github.com/go-sql-driver/mysql"
+	"github.com/carefuly/PackageFluxApp/internal/model"
 	"gorm.io/gorm"
 )
 
 var (
-	ErrDuplicateEmail = errors.New("邮箱冲突")
-	ErrUserNotFound   = gorm.ErrRecordNotFound
+	ErrDuplicateEmail = errors.New("邮箱已存在")
+	ErrUserNotFound = gorm.ErrRecordNotFound
 )
 
 type UserDAO interface {
 	Insert(ctx context.Context, u model.User) error
-	Login(ctx context.Context, email string) (model.User, error)
-	UserInfo(ctx context.Context, uid string) (model.User, error)
+	ExistsByEmail(ctx context.Context, email string) (bool, error)
 }
 
-type userDAO struct {
+type GORMUserDAO struct {
 	db *gorm.DB
 }
 
-func NewUserDAO(db *gorm.DB) UserDAO {
-	return &userDAO{
+func NewGORMUserDAO(db *gorm.DB) UserDAO {
+	return &GORMUserDAO{
 		db: db,
 	}
 }
 
-func (dao *userDAO) Insert(ctx context.Context, u model.User) error {
-	err := dao.db.WithContext(ctx).Create(&u).Error
-	var me *mysql.MySQLError
-	if errors.As(err, &me) {
-		const duplicateErr uint16 = 1062
-		if me.Number == duplicateErr {
-			// 用户冲突，邮箱冲突
-			return ErrDuplicateEmail
-		}
-	}
-	return err
+func (dao *GORMUserDAO) Insert(ctx context.Context, u model.User) error {
+	return dao.db.WithContext(ctx).Create(&u).Error
 }
 
-func (dao *userDAO) Login(ctx context.Context, email string) (model.User, error) {
-	var u model.User
-	err := dao.db.WithContext(ctx).Where("email=?", email).First(&u).Error
-	return u, err
-}
-
-func (dao *userDAO) UserInfo(ctx context.Context, uid string) (model.User, error) {
-	var u model.User
-	err := dao.db.WithContext(ctx).Where("id=?", uid).First(&u).Error
-	return u, err
+func (dao *GORMUserDAO) ExistsByEmail(ctx context.Context, email string) (bool, error) {
+	var count int64
+	err := dao.db.WithContext(ctx).Model(&model.User{}).
+		Where("email = ?", email).
+		Count(&count).Error
+	return count > 0, err
 }

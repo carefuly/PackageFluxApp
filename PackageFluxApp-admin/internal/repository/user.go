@@ -2,7 +2,7 @@
  * Description：
  * FileName：user.go
  * Author：CJiaの用心
- * Create：2025/2/24 15:41:42
+ * Create：2025/2/26 14:18:41
  * Remark：
  */
 
@@ -10,87 +10,54 @@ package repository
 
 import (
 	"context"
-	"database/sql"
 	"github.com/carefuly/PackageFluxApp/internal/domain"
+	"github.com/carefuly/PackageFluxApp/internal/model"
+	"github.com/carefuly/PackageFluxApp/internal/repository/cache"
 	"github.com/carefuly/PackageFluxApp/internal/repository/dao"
-	"github.com/carefuly/PackageFluxApp/model"
 )
 
 var (
-	ErrDuplicateUser = dao.ErrDuplicateEmail
-	ErrUserNotFound = dao.ErrUserNotFound
+	ErrDuplicateEmail = dao.ErrDuplicateEmail
 )
 
 type UserRepository interface {
-	Register(ctx context.Context, u domain.Register) error
-	Login(ctx context.Context, email string) (domain.Login, error)
-	UserInfo(ctx context.Context, uid string) (domain.UserInfo, error)
+	Create(ctx context.Context, u domain.Register) error
+	ExistsByEmail(ctx context.Context, email string) (bool, error)
 }
 
 type userRepository struct {
-	dao dao.UserDAO
+	dao   dao.UserDAO
+	cache cache.UserCache
 }
 
 func NewUserRepository(dao dao.UserDAO) UserRepository {
 	return &userRepository{
-		dao: dao,
+		dao:   dao,
+		// cache: cache,
 	}
 }
 
-func (repo *userRepository) Register(ctx context.Context, u domain.Register) error {
+func (repo *userRepository) Create(ctx context.Context, u domain.Register) error {
 	return repo.dao.Insert(ctx, repo.toEntity(u))
 }
 
-func (repo *userRepository) Login(ctx context.Context, email string) (domain.Login, error) {
-	u, err := repo.dao.Login(ctx, email)
-	if err != nil {
-		return domain.Login{}, err
-	}
-	return repo.toDomain(u), nil
+func (repo *userRepository) ExistsByEmail(ctx context.Context, email string) (bool, error) {
+	return repo.dao.ExistsByEmail(ctx, email)
 }
 
-func (repo *userRepository) UserInfo(ctx context.Context, uid string) (domain.UserInfo, error) {
-	u, err := repo.dao.UserInfo(ctx, uid)
-	if err != nil {
-		return domain.UserInfo{}, err
-	}
-	return domain.UserInfo{
-		User: model.User{
-			CoreModels:  u.CoreModels,
-			Username:    u.Username,
-			Avatar:      u.Avatar,
-			UsageNumber: u.UsageNumber,
-			Total:       u.Total,
-		},
-		Email:      u.Email.String,
-		CreateTime: u.CoreModels.CreateTime.Format("2006-01-02 15:04:05.000"),
-		UpdateTime: u.CoreModels.UpdateTime.Format("2006-01-02 15:04:05.000"),
-	}, nil
-}
+// func (repo *userRepository) Create(ctx context.Context, u domain.Register) error {
+// 	return repo.dao.Insert(ctx, repo.toEntity(u))
+// }
+//
+// func (repo *userRepository) ExistsByEmail(ctx context.Context, email string) (bool, error) {
+// 	return repo.dao.ExistsByEmail(ctx, email)
+// }
 
-func (repo *userRepository) toDomain(u model.User) domain.Login {
-	return domain.Login{
-		ID:       u.CoreModels.ID,
-		Email:    u.Email.String,
-		Password: u.Password.String,
-	}
-}
-
-
-func (repo *userRepository) toEntity(u domain.Register) model.User {
+func (repo *userRepository) toEntity(d domain.Register) model.User {
 	return model.User{
-		Username: u.Username,
-		Email: sql.NullString{
-			String: u.Email,
-			Valid:  u.Email != "",
-		},
-		Password: sql.NullString{
-			String: u.Password,
-			Valid:  u.Password != "",
-		},
-		PasswordStr: sql.NullString{
-			String: u.PasswordStr,
-			Valid:  u.PasswordStr != "",
-		},
+		Username:    d.Username,
+		Email:       d.Email,
+		Password:    d.Password,
+		PasswordStr: d.PasswordStr,
 	}
 }

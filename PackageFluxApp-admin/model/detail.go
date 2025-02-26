@@ -9,6 +9,7 @@
 package model
 
 import (
+	"github.com/carefuly/PackageFluxApp/internal/model"
 	"github.com/carefuly/PackageFluxApp/pkg/models"
 )
 
@@ -21,7 +22,7 @@ type Detail struct {
 	Type        int      `gorm:"type:int;default:1;comment:1:APP" json:"type"`                                            // 1:APP
 	Preview     string   `gorm:"type:json;comment:预览图" json:"preview"`                                                    // 预览图
 	UserID      string   `gorm:"type:varchar(100);comment:用户ID" json:"user_id"`                                           // 用户ID
-	User        *User    `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`                         // 用户详情
+	User        *model.User    `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`                         // 用户详情
 	VersionID   *string  `gorm:"type:varchar(100);comment:版本ID" json:"version_id"`                                        // 版本ID
 	Version     *Version `gorm:"foreignKey:VersionID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` // 版本
 }

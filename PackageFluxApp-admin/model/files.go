@@ -9,6 +9,7 @@
 package model
 
 import (
+	"github.com/carefuly/PackageFluxApp/internal/model"
 	"github.com/carefuly/PackageFluxApp/pkg/models"
 )
 
@@ -22,5 +23,5 @@ type File struct {
 	Path    string `gorm:"type:varchar(255);comment:文件所在路径" json:"path"`                    // 文件所在路径
 	Url     string `gorm:"type:varchar(255);comment:文件地址" json:"url"`                       // 文件地址
 	UserID  string `gorm:"type:varchar(100);comment:用户ID" json:"user_id"`                   // 用户ID
-	User    *User  `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"` // 用户
+	User    *model.User  `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"` // 用户
 }

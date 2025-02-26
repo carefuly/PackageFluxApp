@@ -49,7 +49,7 @@ func (dao *filesDAO) BatchCreate(ctx context.Context, files []model.File) error 
 			}
 		}
 
-		if existingFile.ID != "" {
+		if existingFile.Id != "" {
 			if err := dao.db.Delete(&existingFile).Error; err != nil {
 				return ErrCreateFile
 			}
@@ -75,7 +75,7 @@ func (dao *filesDAO) BatchDelete(ctx context.Context, uid string, ids []string) 
 
 		pathsToDelete = append(pathsToDelete, existingFile.Path)
 
-		if existingFile.ID != "" {
+		if existingFile.Id != "" {
 			if err := dao.db.Delete(&existingFile).Error; err != nil {
 			}
 		}

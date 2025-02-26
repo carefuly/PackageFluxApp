@@ -2,7 +2,7 @@
  * Description：
  * FileName：user.go
  * Author：CJiaの用心
- * Create：2025/2/24 15:43:14
+ * Create：2025/2/26 14:36:28
  * Remark：
  */
 
@@ -13,18 +13,16 @@ import (
 	"errors"
 	"github.com/carefuly/PackageFluxApp/internal/domain"
 	"github.com/carefuly/PackageFluxApp/internal/repository"
+	"github.com/go-sql-driver/mysql"
 	"golang.org/x/crypto/bcrypt"
 )
 
 var (
-	ErrDuplicateEmail        = repository.ErrDuplicateUser
-	ErrInvalidUserOrPassword = errors.New("用户不存在/密码错误")
+	ErrDuplicateEmail = repository.ErrDuplicateEmail
 )
 
 type UserService interface {
 	Register(ctx context.Context, u domain.Register) error
-	Login(ctx context.Context, u domain.Login) (domain.Login, error)
-	UserInfo(ctx context.Context, uid string) (domain.UserInfo, error)
 }
 
 type userService struct {
@@ -38,31 +36,33 @@ func NewUserService(repo repository.UserRepository) UserService {
 }
 
 func (svc *userService) Register(ctx context.Context, u domain.Register) error {
+	exists, err := svc.repo.ExistsByEmail(ctx, u.Email)
+	if err != nil {
+		return err
+	}
+	if exists {
+		return repository.ErrDuplicateEmail
+	}
+
 	hash, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return err
 	}
-	u.PasswordStr = u.Password
 	u.Password = string(hash)
-	return svc.repo.Register(ctx, u)
+
+	err = svc.repo.Create(ctx, u)
+	if svc.IsDuplicateEntryError(err) {
+		return repository.ErrDuplicateEmail
+	}
+
+	return nil
 }
 
-func (svc *userService) Login(ctx context.Context, user domain.Login) (domain.Login, error) {
-	u, err := svc.repo.Login(ctx, user.Email)
-	if errors.Is(err, repository.ErrUserNotFound) {
-		return domain.Login{}, ErrInvalidUserOrPassword
+func (svc *userService) IsDuplicateEntryError(err error) bool {
+	var mysqlErr *mysql.MySQLError
+	if errors.As(err, &mysqlErr) {
+		// MySQL 错误码 1062 表示唯一冲突
+		return mysqlErr.Number == 1062
 	}
-	if err != nil {
-		return domain.Login{}, err
-	}
-	// 检查密码对不对
-	err = bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(user.Password))
-	if err != nil {
-		return domain.Login{}, ErrInvalidUserOrPassword
-	}
-	return u, nil
-}
-
-func (svc *userService) UserInfo(ctx context.Context, uid string) (domain.UserInfo, error) {
-	return svc.repo.UserInfo(ctx, uid)
+	return false
 }
