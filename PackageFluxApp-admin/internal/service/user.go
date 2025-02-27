@@ -71,7 +71,7 @@ func (svc *userService) Register(ctx context.Context, u domain.Register) error {
 		return repository.ErrDuplicateEmail
 	}
 
-	return nil
+	return err
 }
 
 func (svc *userService) Login(ctx *gin.Context, rely config.RelyConfig, u domain.Login) (string, error) {

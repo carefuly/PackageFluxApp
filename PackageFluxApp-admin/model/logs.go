@@ -9,6 +9,7 @@
 package model
 
 import (
+	"github.com/carefuly/PackageFluxApp/internal/model"
 	"github.com/carefuly/PackageFluxApp/pkg/models"
 )
 
@@ -23,5 +24,5 @@ type Logger struct {
 	Brand        string  `gorm:"type:varchar(50);comment:设备品牌" json:"brand"`                       // 设备品牌
 	SystemName   string  `gorm:"type:varchar(50);comment:系统名称" json:"system_name"`                 // 系统名称
 	DetailId     string  `gorm:"type:varchar(100);comment:应用详情ID" json:"detail_id"`                // 应用详情ID
-	Detail       *Detail `gorm:"foreignKey:DetailID;references:RecordId;constraint:OnDelete:CASCADE;"` // 应用详情
+	Detail       *model.Detail `gorm:"foreignKey:DetailID;references:RecordId;constraint:OnDelete:CASCADE;"` // 应用详情
 }

@@ -10,6 +10,11 @@ package router
 
 import (
 	"github.com/carefuly/PackageFluxApp/config"
+	"github.com/carefuly/PackageFluxApp/internal/repository"
+	"github.com/carefuly/PackageFluxApp/internal/repository/cache"
+	"github.com/carefuly/PackageFluxApp/internal/repository/dao"
+	"github.com/carefuly/PackageFluxApp/internal/service"
+	"github.com/carefuly/PackageFluxApp/internal/web"
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,24 +29,25 @@ func NewApplicationRouter(rely config.RelyConfig) *ApplicationRouter {
 }
 
 func (r *ApplicationRouter) RegisterAuthRouter(router *gin.RouterGroup) {
-	// applicationRouter := router.Group("/application")
-	//
+	applicationRouter := router.Group("/application")
+
 	// aliYunOSS := oss.NewAliYunOSS(r.rely.AliYun.Endpoint, r.rely.AliYun.BucketName,
 	// 	r.rely.AliYun.AccessKeyID, r.rely.AliYun.AccessKeyID)
 	// aliYunService := service.NewAliYunService(aliYunOSS)
-	//
-	// detailsDAO := dao.NewDetailsDAO(r.rely.Db)
-	// detailsRepository := repository.NewDetailsRepository(detailsDAO)
-	// detailsService := service.NewDetailsService(detailsRepository)
-	// detailsHandler := web.NewDetailsHandler(r.rely, detailsService)
-	// detailsHandler.RegisterRoutes(applicationRouter)
-	//
+
+	redisDetailCache := cache.NewRedisDetailCache(r.rely.Redis)
+	detailDAO := dao.NewGORMDetailDAO(r.rely.Db)
+	detailRepository := repository.NewDetailRepository(detailDAO, redisDetailCache)
+	detailService := service.NewDetailService(detailRepository)
+	detailHandler := web.NewDetailHandler(r.rely, detailService)
+	detailHandler.RegisterRoutes(applicationRouter)
+
 	// versionDAO := dao.NewVersionDAO(r.rely.Db)
 	// versionRepository := repository.NewVersionRepository(versionDAO)
 	// versionService := service.NewVersionService(versionRepository, detailsRepository)
 	// versionHandler := web.NewVersionHandler(r.rely, versionService)
 	// versionHandler.RegisterRoutes(applicationRouter)
-	//
+
 	// filesDAO := dao.NewFilesDAO(r.rely.Db)
 	// filesRepository := repository.NewFilesRepository(filesDAO)
 	// filesService := service.NewFilesService(filesRepository)

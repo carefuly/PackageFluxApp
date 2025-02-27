@@ -9,6 +9,7 @@
 package model
 
 import (
+	"github.com/carefuly/PackageFluxApp/internal/model"
 	"github.com/carefuly/PackageFluxApp/pkg/models"
 )
 
@@ -22,5 +23,5 @@ type Version struct {
 	ApkUrl         string  `gorm:"type:varchar(255);not null;comment:apk下载地址" json:"apkUrl"`            // apk下载地址
 	WgtUrl         string  `gorm:"type:varchar(255);not null;comment:wgt下载地址" json:"wgtUrl"`            // wgt下载地址
 	DetailID       string  `gorm:"type:varchar(100);comment:应用详情ID" json:"detail_id"`                   // 应用详情ID
-	Detail         *Detail `gorm:"foreignKey:DetailID;constraint:OnDelete:CASCADE;"`                    // 应用详情
+	Detail         *model.Detail `gorm:"foreignKey:DetailID;constraint:OnDelete:CASCADE;"`                    // 应用详情
 }

@@ -69,7 +69,7 @@ func (h *registerHandler) SendEmailCaptchaRegisterHandler(ctx *gin.Context) {
 	case err == nil:
 		response.NewResponse().SuccessResponse(ctx, "发送成功, 验证码10分钟有效", nil)
 	case errors.Is(err, service.ErrCodeSendTooMany):
-		response.NewResponse().ErrorResponse(ctx, http.StatusBadRequest, "短信发送太频繁，请稍后再试", nil)
+		response.NewResponse().ErrorResponse(ctx, http.StatusBadRequest, "邮箱发送太频繁，请稍后再试", nil)
 	default:
 		ctx.Set("internal", err.Error())
 		zap.L().Error("短信发送异常", zap.Error(err))

@@ -63,5 +63,6 @@ func (i DbPool) InitDb(database config.DatabaseConfig) *gorm.DB {
 	}
 	// 迁移表
 	// model.NewUser().AutoMigrate(i.db)
+	// model.NewDetail().AutoMigrate(i.db)
 	return i.db
 }
