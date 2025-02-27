@@ -77,7 +77,6 @@ func (dao *GORMDetailDAO) FindListAll(ctx context.Context, userId, appName strin
 	}
 	var details []*model.Detail
 	result := query.Find(&details)
-
 	return result.RowsAffected, details, result.Error
 }
 

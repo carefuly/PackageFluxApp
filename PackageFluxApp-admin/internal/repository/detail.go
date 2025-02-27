@@ -97,7 +97,7 @@ func (repo *detailRepository) FindListAll(ctx context.Context, userId, appName s
 }
 
 func (repo *detailRepository) ExistsByUserIdAndAppName(ctx context.Context, userId, appName string) (bool, error) {
-	return repo.dao.ExistsByUserIdAndAppName(ctx, userId, userId)
+	return repo.dao.ExistsByUserIdAndAppName(ctx, userId, appName)
 }
 
 func (repo *detailRepository) toEntity(d domain.Detail) model.Detail {

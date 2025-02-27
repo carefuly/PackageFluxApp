@@ -14,6 +14,7 @@ import (
 	"github.com/carefuly/PackageFluxApp/internal/repository/cache"
 	"github.com/carefuly/PackageFluxApp/internal/repository/dao"
 	"github.com/carefuly/PackageFluxApp/internal/service"
+	"github.com/carefuly/PackageFluxApp/internal/service/oss"
 	"github.com/carefuly/PackageFluxApp/internal/web"
 	"github.com/gin-gonic/gin"
 )
@@ -31,9 +32,9 @@ func NewApplicationRouter(rely config.RelyConfig) *ApplicationRouter {
 func (r *ApplicationRouter) RegisterAuthRouter(router *gin.RouterGroup) {
 	applicationRouter := router.Group("/application")
 
-	// aliYunOSS := oss.NewAliYunOSS(r.rely.AliYun.Endpoint, r.rely.AliYun.BucketName,
-	// 	r.rely.AliYun.AccessKeyID, r.rely.AliYun.AccessKeyID)
-	// aliYunService := service.NewAliYunService(aliYunOSS)
+	aliYunOSS := oss.NewAliYunOSS(r.rely.AliYun.Endpoint, r.rely.AliYun.BucketName,
+		r.rely.AliYun.AccessKeyID, r.rely.AliYun.AccessKeyID)
+	aliYunService := service.NewAliYunService(aliYunOSS)
 
 	redisDetailCache := cache.NewRedisDetailCache(r.rely.Redis)
 	detailDAO := dao.NewGORMDetailDAO(r.rely.Db)
@@ -48,9 +49,10 @@ func (r *ApplicationRouter) RegisterAuthRouter(router *gin.RouterGroup) {
 	// versionHandler := web.NewVersionHandler(r.rely, versionService)
 	// versionHandler.RegisterRoutes(applicationRouter)
 
-	// filesDAO := dao.NewFilesDAO(r.rely.Db)
-	// filesRepository := repository.NewFilesRepository(filesDAO)
-	// filesService := service.NewFilesService(filesRepository)
-	// filesHandler := web.NewFilesHandler(r.rely, filesService, aliYunService)
-	// filesHandler.RegisterRoutes(applicationRouter)
+	redisFileCache := cache.NewRedisFileCache(r.rely.Redis)
+	fileDAO := dao.NewGORMFileDAO(r.rely.Db)
+	fileRepository := repository.NewFileRepository(fileDAO, redisFileCache)
+	fileService := service.NewFileService(fileRepository)
+	fileHandler := web.NewFileHandler(r.rely, fileService, aliYunService)
+	fileHandler.RegisterRoutes(applicationRouter)
 }

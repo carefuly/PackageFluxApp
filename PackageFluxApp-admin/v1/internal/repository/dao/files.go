@@ -1,6 +1,6 @@
 /**
  * Description：
- * FileName：files.go
+ * FileName：file.go
  * Author：CJiaの用心
  * Create：2025/2/24 16:48:50
  * Remark：
@@ -35,6 +35,7 @@ type filesDAO struct {
 func NewFilesDAO(db *gorm.DB) FilesDAO {
 	return &filesDAO{
 		db: db,
+
 	}
 }
 
