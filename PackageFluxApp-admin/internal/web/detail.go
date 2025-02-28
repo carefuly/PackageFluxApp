@@ -171,6 +171,8 @@ func (h *detailHandler) Update(ctx *gin.Context) {
 	switch {
 	case err == nil:
 		response.NewResponse().SuccessResponse(ctx, "更新成功", nil)
+	case errors.Is(err, service.ErrDuplicateUserIdAndAppName):
+		response.NewResponse().ErrorResponse(ctx, http.StatusBadRequest, "同一用户下应用名称不能重复，请重新输入", nil)
 	case errors.Is(err, service.ErrDetailNotFound):
 		response.NewResponse().ErrorResponse(ctx, http.StatusBadRequest, "记录不存在", nil)
 	default:
@@ -203,8 +205,8 @@ func (h *detailHandler) GetById(ctx *gin.Context) {
 	case errors.Is(err, service.ErrDetailRecordNotFound):
 		response.NewResponse().ErrorResponse(ctx, http.StatusBadRequest, "记录不存在", nil)
 	default:
-		ctx.Set("internal", uid)
-		zap.S().Error("根据Id查询应用详情异常", uid)
+		ctx.Set("internal", err.Error())
+		zap.S().Error("根据Id查询应用详情异常", err)
 		response.NewResponse().ErrorResponse(ctx, http.StatusInternalServerError, "服务器异常", nil)
 	}
 }

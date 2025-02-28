@@ -23,6 +23,7 @@ var (
 type FileService interface {
 	BatchCreate(ctx context.Context, files []domain.File) []string
 	BatchDelete(ctx context.Context, userId string, ids []string) ([]string, []error)
+	FindById(ctx context.Context, id, userId string) (domain.File, error)
 	FindListPage(ctx context.Context, userId string, page filters.Pagination) (int64, []domain.File, error)
 	FindListAll(ctx context.Context, userId, name string) ([]domain.File, error)
 }

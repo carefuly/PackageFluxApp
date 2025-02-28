@@ -9,6 +9,7 @@
 package web
 
 import (
+	"errors"
 	"fmt"
 	"github.com/carefuly/PackageFluxApp/config"
 	"github.com/carefuly/PackageFluxApp/internal/domain"
@@ -28,6 +29,10 @@ import (
 type FileHandler interface {
 	RegisterRoutes(router *gin.RouterGroup)
 	BatchUpload(ctx *gin.Context)
+	BatchDelete(ctx *gin.Context)
+	GetById(ctx *gin.Context)
+	GetListAllPage(ctx *gin.Context)
+	GetListAll(ctx *gin.Context)
 }
 
 type fileHandler struct {
@@ -47,6 +52,7 @@ func NewFileHandler(rely config.RelyConfig, svc service.FileService, aliYun serv
 func (h *fileHandler) RegisterRoutes(router *gin.RouterGroup) {
 	router.POST("/file/batchUpload", h.BatchUpload)
 	router.DELETE("/file/batchDelete", h.BatchDelete)
+	router.GET("/file/getById/:id", h.GetById)
 	router.GET("/file/listPage", h.GetListAllPage)
 	router.GET("/file/listAll", h.GetListAll)
 }
@@ -144,6 +150,35 @@ func (h *fileHandler) BatchDelete(ctx *gin.Context) {
 	}
 
 	response.NewResponse().SuccessResponse(ctx, fmt.Sprintf("【成功删除%d个文件】%v", len(paths), paths), nil)
+}
+
+func (h *fileHandler) GetById(ctx *gin.Context) {
+	uid, ok := ctx.MustGet("userId").(string)
+	if !ok {
+		ctx.Set("internal", uid)
+		zap.S().Error("用户ID获取失败", uid)
+		response.NewResponse().ErrorResponse(ctx, http.StatusInternalServerError, "服务器异常", nil)
+		return
+	}
+
+	id := ctx.Param("id")
+	if id == "" || len(id) == 0 {
+		response.NewResponse().ErrorResponse(ctx, http.StatusBadRequest, "参数错误", nil)
+		return
+	}
+
+	file, err := h.svc.FindById(ctx, id, uid)
+
+	switch {
+	case err == nil:
+		response.NewResponse().SuccessResponse(ctx, "查询成功", file)
+	case errors.Is(err, service.ErrDetailRecordNotFound):
+		response.NewResponse().ErrorResponse(ctx, http.StatusBadRequest, "记录不存在", nil)
+	default:
+		ctx.Set("internal", err)
+		zap.S().Error("根据Id查询文件详情异常", err)
+		response.NewResponse().ErrorResponse(ctx, http.StatusInternalServerError, "服务器异常", nil)
+	}
 }
 
 func (h *fileHandler) GetListAllPage(ctx *gin.Context) {

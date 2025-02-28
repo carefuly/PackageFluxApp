@@ -31,6 +31,7 @@ type DetailRepository interface {
 	Create(ctx context.Context, d domain.Detail) error
 	Delete(ctx context.Context, id, userId string) (int64, error)
 	Update(ctx context.Context, id, userId string, d domain.Detail) (int64, error)
+	UpdateFormal(ctx context.Context, id, userId, versionId string) (int64, error)
 	FindByIdAndUserId(ctx context.Context, id, userId string) (domain.Detail, error)
 	FindListAll(ctx context.Context, userId, appName string) (int64, []domain.Detail, error)
 	ExistsByUserIdAndAppName(ctx context.Context, userId, appName string) (bool, error)
@@ -58,6 +59,10 @@ func (repo *detailRepository) Delete(ctx context.Context, id, userId string) (in
 
 func (repo *detailRepository) Update(ctx context.Context, id, userId string, d domain.Detail) (int64, error) {
 	return repo.dao.Update(ctx, id, userId, repo.toEntity(d))
+}
+
+func (repo *detailRepository) UpdateFormal(ctx context.Context, id, userId, versionId string) (int64, error) {
+	return repo.dao.UpdateFormal(ctx, id, userId, versionId)
 }
 
 func (repo *detailRepository) FindByIdAndUserId(ctx context.Context, id, userId string) (domain.Detail, error) {

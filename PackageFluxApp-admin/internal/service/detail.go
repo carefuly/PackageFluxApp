@@ -70,6 +70,9 @@ func (svc *detailService) Delete(ctx context.Context, id, userId string) error {
 
 func (svc *detailService) Update(ctx context.Context, id, userId string, d domain.Detail) error {
 	rowsAffected, err := svc.repo.Update(ctx, id, userId, d)
+	if svc.IsDuplicateEntryError(err) {
+		return repository.ErrDuplicateUserIdAndAppName
+	}
 	if err != nil {
 		return err
 	}
