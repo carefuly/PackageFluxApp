@@ -50,6 +50,13 @@ func (r *ApplicationRouter) RegisterAuthRouter(router *gin.RouterGroup) {
 	versionHandler := web.NewVersionHandler(r.rely, versionService)
 	versionHandler.RegisterRoutes(applicationRouter)
 
+	redisUserCache := cache.NewRedisUserCache(r.rely.Redis)
+	userDAO := dao.NewGORMUserDAO(r.rely.Db)
+	userRepository := repository.NewUserRepository(userDAO, redisUserCache)
+	checkService := service.NewCheckService(userRepository, detailRepository, versionRepository)
+	checkHandler := web.NewCheckHandler(r.rely, checkService)
+	checkHandler.RegisterRoutes(applicationRouter)
+
 	redisFileCache := cache.NewRedisFileCache(r.rely.Redis)
 	fileDAO := dao.NewGORMFileDAO(r.rely.Db)
 	fileRepository := repository.NewFileRepository(fileDAO, redisFileCache)

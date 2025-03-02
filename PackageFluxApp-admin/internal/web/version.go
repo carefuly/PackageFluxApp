@@ -211,6 +211,8 @@ func (h *versionHandler) UpdateFormal(ctx *gin.Context) {
 		response.NewResponse().SuccessResponse(ctx, "设置正式版成功", nil)
 	case errors.Is(err, service.ErrVersionNotFound):
 		response.NewResponse().ErrorResponse(ctx, http.StatusBadRequest, "记录不存在", nil)
+	case errors.Is(err, service.ErrVersionLowerInvalid):
+		response.NewResponse().ErrorResponse(ctx, http.StatusBadRequest, "正式版版本号不能低于当前正式版", nil)
 	default:
 		ctx.Set("internal", err.Error())
 		zap.L().Error("设置正式版异常", zap.Error(err))

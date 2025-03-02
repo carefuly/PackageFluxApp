@@ -30,8 +30,11 @@ type VersionRepository interface {
 	Delete(ctx context.Context, id, detailId, userId string) (int64, error)
 	Update(ctx context.Context, id, detailId, userId string, v domain.Version) (int64, error)
 	UpdateFormal(ctx context.Context, id, detailId, userId string) (int64, error)
-	FindByIdAndUserId(ctx context.Context, id, detailId, userId string) (domain.Version, error)
+	FindByIdAndDetailIdAndUserId(ctx context.Context, id, detailId, userId string) (domain.Version, error)
+	FindByFormalVersionCode(ctx context.Context, detailId, userId string) (domain.Version, error)
+	FindByDetailIdAndFormalVersion(ctx context.Context, detailId string) (domain.Version, error)
 	FindListAll(ctx context.Context, detailId, userId string) (int64, []domain.Version, error)
+	ExistsByDetailIdAndFormalVersion(ctx context.Context, detailId string) (bool, error)
 	ExistsByDetailIdAndCode(ctx context.Context, userId, detailId, versionCode string) (bool, error)
 }
 
@@ -63,7 +66,7 @@ func (repo *versionRepository) UpdateFormal(ctx context.Context, id, detailId, u
 	return repo.dao.UpdateFormal(ctx, id, detailId, userId)
 }
 
-func (repo *versionRepository) FindByIdAndUserId(ctx context.Context, id, detailId, userId string) (domain.Version, error) {
+func (repo *versionRepository) FindByIdAndDetailIdAndUserId(ctx context.Context, id, detailId, userId string) (domain.Version, error) {
 	v, err := repo.cache.Get(ctx, id, userId)
 	switch {
 	case err == nil:
@@ -87,6 +90,24 @@ func (repo *versionRepository) FindByIdAndUserId(ctx context.Context, id, detail
 	}
 }
 
+func (repo *versionRepository) FindByFormalVersionCode(ctx context.Context, detailId, userId string) (domain.Version, error) {
+	version, err := repo.dao.FindByFormalVersionCode(ctx, detailId, userId)
+	if err != nil {
+		return domain.Version{}, err
+	}
+	versionInfo := repo.toDomain(version)
+	return versionInfo, err
+}
+
+func (repo *versionRepository) FindByDetailIdAndFormalVersion(ctx context.Context, detailId string) (domain.Version, error) {
+	version, err := repo.dao.FindByDetailIdAndFormalVersion(ctx, detailId)
+	if err != nil {
+		return domain.Version{}, err
+	}
+	versionInfo := repo.toDomain(version)
+	return versionInfo, err
+}
+
 func (repo *versionRepository) FindListAll(ctx context.Context, detailId, userId string) (int64, []domain.Version, error) {
 	rows, list, err := repo.dao.FindListAll(ctx, detailId, userId)
 	if err != nil {
@@ -97,6 +118,10 @@ func (repo *versionRepository) FindListAll(ctx context.Context, detailId, userId
 		versions = append(versions, repo.toDomain(v))
 	}
 	return rows, versions, err
+}
+
+func (repo *versionRepository) ExistsByDetailIdAndFormalVersion(ctx context.Context, detailId string) (bool, error) {
+	return repo.dao.ExistsByDetailIdAndFormalVersion(ctx, detailId)
 }
 
 func (repo *versionRepository) ExistsByDetailIdAndCode(ctx context.Context, userId, detailId, versionCode string) (bool, error) {

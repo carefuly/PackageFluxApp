@@ -99,7 +99,6 @@ func (svc *versionService) FindListAll(ctx context.Context, f domain.FiltersVers
 
 // CompareVersion 比较两个版本号
 // 返回值：
-//
 //	-1: v1 < v2
 //	 0: v1 == v2
 //	 1: v1 > v2

@@ -27,7 +27,10 @@ type VersionDAO interface {
 	Update(ctx context.Context, id, detailId, userId string, v model.Version) (int64, error)
 	UpdateFormal(ctx context.Context, id, detailId, userId string) (int64, error)
 	FindByIdAndDetailIdAndUserId(ctx context.Context, id, detailId, userId string) (*model.Version, error)
+	FindByFormalVersionCode(ctx context.Context, detailId, userId string) (*model.Version, error)
+	FindByDetailIdAndFormalVersion(ctx context.Context, detailId string) (*model.Version, error)
 	FindListAll(ctx context.Context, detailId, userId string) (int64, []*model.Version, error)
+	ExistsByDetailIdAndFormalVersion(ctx context.Context, detailId string) (bool, error)
 	ExistsByDetailIdAndCode(ctx context.Context, userId, detailId, versionCode string) (bool, error)
 }
 
@@ -84,6 +87,22 @@ func (dao *GORMVersionDAO) FindByIdAndDetailIdAndUserId(ctx context.Context, id,
 	return &version, err
 }
 
+func (dao *GORMVersionDAO) FindByFormalVersionCode(ctx context.Context, detailId, userId string) (*model.Version, error) {
+	var version model.Version
+	err := dao.db.WithContext(ctx).
+		Where("formalVersion = ? AND detail_id = ? AND user_id = ?", true, detailId, userId).
+		First(&version).Error
+	return &version, err
+}
+
+func (dao *GORMVersionDAO) FindByDetailIdAndFormalVersion(ctx context.Context, detailId string) (*model.Version, error) {
+	var version model.Version
+	err := dao.db.WithContext(ctx).Model(&model.Version{}).
+		Where("formalVersion = ? AND detail_id = ?", true, detailId).
+		First(&version).Error
+	return &version, err
+}
+
 func (dao *GORMVersionDAO) FindListAll(ctx context.Context, detailId, userId string) (int64, []*model.Version, error) {
 	query := dao.db.WithContext(ctx).
 		Where("status = ? AND detail_id = ? AND user_id = ?", true, detailId, userId).
@@ -91,6 +110,14 @@ func (dao *GORMVersionDAO) FindListAll(ctx context.Context, detailId, userId str
 	var versions []*model.Version
 	result := query.Find(&versions)
 	return result.RowsAffected, versions, result.Error
+}
+
+func (dao *GORMVersionDAO) ExistsByDetailIdAndFormalVersion(ctx context.Context, detailId string) (bool, error) {
+	var count int64
+	err := dao.db.WithContext(ctx).Model(&model.Version{}).
+		Where("formalVersion = ? AND detail_id = ?", true, detailId).
+		Count(&count).Error
+	return count > 0, err
 }
 
 func (dao *GORMVersionDAO) ExistsByDetailIdAndCode(ctx context.Context, userId, detailId, versionCode string) (bool, error) {
