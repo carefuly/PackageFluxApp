@@ -51,7 +51,7 @@ func NewFileHandler(rely config.RelyConfig, svc service.FileService, aliYun serv
 
 func (h *fileHandler) RegisterRoutes(router *gin.RouterGroup) {
 	router.POST("/file/batchUpload", h.BatchUpload)
-	router.DELETE("/file/batchDelete", h.BatchDelete)
+	router.POST("/file/batchDelete", h.BatchDelete)
 	router.GET("/file/getById/:id", h.GetById)
 	router.GET("/file/listPage", h.GetListAllPage)
 	router.GET("/file/listAll", h.GetListAll)

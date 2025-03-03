@@ -8,7 +8,7 @@ const method = reactive({
     let params = {
       title: "上传文件🌻",
       isApi: true, // 是否后台上传
-      importApi: "/v1/application/files/batchUpload"
+      importApi: "/v1/application/file/batchUpload"
     };
     skyFileRef.value.uploadParams(params);
   },

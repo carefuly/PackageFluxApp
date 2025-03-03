@@ -58,11 +58,43 @@ func (repo *detailRepository) Delete(ctx context.Context, id, userId string) (in
 }
 
 func (repo *detailRepository) Update(ctx context.Context, id, userId string, d domain.Detail) (int64, error) {
-	return repo.dao.Update(ctx, id, userId, repo.toEntity(d))
+	rowsAffected, err := repo.dao.Update(ctx, id, userId, repo.toEntity(d))
+	if err != nil {
+		return 0, err
+	}
+	// 更新缓存
+	detail, err := repo.dao.FindByIdAndUserId(ctx, id, userId)
+	if err != nil {
+		return rowsAffected, err
+	}
+
+	detailInfo := repo.toDomain(detail)
+	err = repo.cache.Set(ctx, detailInfo)
+	if err != nil {
+		zap.L().Error("Redis异常", zap.Error(err))
+		return rowsAffected, err
+	}
+	return rowsAffected, err
 }
 
 func (repo *detailRepository) UpdateFormal(ctx context.Context, id, userId, versionId string) (int64, error) {
-	return repo.dao.UpdateFormal(ctx, id, userId, versionId)
+	rowsAffected, err := repo.dao.UpdateFormal(ctx, id, userId, versionId)
+	if err != nil {
+		return 0, err
+	}
+	// 更新缓存
+	detail, err := repo.dao.FindByIdAndUserId(ctx, id, userId)
+	if err != nil {
+		return rowsAffected, err
+	}
+
+	detailInfo := repo.toDomain(detail)
+	err = repo.cache.Set(ctx, detailInfo)
+	if err != nil {
+		zap.L().Error("Redis异常", zap.Error(err))
+		return rowsAffected, err
+	}
+	return rowsAffected, err
 }
 
 func (repo *detailRepository) FindByIdAndUserId(ctx context.Context, id, userId string) (domain.Detail, error) {
@@ -120,6 +152,7 @@ func (repo *detailRepository) toEntity(d domain.Detail) model.Detail {
 		Description: d.Description,
 		Preview:     preview.String(),
 		UserId:      d.UserId,
+		VersionId:   d.VersionId,
 	}
 }
 

@@ -59,5 +59,5 @@ func (c *RedisVersionCache) Set(ctx context.Context, v domain.Version) error {
 }
 
 func (c *RedisVersionCache) key(id, userId string) string {
-	return fmt.Sprintf("detail:info:%s:%s", id, userId)
+	return fmt.Sprintf("version:info:%s:%s", id, userId)
 }

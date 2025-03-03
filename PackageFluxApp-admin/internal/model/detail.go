@@ -24,7 +24,7 @@ type Detail struct {
 	Preview     string   `gorm:"type:json;column:preview;comment:预览图" json:"preview"`                                                 // 预览图
 	UserId      string   `gorm:"type:varchar(100);index:idx_user_app_name,unique;column:user_id;comment:用户ID" json:"user_id"`         // 用户ID
 	User        *User    `gorm:"foreignKey:UserId;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`                                     // 用户详情
-	VersionId   string   `gorm:"type:varchar(100);column:version_id;comment:版本ID" json:"version_id"`                                  // 版本ID
+	VersionId   *string  `gorm:"type:varchar(100);column:version_id;comment:版本ID" json:"version_id"`                                  // 版本ID
 	Version     *Version `gorm:"foreignKey:VersionId;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`                                 // 版本
 }
 

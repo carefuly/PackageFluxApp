@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {useRouter} from "vue-router";
-import accomplish from "@/global/method";
 import {useUserStore} from "@/store";
 import {skyNoticeSuccess, skyNoticeError, skyMsgError, skyMsgWarning, skyMsgBox} from "@/utils/sky.js";
 import {listAll as fileListAll} from "@/apis/application/file";
@@ -32,15 +31,11 @@ const pageData = ref({
   confirmLoading: false,
   form: {
     id: null,
-    recordId: null,
     logoUrl: "",
     appName: "",
     appleId: null,
     description: null,
     preview: [],
-    sort: 1,
-    status: true,
-    belong_dept: null,
     remark: null,
   },
   rules: {
@@ -59,7 +54,12 @@ const method = reactive({
   },
   /** 重置搜索参数 */
   resetSearchParams: () => {
-    accomplish.resetForm(null, pageData.value.pageParams);
+    pageData.value.pageParams = {
+      creator: null,
+      modifier: null,
+      status: true,
+      appName: "",
+    };
   },
   /** 添加 */
   handleAdd: () => {
@@ -68,7 +68,7 @@ const method = reactive({
     // 文件数据表格
     method.handleFileListAll();
     // 重置表单
-    accomplish.resetForm(formRef, pageData.value.form);
+    method.resetForm();
     // 打开弹出框
     skyDialogRef.value.skyOpen();
   },
@@ -108,7 +108,7 @@ const method = reactive({
     // 文件数据表格
     method.handleFileListAll();
     // 重置表单
-    accomplish.resetForm(formRef, pageData.value.form);
+    method.resetForm();
     const id = row.id;
     if (id == null || id === "") {
       skyMsgError("请选中需要修改的数据🌻");
@@ -143,7 +143,7 @@ const method = reactive({
             skyNoticeSuccess("修改成功🌻");
             pageData.value.confirmLoading = false;
             skyDialogRef.value.skyQuickClose();
-            accomplish.resetForm(formRef, pageData.value.form);
+            method.resetForm();
             await method.handleListAll();
           } catch (error) {
             pageData.value.confirmLoading = false;
@@ -155,7 +155,7 @@ const method = reactive({
             skyNoticeSuccess("添加成功🌻");
             pageData.value.confirmLoading = false;
             skyDialogRef.value.skyQuickClose();
-            accomplish.resetForm(formRef, pageData.value.form);
+            method.resetForm();
             await method.handleListAll();
           } catch (error) {
             pageData.value.confirmLoading = false;
@@ -171,6 +171,24 @@ const method = reactive({
   /** 取消 */
   handleCancel: () => {
     skyDialogRef.value.skyClose();
+  },
+  /** 清空表单数据 */
+  resetForm: () => {
+    nextTick(() => {
+      if (formRef.value) {
+        // 重置该表单项，将其值重置为初始值，并移除校验结果
+        formRef.value.resetFields();
+      }
+    });
+    pageData.value.form = {
+      id: null,
+      logoUrl: "",
+      appName: "",
+      appleId: null,
+      description: null,
+      preview: [],
+      remark: null,
+    };
   },
   /** 数据表格 */
   handleListAll: async () => {

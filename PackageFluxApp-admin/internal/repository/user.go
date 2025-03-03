@@ -25,6 +25,7 @@ var (
 
 type UserRepository interface {
 	Create(ctx context.Context, u domain.Register) error
+	UpdateUsageNumber(ctx context.Context, userId string) error
 	FindById(ctx context.Context, email string) (domain.User, error)
 	FindByEmail(ctx context.Context, email string) (domain.User, error)
 	ExistsByEmail(ctx context.Context, email string) (bool, error)
@@ -44,6 +45,10 @@ func NewUserRepository(dao dao.UserDAO, cache cache.UserCache) UserRepository {
 
 func (repo *userRepository) Create(ctx context.Context, u domain.Register) error {
 	return repo.dao.Insert(ctx, repo.toEntity(u))
+}
+
+func (repo *userRepository) UpdateUsageNumber(ctx context.Context, userId string) error {
+	return repo.dao.UpdateUsageNumber(ctx, userId)
 }
 
 func (repo *userRepository) FindById(ctx context.Context, id string) (domain.User, error) {

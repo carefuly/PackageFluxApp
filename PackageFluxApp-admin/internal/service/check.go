@@ -57,6 +57,11 @@ func (svc *checkService) CheckLatest(ctx context.Context, detailId, versionCode 
 		return domain.Check{}, err
 	}
 
+	err = svc.userRepo.UpdateUsageNumber(ctx, version.UserId)
+	if err != nil {
+		return domain.Check{}, err
+	}
+
 	switch compareVersion {
 	case 0:
 		return domain.Check{
