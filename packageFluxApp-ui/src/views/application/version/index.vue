@@ -25,11 +25,7 @@ const pageData = ref({
     appName: "",
   },
   pageParams: {
-    creator: null,
-    modifier: null,
-    status: true,
-    versionCode: "",
-    detail_id: null,
+    detailId: null,
   },
   title: "应用版本",
   confirmLoading: false,
@@ -78,13 +74,9 @@ const method = reactive({
   /** 重置搜索参数 */
   resetSearchParams: () => {
     pageData.value.pageParams = {
-      creator: null,
-      modifier: null,
-      status: true,
-      versionCode: "",
-      detail_id: null,
+      detailId: null,
     };
-    pageData.value.pageParams.detail_id = method.handleGetAppId();
+    pageData.value.pageParams.detailId = method.handleGetAppId();
   },
   /** 添加 */
   handleAdd: () => {
@@ -102,10 +94,7 @@ const method = reactive({
   /** 设置正式版 */
   handleFormal: async (row: any) => {
     try {
-      const res: any = await setFormal({
-        detailId: row.detail_id,
-        versionId: row.id,
-      });
+      const res: any = await setFormal(row.id, pageData.value.pageParams.detailId);
       await method.handleListPage();
       skyMsgSuccess("设置成功🌻");
     } catch (error) {
@@ -122,7 +111,7 @@ const method = reactive({
     skyMsgBox("您确认需要删除名称[" + row.versionCode + "]么？")
       .then(async () => {
         try {
-          await deleteById(id);
+          await deleteById(id, pageData.value.pageParams.detailId);
           await method.handleListPage();
           skyNoticeSuccess("删除成功🌻");
         } catch (error) {
@@ -157,7 +146,7 @@ const method = reactive({
       return;
     }
     try {
-      const res = await getById(id);
+      const res = await getById(id, pageData.value.pageParams);
       pageData.value.form = res.data;
     } catch (error) {
       skyNoticeError("数据获取失败，请刷新重试🌻");
@@ -257,8 +246,7 @@ const filterList = computed(() => {
 });
 onMounted(() => {
   method.handleGetByIdApp(method.handleGetAppId());
-  pageData.value.pageParams.detail_id = method.handleGetAppId();
-  // method.handleFileListAll();
+  pageData.value.pageParams.detailId = method.handleGetAppId();
   method.handleListPage();
 });
 </script>
@@ -271,7 +259,8 @@ onMounted(() => {
         <div style="display: flex; align-items: center;">
           <el-col :span="1.5">
             <el-tooltip content="返回">
-              <el-button size="small" type="primary" icon="ArrowLeftBold" circle plain @click="router.push('/application')"></el-button>
+              <el-button size="small" type="primary" icon="ArrowLeftBold" circle plain
+                         @click="router.push('/application')"></el-button>
             </el-tooltip>
           </el-col>
           <el-col :span="1.5">
@@ -401,7 +390,7 @@ onMounted(() => {
               <el-col :xs="{ span: 24 }" :sm="{ span: 24 }">
                 <el-form-item label="应用版本号" prop="versionCode">
                   <el-input v-model="pageData.form.versionCode"
-                            placeholder="请输入应用版本号，例如：2.2.8" :disabled="pageData.form.id" clearable/>
+                            placeholder="请输入应用版本号，例如：2.2.8" :disabled="pageData.form.id !== null" clearable/>
                 </el-form-item>
               </el-col>
             </el-row>

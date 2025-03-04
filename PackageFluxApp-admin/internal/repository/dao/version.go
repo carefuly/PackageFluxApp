@@ -106,7 +106,7 @@ func (dao *GORMVersionDAO) FindByDetailIdAndFormalVersion(ctx context.Context, d
 func (dao *GORMVersionDAO) FindListAll(ctx context.Context, detailId, userId string) (int64, []*model.Version, error) {
 	query := dao.db.WithContext(ctx).
 		Where("status = ? AND detail_id = ? AND user_id = ?", true, detailId, userId).
-		Order("update_time DESC, sort ASC")
+		Order("versionCode DESC, sort ASC")
 	var versions []*model.Version
 	result := query.Find(&versions)
 	return result.RowsAffected, versions, result.Error

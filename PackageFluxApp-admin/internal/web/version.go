@@ -28,6 +28,7 @@ type VersionHandler interface {
 	Delete(ctx *gin.Context)
 	Update(ctx *gin.Context)
 	GetById(ctx *gin.Context)
+	GetListAll(ctx *gin.Context)
 }
 
 type versionHandler struct {
@@ -212,7 +213,7 @@ func (h *versionHandler) UpdateFormal(ctx *gin.Context) {
 	case errors.Is(err, service.ErrVersionNotFound):
 		response.NewResponse().ErrorResponse(ctx, http.StatusBadRequest, "记录不存在", nil)
 	case errors.Is(err, service.ErrVersionLowerInvalid):
-		response.NewResponse().ErrorResponse(ctx, http.StatusBadRequest, "正式版版本号不能低于当前正式版", nil)
+		response.NewResponse().ErrorResponse(ctx, http.StatusBadRequest, "暂不支持降低更新，请设置高于当前正式版的版本号更新", nil)
 	default:
 		ctx.Set("internal", err.Error())
 		zap.L().Error("设置正式版异常", zap.Error(err))

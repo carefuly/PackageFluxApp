@@ -288,8 +288,8 @@ onMounted(() => {
         <el-descriptions-item label="应用名称">{{ item.appName }}</el-descriptions-item>
         <el-descriptions-item label="当前正式版">
           <el-tag v-if="item?.version_id" type="success">
-            <el-tooltip :content="item?.version_id">
-              版本号：{{ item?.versionCode }}
+            <el-tooltip :content="item?.Version?.versionCode">
+              正式版：{{ item?.Version?.versionCode }}
             </el-tooltip>
           </el-tag>
           <el-tag v-else type="danger">当前暂无正式版哦，快去发布吧！</el-tag>
