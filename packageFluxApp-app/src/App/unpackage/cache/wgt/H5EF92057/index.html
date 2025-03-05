@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8"/>
+  <link rel="shortcut icon" type="image/x-icon" href="./favicon.png">
+  <meta name="renderer" content="webkit">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta
+    name="keywords"
+    content="基于 Vue3 + CompositionAPI + Typescript + Vite + Element plus 的后台开源免费管理系统"
+  />
+  <meta
+    name="description"
+    content="基于 Vue3 + CompositionAPI + Typescript + Vite + Element plus 的后台开源免费管理系统"
+  />
+  <title>PACKAGE-FLUX-APP</title>
+  <script type="module" crossorigin src="./static/js/index-D4uuwCX8.js"></script>
+  <link rel="modulepreload" crossorigin href="./static/js/__commonjsHelpers__-lGe4XDVY.js">
+  <link rel="stylesheet" crossorigin href="./static/css/index-BReO5hom.css">
+</head>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body, #app {
+    height: 100%;
+  }
+
+  .app-loading {
+    background: #181818;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+
+  .app-name__loader {
+    line-height: 5em;
+    font-weight: bold;
+    color: #efefef;
+    font-size: 1.25rem;
+  }
+
+  .app-name__loader::before {
+    content: 'PackageFluxAppAdmin';
+  }
+
+  .app-animate__loader {
+    color: #fff;
+    width: 0.375rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    animation: animateLoading-1 .75s infinite linear alternate,
+    animateLoading-2 1.5s infinite linear;
+  }
+
+  @keyframes animateLoading-1 {
+    0%, 20% {
+      box-shadow: 1.875rem 0 0 0.1875rem, 0.625rem 0 0 0.1875rem, -0.625rem 0 0 0.1875rem, -1.875rem 0 0 0.1875rem
+    }
+    60%, 100% {
+      box-shadow: 0.75rem 0 0 0.1875rem, 0.875rem 0 0 0.375rem, -0.875rem 0 0 0.375rem, -0.75rem 0 0 0.1875rem
+    }
+  }
+
+  @keyframes animateLoading-2 {
+    0%, 25% {
+      transform: rotate(0)
+    }
+    50%, 100% {
+      transform: rotate(.5turn)
+    }
+  }
+
+  .app-text__loader {
+    font-size: 0.875rem;
+    color: #aaa;
+    line-height: 7em;
+  }
+
+  .app-text__loader::before {
+    content: '再等等，拼命载入资源中'
+  }
+</style>
+<body>
+<div id="app">
+  <div class="app-loading">
+    <div class="app-name__loader"></div>
+    <div class="app-animate__loader"></div>
+    <div class="app-text__loader"></div>
+  </div>
+</div>
+</body>
+</html>

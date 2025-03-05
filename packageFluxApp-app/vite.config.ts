@@ -1,7 +1,7 @@
 import path from "path";
-import {defineConfig, loadEnv} from 'vite';
-import createVitePlugins from './build/vite/plugin';
 import postcss from 'postcss-pxtorem';
+import {defineConfig, loadEnv} from 'vite';
+import createVitePlugins from './build/vite/plugins';
 
 // https://vitejs.dev/config/
 export default defineConfig(({command, mode}) => {
@@ -24,7 +24,8 @@ export default defineConfig(({command, mode}) => {
       preprocessorOptions: {
         scss: {
           javascriptEnabled: true,
-          additionalData: '@import "./src/styles/variable.scss";'
+          api: 'modern-compiler',
+          additionalData: '@use "@/styles/variable.scss" as *;'
         }
       },
       postcss: {
@@ -41,7 +42,7 @@ export default defineConfig(({command, mode}) => {
     // 服务配置跨域
     server: {
       host: "localhost", // 配置localhost、本机IP地址
-      port: 10010, // 端口号
+      port: 3888, // 端口号
       hmr: true, // 热更新
       open: false, // 服务启动时是否自动打开浏览器
       proxy: {
@@ -150,5 +151,5 @@ export default defineConfig(({command, mode}) => {
         "element-plus/es/components/tab-pane/style/css"
       ]
     }
-  };
+  }
 });

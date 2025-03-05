@@ -1,11 +1,14 @@
 import {createApp} from "vue";
 import App from "./App.vue";
 // 引入路由
-// import router from "./router/index";
+import router from "./router";
 // 引入仓库pinia
-// import store from "./store";
+import store from "./store";
 // 引入ElementPlus所有图标
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
+// 引入V
+import V from "vant";
+
 // 引入全局自定义指令
 import SkyDirectives from "@/directives";
 
@@ -22,6 +25,10 @@ import "element-plus/dist/index.css";
 import zhCn from "element-plus/dist/locale/zh-cn.mjs";
 // 引入ElementPlus的暗黑模式css
 import "element-plus/theme-chalk/dark/css-vars.css";
+// UnoCss防止覆盖ElementPlus 的 el-button的css，所有放置最下方
+import "uno.css";
+// 引入V样式
+import 'vant/lib/index.css';
 
 // 引入css
 import "@/styles/index.scss";
@@ -30,7 +37,6 @@ import "@/styles/animation.scss";
 import "animate.css";
 // UnoCss防止覆盖ElementPlus 的 el-button的css，所有放置最下方
 import "uno.css";
-import "amfe-flexible";
 
 // 引入js
 
@@ -46,9 +52,11 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 
 // 注册路由
-// app.use(router);
+app.use(router);
+// 注册V
+app.use(V);
 // 注册pinia
-// app.use(store);
+app.use(store);
 // 注册全局自定义指令
 app.use(SkyDirectives);
 // 挂载

@@ -43,15 +43,16 @@
     "ignoreDeprecations": "5.0"
     // 选项 importsNotUsedAsValues 已弃用，并将在 TypeScript 5.5 中停止工作。指定 compilerOption 的 "ignoreprecations ": "5.0" 来消除这个错误，使用 verbatimModuleSyntax 代替
   },
-  //  "include": ["src/**/*", "src/**/*.vue", "vite.config.ts"], // 指定被编译文件所在的目录
-  //  "exclude": ["node_modules", "dist", "**/*.js"] // 指定不需要被编译的目录
   "include": [
     "src/**/*",
     "src/**/*.vue",
     "vite.config.ts"
   ],
+  // 指定被编译文件所在的目录
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    "**/*.js"
   ]
+  // 指定不需要被编译的目录
 }

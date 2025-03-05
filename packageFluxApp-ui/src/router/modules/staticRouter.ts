@@ -1,6 +1,6 @@
 import Layout from "@/layout/index.vue";
-import {RouteRecordRaw} from "vue-router";
-import {HOME_URL, LOGIN_URL, REGISTER_URL} from "@/config";
+import { RouteRecordRaw } from "vue-router";
+import { HOME_URL, LOGIN_URL, REGISTER_URL } from "@/config";
 
 /**
  * LayoutRouter (布局路由)
@@ -9,9 +9,9 @@ export const layoutRouter: RouteRecordRaw[] = [
   {
     path: "/",
     name: "Layout",
-  component: Layout,
-  redirect: HOME_URL,
-  children: [
+    component: Layout,
+    redirect: HOME_URL,
+    children: [
       {
         path: HOME_URL, // [唯一]
         component: () => import("@/views/application/details/index.vue"),

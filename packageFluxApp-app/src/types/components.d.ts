@@ -7,8 +7,11 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    File: typeof import('./../components/SkyUpload/file.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SkyCard: typeof import('./../components/SkyCard/index.vue')['default']
+    SkyDialog: typeof import('./../components/SkyDialog/index.vue')['default']
     SkyTabBar: typeof import('./../components/SkyTabBar/index.vue')['default']
   }
 }
