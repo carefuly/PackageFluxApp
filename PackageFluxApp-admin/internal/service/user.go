@@ -11,6 +11,7 @@ package service
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/carefuly/PackageFluxApp/config"
 	"github.com/carefuly/PackageFluxApp/internal/domain"
 	"github.com/carefuly/PackageFluxApp/internal/repository"
@@ -76,6 +77,8 @@ func (svc *userService) Register(ctx context.Context, u domain.Register) error {
 
 func (svc *userService) Login(ctx *gin.Context, rely config.RelyConfig, u domain.Login) (string, error) {
 	user, err := svc.repo.FindByEmail(ctx, u.Email)
+	fmt.Println(user)
+	fmt.Println(err)
 	if err != nil {
 		return "", ErrInvalidUserOrPassword
 	}
@@ -120,7 +123,7 @@ func (svc *userService) setJWTToken(ctx *gin.Context, rely config.RelyConfig, u 
 		UserAgent: ctx.GetHeader("User-Agent"),
 		RegisteredClaims: jwt.RegisteredClaims{
 			// 一小时过期
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute * 60 * 4)),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute * 60 * 1)),
 		},
 	}
 

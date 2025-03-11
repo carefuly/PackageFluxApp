@@ -41,7 +41,7 @@ func InitGinMiddlewares(rely config.RelyConfig) []gin.HandlerFunc {
 			IgnorePaths("/api/v1/application/check/latest").
 			Build(),
 		middleware.NewLogger(rely.Logger).Logger(),
-		// middleware2.NewStorage().StorageLogger(rely.Db),
+		middleware.NewStorage().StorageLogger(rely.Db),
 	}
 }
 

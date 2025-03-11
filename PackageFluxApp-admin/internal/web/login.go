@@ -26,7 +26,8 @@ var (
 
 type LoginHandler interface {
 	RegisterRoutes(router *gin.RouterGroup)
-	SendEmailLoginCaptchaHandler(ctx *gin.Context)
+	SendEmailCaptchaLoginHandler(ctx *gin.Context)
+	EmailCaptchaLoginHandler(ctx *gin.Context)
 	PassWordLoginHandler(ctx *gin.Context)
 	UserInfoHandler(ctx *gin.Context)
 }
@@ -37,7 +38,7 @@ type loginHandler struct {
 	codeSvc service.CodeService
 }
 
-func NewLoginHandler(rely config.RelyConfig, svc service.UserService, codeSvc service.CodeService) RegisterHandler {
+func NewLoginHandler(rely config.RelyConfig, svc service.UserService, codeSvc service.CodeService) LoginHandler {
 	return &loginHandler{
 		rely:    rely,
 		svc:     svc,
@@ -64,7 +65,8 @@ func (h *loginHandler) SendEmailCaptchaLoginHandler(ctx *gin.Context) {
 	}
 
 	code, err := h.codeSvc.Send(ctx, req.Email, "Package登录", bizLogin)
-	zap.L().Info("验证码发送成功", zap.String("email", req.Email), zap.String("code", code))
+	// 不管成功还是失败, 控制台都要返回验证码
+	zap.L().Info("当前要发送的验证码", zap.String("email", req.Email), zap.String("code", code))
 
 	switch {
 	case err == nil:

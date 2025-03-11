@@ -11,6 +11,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"github.com/carefuly/PackageFluxApp/internal/domain"
 	"github.com/carefuly/PackageFluxApp/internal/model"
 	"github.com/carefuly/PackageFluxApp/internal/repository/cache"
@@ -19,15 +20,18 @@ import (
 )
 
 var (
-	ErrDuplicateEmail = dao.ErrDuplicateEmail
-	ErrUserIdNotFound = dao.ErrUserIdNotFound
+	ErrDuplicateEmail  = dao.ErrDuplicateEmail
+	ErrUserIdNotFound  = dao.ErrUserNotFound
+	ErrUserKeyNotExist = cache.ErrUserKeyNotExist
 )
 
 type UserRepository interface {
 	Create(ctx context.Context, u domain.Register) error
 	UpdateUsageNumber(ctx context.Context, userId string) error
+
 	FindById(ctx context.Context, email string) (domain.User, error)
 	FindByEmail(ctx context.Context, email string) (domain.User, error)
+
 	ExistsByEmail(ctx context.Context, email string) (bool, error)
 }
 
@@ -48,12 +52,24 @@ func (repo *userRepository) Create(ctx context.Context, u domain.Register) error
 }
 
 func (repo *userRepository) UpdateUsageNumber(ctx context.Context, userId string) error {
+	err := repo.dao.UpdateUsageNumber(ctx, userId)
+	if err != nil {
+		return err
+	}
+
+	err = repo.cache.Del(ctx, userId)
+	if err != nil {
+		// 网络崩了，也可能是 redis 崩了
+		zap.L().Error("Redis异常", zap.Error(err))
+		return err
+	}
+
 	return repo.dao.UpdateUsageNumber(ctx, userId)
 }
 
 func (repo *userRepository) FindById(ctx context.Context, id string) (domain.User, error) {
 	u, err := repo.cache.Get(ctx, id)
-	if err == nil {
+	if errors.Is(err, ErrUserKeyNotExist) {
 		return *u, nil
 	}
 

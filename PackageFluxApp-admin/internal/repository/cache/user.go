@@ -17,11 +17,12 @@ import (
 	"time"
 )
 
-var ErrKeyNotExist = redis.Nil
+var ErrUserKeyNotExist = redis.Nil
 
 type UserCache interface {
 	Get(ctx context.Context, id string) (*domain.User, error)
 	Set(ctx context.Context, d domain.User) error
+	Del(ctx context.Context, id string) error
 }
 
 type RedisUserCache struct {
@@ -56,6 +57,11 @@ func (c *RedisUserCache) Set(ctx context.Context, d domain.User) error {
 		return err
 	}
 	return c.cmd.Set(ctx, key, data, c.expiration).Err()
+}
+
+func (c *RedisUserCache) Del(ctx context.Context, id string) error {
+	key := c.key(id)
+	return c.cmd.Del(ctx, key).Err()
 }
 
 func (c *RedisUserCache) key(id string) string {

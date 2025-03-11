@@ -26,8 +26,9 @@ var (
 
 type RegisterHandler interface {
 	RegisterRoutes(router *gin.RouterGroup)
-	// SendEmailRegisterCaptchaHandler(ctx *gin.Context)
-	// EmailRegisterHandler(ctx *gin.Context)
+	SendEmailCaptchaRegisterHandler(ctx *gin.Context)
+	EmailCaptchaRegisterHandler(ctx *gin.Context)
+	PassWordRegisterHandler(ctx *gin.Context)
 }
 
 type registerHandler struct {
@@ -62,8 +63,8 @@ func (h *registerHandler) SendEmailCaptchaRegisterHandler(ctx *gin.Context) {
 	}
 
 	code, err := h.codeSvc.Send(ctx, req.Email, "Package注册", bizRegister)
-	// 不管成功还是失败, 都要返回验证码
-	zap.L().Info("验证码发送成功", zap.String("email", req.Email), zap.String("code", code))
+	// 不管成功还是失败, 控制台都要返回验证码
+	zap.L().Info("当前要发送的验证码", zap.String("email", req.Email), zap.String("code", code))
 
 	switch {
 	case err == nil:

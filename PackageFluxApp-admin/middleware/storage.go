@@ -11,7 +11,7 @@ package middleware
 import (
 	"bytes"
 	"fmt"
-	"github.com/carefuly/PackageFluxApp/model"
+	"github.com/carefuly/PackageFluxApp/internal/model"
 	"github.com/carefuly/PackageFluxApp/pkg/logger"
 	"github.com/carefuly/PackageFluxApp/pkg/requestUtils"
 	"github.com/gin-gonic/gin"
@@ -121,21 +121,21 @@ func (s *Storage) StorageLogger(db *gorm.DB) gin.HandlerFunc {
 
 			l := s.Logger(record.RequestPath)
 			l.Info(path,
-				zap.String("request_username", record.RequestUsername),
-				zap.String("request_time", fmt.Sprintf("%v", latency)),
-				zap.Int("request_status", c.Writer.Status()),
-				zap.String("request_method", c.Request.Method),
-				zap.String("request_ip", c.ClientIP()),
-				zap.String("request_path", path),
-				zap.Any("request_query", query),
-				zap.Any("request_body", loggingReader.format()),
-				zap.String("request_os", record.RequestOs),
-				zap.String("request_browser", record.RequestBrowser),
-				zap.String("user_agent", record.UserAgent),
-				zap.Int("request_code", record.RequestCode),
-				zap.Any("request_result", record.RequestResult),
-				zap.String("request_errors", record.Errors),
-				zap.String("request_internal", record.Internal),
+				zap.String("requestUsername", record.RequestUsername),
+				zap.String("requestTime", fmt.Sprintf("%v", latency)),
+				zap.Int("requestStatus", c.Writer.Status()),
+				zap.String("requestMethod", c.Request.Method),
+				zap.String("requestIp", c.ClientIP()),
+				zap.String("requestPath", path),
+				zap.Any("requestQuery", query),
+				zap.Any("requestBody", loggingReader.format()),
+				zap.String("requestOs", record.RequestOs),
+				zap.String("requestBrowser", record.RequestBrowser),
+				zap.String("userAgent", record.UserAgent),
+				zap.Int("requestCode", record.RequestCode),
+				zap.Any("requestResult", record.RequestResult),
+				zap.String("requestErrors", record.Errors),
+				zap.String("requestInternal", record.Internal),
 			)
 		}
 	}
