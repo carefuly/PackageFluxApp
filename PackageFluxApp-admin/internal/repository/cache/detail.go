@@ -22,6 +22,7 @@ var ErrDetailNotExist = redis.Nil
 type DetailCache interface {
 	Get(ctx context.Context, id string) (*domain.Detail, error)
 	Set(ctx context.Context, d domain.Detail) error
+	Del(ctx context.Context, id string) error
 }
 
 type RedisDetailCache struct {
@@ -56,6 +57,11 @@ func (c *RedisDetailCache) Set(ctx context.Context, d domain.Detail) error {
 		return err
 	}
 	return c.cmd.Set(ctx, key, data, c.expiration).Err()
+}
+
+func (c *RedisDetailCache) Del(ctx context.Context, id string) error {
+	key := c.key(id)
+	return c.cmd.Del(ctx, key).Err()
 }
 
 func (c *RedisDetailCache) key(id string) string {

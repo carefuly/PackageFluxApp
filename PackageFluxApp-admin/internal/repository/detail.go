@@ -62,18 +62,15 @@ func (repo *detailRepository) Update(ctx context.Context, id, userId string, d d
 	if err != nil {
 		return 0, err
 	}
-	// 更新缓存
-	detail, err := repo.dao.FindByIdAndUserId(ctx, id, userId)
+
+	// 删除缓存
+	err = repo.cache.Del(ctx, id)
 	if err != nil {
-		return rowsAffected, err
+		// 网络崩了，也可能是 redis 崩了
+		zap.L().Error("Redis异常", zap.Error(err))
+		return 0, err
 	}
 
-	detailInfo := repo.toDomain(detail)
-	err = repo.cache.Set(ctx, detailInfo)
-	if err != nil {
-		zap.L().Error("Redis异常", zap.Error(err))
-		return rowsAffected, err
-	}
 	return rowsAffected, err
 }
 
@@ -82,18 +79,15 @@ func (repo *detailRepository) UpdateFormal(ctx context.Context, id, userId, vers
 	if err != nil {
 		return 0, err
 	}
-	// 更新缓存
-	detail, err := repo.dao.FindByIdAndUserId(ctx, id, userId)
+
+	// 删除缓存
+	err = repo.cache.Del(ctx, id)
 	if err != nil {
-		return rowsAffected, err
+		// 网络崩了，也可能是 redis 崩了
+		zap.L().Error("Redis异常", zap.Error(err))
+		return 0, err
 	}
 
-	detailInfo := repo.toDomain(detail)
-	err = repo.cache.Set(ctx, detailInfo)
-	if err != nil {
-		zap.L().Error("Redis异常", zap.Error(err))
-		return rowsAffected, err
-	}
 	return rowsAffected, err
 }
 

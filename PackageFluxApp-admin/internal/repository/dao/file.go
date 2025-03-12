@@ -66,8 +66,10 @@ func (dao *GORMFileDAO) FindListPage(ctx context.Context, userId string, page fi
 	}
 
 	offset := (page.Page - 1) * page.PageSize
-	if err := dao.db.WithContext(ctx).Where("status = ? AND user_id = ?", true, userId).
-		Offset(offset).Limit(page.PageSize).Order("update_time DESC, sort ASC").
+	if err := dao.db.WithContext(ctx).
+		Where("status = ? AND user_id = ?", true, userId).
+		Offset(offset).Limit(page.PageSize).
+		Order("update_time DESC, sort ASC").
 		Find(&files).Error; err != nil {
 		return 0, nil, err
 	}

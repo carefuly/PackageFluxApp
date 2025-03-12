@@ -11,7 +11,6 @@ package repository
 import (
 	"context"
 	"database/sql"
-	"errors"
 	"github.com/carefuly/PackageFluxApp/internal/domain"
 	"github.com/carefuly/PackageFluxApp/internal/model"
 	"github.com/carefuly/PackageFluxApp/internal/repository/cache"
@@ -69,7 +68,8 @@ func (repo *userRepository) UpdateUsageNumber(ctx context.Context, userId string
 
 func (repo *userRepository) FindById(ctx context.Context, id string) (domain.User, error) {
 	u, err := repo.cache.Get(ctx, id)
-	if errors.Is(err, ErrUserKeyNotExist) {
+
+	if err == nil {
 		return *u, nil
 	}
 

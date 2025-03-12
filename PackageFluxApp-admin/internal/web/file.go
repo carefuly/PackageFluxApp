@@ -22,8 +22,8 @@ import (
 	"go.uber.org/zap"
 	"net/http"
 	"os"
-	"path/filepath"
 	"strconv"
+	"strings"
 )
 
 type FileHandler interface {
@@ -92,14 +92,13 @@ func (h *fileHandler) BatchUpload(ctx *gin.Context) {
 	for _, file := range uploadFiles {
 		dir, _ := os.Getwd()
 		filePath := path + "/" + file.Filename
-
-		fileSuffix := filepath.Ext(file.Filename)
+		fileType := strings.Split(file.Filename, ".")
 
 		files = append(files, domain.File{
 			File: model.File{
 				Name:    file.Filename,
 				Size:    fmt.Sprintf("%.3f", float64(file.Size)/1024/1024),
-				Type:    fileSuffix,
+				Type:    fileType[len(fileType)-1],
 				Suffix:  file.Header.Get("Content-Type"),
 				BaseDir: dir,
 				FileDir: dir + filePath,

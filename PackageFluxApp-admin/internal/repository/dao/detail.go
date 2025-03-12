@@ -82,7 +82,7 @@ func (dao *GORMDetailDAO) FindListAll(ctx context.Context, userId, appName strin
 		Preload("Version").
 		Order("update_time DESC, sort ASC")
 	if appName != "" {
-		query = query.Where("app_name LIKE ?", "%"+appName+"%")
+		query = query.Where("appName LIKE ?", "%"+appName+"%")
 	}
 	var details []*model.Detail
 	result := query.Find(&details)
