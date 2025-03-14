@@ -30,10 +30,12 @@ type VersionRepository interface {
 	Delete(ctx context.Context, id, detailId, userId string) (int64, error)
 	Update(ctx context.Context, id, detailId, userId string, v domain.Version) (int64, error)
 	UpdateFormal(ctx context.Context, id, detailId, userId string) (int64, error)
+
 	FindByIdAndDetailIdAndUserId(ctx context.Context, id, detailId, userId string) (domain.Version, error)
 	FindByFormalVersionCode(ctx context.Context, detailId, userId string) (domain.Version, error)
 	FindByDetailIdAndFormalVersion(ctx context.Context, detailId string) (domain.Version, error)
 	FindListAll(ctx context.Context, detailId, userId string) (int64, []domain.Version, error)
+
 	ExistsByDetailIdAndFormalVersion(ctx context.Context, detailId string) (bool, error)
 	ExistsByDetailIdAndCode(ctx context.Context, userId, detailId, versionCode string) (bool, error)
 }
@@ -63,16 +65,12 @@ func (repo *versionRepository) Update(ctx context.Context, id, detailId, userId 
 	if err != nil {
 		return 0, err
 	}
-	// 更新缓存
-	version, err := repo.dao.FindByIdAndDetailIdAndUserId(ctx, id, detailId, userId)
+	// 删除缓存
+	err = repo.cache.Del(ctx, id, userId)
 	if err != nil {
-		return rowsAffected, err
-	}
-	versionInfo := repo.toDomain(version)
-	err = repo.cache.Set(ctx, versionInfo)
-	if err != nil {
+		// 网络崩了，也可能是 redis 崩了
 		zap.L().Error("Redis异常", zap.Error(err))
-		return rowsAffected, err
+		return 0, err
 	}
 	return rowsAffected, err
 }
@@ -82,17 +80,14 @@ func (repo *versionRepository) UpdateFormal(ctx context.Context, id, detailId, u
 	if err != nil {
 		return 0, err
 	}
-	// 更新缓存
-	version, err := repo.dao.FindByIdAndDetailIdAndUserId(ctx, id, detailId, userId)
+	// 删除缓存
+	err = repo.cache.Del(ctx, id, userId)
 	if err != nil {
-		return rowsAffected, err
-	}
-	versionInfo := repo.toDomain(version)
-	err = repo.cache.Set(ctx, versionInfo)
-	if err != nil {
+		// 网络崩了，也可能是 redis 崩了
 		zap.L().Error("Redis异常", zap.Error(err))
-		return rowsAffected, err
+		return 0, err
 	}
+
 	return rowsAffected, err
 }
 

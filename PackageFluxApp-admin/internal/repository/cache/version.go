@@ -22,6 +22,7 @@ var ErrVersionNotExist = redis.Nil
 type VersionCache interface {
 	Get(ctx context.Context, id, userId string) (*domain.Version, error)
 	Set(ctx context.Context, d domain.Version) error
+	Del(ctx context.Context, id, userId string) error
 }
 
 type RedisVersionCache struct {
@@ -56,6 +57,11 @@ func (c *RedisVersionCache) Set(ctx context.Context, v domain.Version) error {
 		return err
 	}
 	return c.cmd.Set(ctx, key, data, c.expiration).Err()
+}
+
+func (c *RedisVersionCache) Del(ctx context.Context, id, userId string) error {
+	key := c.key(id, userId)
+	return c.cmd.Del(ctx, key).Err()
 }
 
 func (c *RedisVersionCache) key(id, userId string) string {

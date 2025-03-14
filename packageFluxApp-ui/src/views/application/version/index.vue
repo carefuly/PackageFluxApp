@@ -385,7 +385,7 @@ onMounted(() => {
         :height="450"
       >
         <template #content>
-          <el-form ref="formRef" :model="pageData.form" :rules="pageData.rules" label-width="auto">
+          <el-form ref="formRef" :model="pageData.form" :rules="pageData.rules" label-width="154px">
             <el-row>
               <el-col :xs="{ span: 24 }" :sm="{ span: 24 }">
                 <el-form-item label="应用版本号" prop="versionCode">

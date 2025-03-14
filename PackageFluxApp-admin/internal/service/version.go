@@ -93,6 +93,7 @@ func (svc *versionService) UpdateFormal(ctx context.Context, id, detailId, userI
 	if err != nil {
 		return err
 	}
+
 	if version.Id != "" {
 		compareResult, err := svc.CompareVersion(v.VersionCode, version.VersionCode)
 		if err != nil {
@@ -102,13 +103,16 @@ func (svc *versionService) UpdateFormal(ctx context.Context, id, detailId, userI
 			return ErrVersionLowerInvalid
 		}
 	}
+
 	rowsAffected, err := svc.repo.UpdateFormal(ctx, id, detailId, userId)
 	if err != nil {
 		return err
 	}
+
 	if rowsAffected == 0 {
 		return repository.ErrVersionNotFound
 	}
+
 	_, err = svc.detailRepo.UpdateFormal(ctx, detailId, userId, id)
 	if err != nil {
 		return err

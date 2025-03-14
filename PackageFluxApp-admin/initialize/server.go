@@ -39,6 +39,7 @@ func InitGinMiddlewares(rely config.RelyConfig) []gin.HandlerFunc {
 			IgnorePaths("/api/v1/auth/email-login").
 			IgnorePaths("/api/v1/auth/password-login").
 			IgnorePaths("/api/v1/application/check/latest").
+			IgnorePaths("/api/v1/application/logger/create").
 			Build(),
 		middleware.NewLogger(rely.Logger).Logger(),
 		middleware.NewStorage().StorageLogger(rely.Db),

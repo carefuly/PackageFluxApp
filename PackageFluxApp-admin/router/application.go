@@ -63,4 +63,10 @@ func (r *ApplicationRouter) RegisterAuthRouter(router *gin.RouterGroup) {
 	fileService := service.NewFileService(fileRepository)
 	fileHandler := web.NewFileHandler(r.rely, fileService, aliYunService)
 	fileHandler.RegisterRoutes(applicationRouter)
+
+	loggerDAO := dao.NewGORMLoggerDAO(r.rely.Db)
+	loggerRepository := repository.NewLoggerRepository(loggerDAO)
+	loggerService := service.NewLoggerService(loggerRepository)
+	loggerHandler := web.NewLoggerHandler(r.rely, loggerService)
+	loggerHandler.RegisterRoutes(applicationRouter)
 }

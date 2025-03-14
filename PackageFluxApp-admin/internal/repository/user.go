@@ -63,7 +63,7 @@ func (repo *userRepository) UpdateUsageNumber(ctx context.Context, userId string
 		return err
 	}
 
-	return repo.dao.UpdateUsageNumber(ctx, userId)
+	return err
 }
 
 func (repo *userRepository) FindById(ctx context.Context, id string) (domain.User, error) {
