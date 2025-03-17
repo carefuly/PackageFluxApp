@@ -18,6 +18,6 @@ spec:
     spec:
       containers:
         - name: package
-          image: carefuly/package-live:v0.0.1
+          image: careful/package-live:v0.0.1
           ports:
             - containerPort: 8080
