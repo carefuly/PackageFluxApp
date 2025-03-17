@@ -3,9 +3,9 @@ import sky from "@/utils/axios";
 
 // 统一管理接口
 enum API {
-  FREQUENCY = "/application/app/statistic/frequency",
+  STATISTICS = "/v1/application/logger/statistics",
 }
 
 // 获取统计次数
-export const frequency = (data: any) => sky.get(API.FREQUENCY, data);
+export const statistics = (data: any) => sky.get(API.STATISTICS, data);
 

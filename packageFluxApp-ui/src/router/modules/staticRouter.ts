@@ -19,14 +19,14 @@ export const layoutRouter: RouteRecordRaw[] = [
           title: "应用详情", // 标题
         }
       },
-      // {
-      //   path: "/application/statistic/:id",
-      //   name: 'Statistic',
-      //   component: () => import("@/views/application/statistic/index.vue"),
-      //   meta: {
-      //     title: "应用统计",
-      //   },
-      // },
+      {
+        path: "/application/statistic/:id",
+        name: 'Statistic',
+        component: () => import("@/views/application/statistic/index.vue"),
+        meta: {
+          title: "应用统计",
+        },
+      },
       {
         path: "/application/version/:id",
         name: 'Version',

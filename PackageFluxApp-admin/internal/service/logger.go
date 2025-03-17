@@ -17,7 +17,8 @@ import (
 
 type LoggerService interface {
 	Create(ctx context.Context, l domain.Logger) error
-	FindListPage(ctx context.Context, detailId string, page filters.Pagination) (int64, []domain.Logger, error)
+	FindListPage(ctx context.Context, detailId, createTime string, page filters.Pagination) (int64, []domain.Logger, error)
+	Statistics(ctx context.Context, detailId, createTime string) (domain.LoggerStatistics, error)
 }
 
 type loggerService struct {
@@ -34,8 +35,8 @@ func (svc *loggerService) Create(ctx context.Context, l domain.Logger) error {
 	return svc.repo.Create(ctx, l)
 }
 
-func (svc *loggerService) FindListPage(ctx context.Context, detailId string, page filters.Pagination) (int64, []domain.Logger, error) {
-	total, list, err := svc.repo.FindListPage(ctx, detailId, page)
+func (svc *loggerService) FindListPage(ctx context.Context, detailId, createTime string, page filters.Pagination) (int64, []domain.Logger, error) {
+	total, list, err := svc.repo.FindListPage(ctx, detailId, createTime, page)
 	if err != nil {
 		return 0, []domain.Logger{}, err
 	}
@@ -43,4 +44,33 @@ func (svc *loggerService) FindListPage(ctx context.Context, detailId string, pag
 		return 0, []domain.Logger{}, err
 	}
 	return total, list, nil
+}
+
+func (svc *loggerService) Statistics(ctx context.Context, detailId, createTime string) (domain.LoggerStatistics, error) {
+	openNum, err := svc.repo.CountByDetailIdAndCreateTime(ctx, detailId, createTime)
+	if err != nil {
+		return domain.LoggerStatistics{}, err
+	}
+
+	userNum, err := svc.repo.CountDistinctUniqueIdByCreateTime(ctx, detailId, createTime)
+	if err != nil {
+		return domain.LoggerStatistics{}, err
+	}
+
+	openTotalNum, err := svc.repo.CountByDetailId(ctx, detailId)
+	if err != nil {
+		return domain.LoggerStatistics{}, err
+	}
+
+	userTotalNum, err := svc.repo.CountDistinctUniqueIdByDetailId(ctx, detailId)
+	if err != nil {
+		return domain.LoggerStatistics{}, err
+	}
+
+	return domain.LoggerStatistics{
+		OpenNum:      openNum,
+		OpenTotalNum: openTotalNum,
+		UserNum:      userNum,
+		UserTotalNum: userTotalNum,
+	}, nil
 }

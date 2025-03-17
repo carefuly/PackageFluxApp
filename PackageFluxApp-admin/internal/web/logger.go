@@ -43,6 +43,7 @@ func NewLoggerHandler(rely config.RelyConfig, svc service.LoggerService) LoggerH
 func (h *loggerHandler) RegisterRoutes(router *gin.RouterGroup) {
 	router.POST("/logger/create", h.Create)
 	router.GET("/logger/listPage", h.GetListAllPage)
+	router.GET("/logger/statistics", h.Statistics)
 }
 
 func (h *loggerHandler) Create(ctx *gin.Context) {
@@ -93,12 +94,13 @@ func (h *loggerHandler) GetListAllPage(ctx *gin.Context) {
 	pageSize, _ := strconv.Atoi(pageSizeStr)
 
 	detailId := ctx.DefaultQuery("detailId", "")
+	createTime := ctx.DefaultQuery("create_time", "")
 	if detailId == "" {
 		response.NewResponse().ErrorResponse(ctx, http.StatusBadRequest, "应用id不能为空", nil)
 		return
 	}
 
-	total, list, err := h.svc.FindListPage(ctx, detailId, filters.Pagination{
+	total, list, err := h.svc.FindListPage(ctx, detailId, createTime, filters.Pagination{
 		Page:     page,
 		PageSize: pageSize,
 	})
@@ -117,4 +119,24 @@ func (h *loggerHandler) GetListAllPage(ctx *gin.Context) {
 		"pageSize": pageSize,
 	})
 
+}
+
+func (h *loggerHandler) Statistics(ctx *gin.Context) {
+	detailId := ctx.DefaultQuery("detailId", "")
+	createTime := ctx.DefaultQuery("create_time", "")
+
+	if detailId == "" {
+		response.NewResponse().ErrorResponse(ctx, http.StatusBadRequest, "应用id不能为空", nil)
+		return
+	}
+
+	statistics, err := h.svc.Statistics(ctx, detailId, createTime)
+	if err != nil {
+		ctx.Set("internal", err.Error())
+		zap.L().Error("查询应用检查日志统计异常", zap.Error(err))
+		response.NewResponse().ErrorResponse(ctx, http.StatusInternalServerError, "服务器异常", nil)
+		return
+	}
+
+	response.NewResponse().SuccessResponse(ctx, "查询成功", statistics)
 }

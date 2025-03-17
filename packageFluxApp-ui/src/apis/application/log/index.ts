@@ -3,7 +3,7 @@ import sky from "@/utils/axios";
 
 // 统一管理接口
 enum API {
-  LIST_PAGE = "/application/app/appLog/listPage",
+  LIST_PAGE = "/v1/application/logger/listPage",
 }
 
 // 分页列表

@@ -19,7 +19,11 @@ import (
 
 type LoggerRepository interface {
 	Create(ctx context.Context, f domain.Logger) error
-	FindListPage(ctx context.Context, detailId string, page filters.Pagination) (int64, []domain.Logger, error)
+	FindListPage(ctx context.Context, detailId, createTime string, page filters.Pagination) (int64, []domain.Logger, error)
+	CountByDetailIdAndCreateTime(ctx context.Context, detailId, createTime string) (int64, error)
+	CountDistinctUniqueIdByCreateTime(ctx context.Context, detailId, createTime string) (int64, error)
+	CountByDetailId(ctx context.Context, detailId string) (int64, error)
+	CountDistinctUniqueIdByDetailId(ctx context.Context, detailId string) (int64, error)
 }
 
 type loggerRepository struct {
@@ -36,8 +40,8 @@ func (repo *loggerRepository) Create(ctx context.Context, l domain.Logger) error
 	return repo.dao.Insert(ctx, repo.toEntity(l))
 }
 
-func (repo *loggerRepository) FindListPage(ctx context.Context, detailId string, page filters.Pagination) (int64, []domain.Logger, error) {
-	rows, list, err := repo.dao.FindListPage(ctx, detailId, page)
+func (repo *loggerRepository) FindListPage(ctx context.Context, detailId, createTime string, page filters.Pagination) (int64, []domain.Logger, error) {
+	rows, list, err := repo.dao.FindListPage(ctx, detailId, createTime, page)
 	if err != nil {
 		return rows, []domain.Logger{}, err
 	}
@@ -46,6 +50,22 @@ func (repo *loggerRepository) FindListPage(ctx context.Context, detailId string,
 		loggers = append(loggers, repo.toDomain(v))
 	}
 	return rows, loggers, err
+}
+
+func (repo *loggerRepository) CountByDetailIdAndCreateTime(ctx context.Context, detailId, createTime string) (int64, error) {
+	return repo.dao.CountByDetailIdAndCreateTime(ctx, detailId, createTime)
+}
+
+func (repo *loggerRepository) CountDistinctUniqueIdByCreateTime(ctx context.Context, detailId, createTime string) (int64, error) {
+	return repo.dao.CountDistinctUniqueIdByCreateTime(ctx, detailId, createTime)
+}
+
+func (repo *loggerRepository) CountByDetailId(ctx context.Context, detailId string) (int64, error) {
+	return repo.dao.CountByDetailId(ctx, detailId)
+}
+
+func (repo *loggerRepository) CountDistinctUniqueIdByDetailId(ctx context.Context, detailId string) (int64, error) {
+	return repo.dao.CountDistinctUniqueIdByDetailId(ctx, detailId)
 }
 
 func (repo *loggerRepository) toEntity(d domain.Logger) model.Logger {
