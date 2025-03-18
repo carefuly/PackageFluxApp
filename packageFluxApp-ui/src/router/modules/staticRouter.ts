@@ -35,14 +35,6 @@ export const layoutRouter: RouteRecordRaw[] = [
           title: "应用版本",
         },
       },
-      // {
-      //   path: "/application/log/:id",
-      //   name: 'Log',
-      //   component: () => import("@/views/application/log/index.vue"),
-      //   meta: {
-      //     title: "应用版本日志",
-      //   },
-      // },
     ]
   },
   {
@@ -63,12 +55,12 @@ export const layoutRouter: RouteRecordRaw[] = [
       requireAuth: false,
     }
   },
-  // {
-  //   path: "/application/issue/:id",
-  //   name: 'Issue',
-  //   component: () => import("@/views/application/issue/index.vue"),
-  //   meta: {
-  //     title: "应用版本发布页",
-  //   },
-  // },
+  {
+    path: "/application/issue/:id",
+    name: 'Issue',
+    component: () => import("@/views/application/issue/index.vue"),
+    meta: {
+      title: "应用版本发布页",
+    },
+  },
 ];

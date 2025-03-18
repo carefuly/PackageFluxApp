@@ -59,7 +59,9 @@ const method = reactive({
   handleFrequency: async () => {
     try {
       pageData.value.frequency = {
-        OpenNum: 0,
+        openNum: 0,
+        openTotalNum: 0,
+        userNum: 0,
         userTotalNum: 0,
       };
       const res: any = await statistics({
@@ -256,7 +258,8 @@ onMounted(() => {
           <el-table-column label="唯一Id" prop="uniqueId" align="center" :show-overflow-tooltip="true"/>
           <el-table-column label="应用标识Id" prop="appId" align="center" :show-overflow-tooltip="true"/>
           <el-table-column label="应用名称" prop="appName" align="center" :show-overflow-tooltip="true"/>
-          <el-table-column label="应用版本(检查的版本)" prop="appVersion" width="200" align="center" :show-overflow-tooltip="true"/>
+          <el-table-column label="应用版本(检查的版本)" prop="appVersion" width="200" align="center"
+                           :show-overflow-tooltip="true"/>
           <el-table-column label="设备品牌" prop="brand" align="center" :show-overflow-tooltip="true"/>
           <el-table-column label="系统名称" prop="systemName" align="center" :show-overflow-tooltip="true"/>
           <el-table-column label="应用标识备注" prop="uniRemark" align="center" :show-overflow-tooltip="true"/>

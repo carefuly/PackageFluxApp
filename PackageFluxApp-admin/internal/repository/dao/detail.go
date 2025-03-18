@@ -73,7 +73,7 @@ func (dao *GORMDetailDAO) UpdateFormal(ctx context.Context, id, userId, versionI
 
 func (dao *GORMDetailDAO) FindByIdAndUserId(ctx context.Context, id, userId string) (*model.Detail, error) {
 	var detail model.Detail
-	err := dao.db.WithContext(ctx).Where("id = ? AND user_id = ?", id, userId).First(&detail).Error
+	err := dao.db.WithContext(ctx).Where("id = ? AND user_id = ?", id, userId).Preload("Version").First(&detail).Error
 	return &detail, err
 }
 
