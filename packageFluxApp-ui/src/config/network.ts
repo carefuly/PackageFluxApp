@@ -5,7 +5,8 @@
  */
 export const network = {
   // axios 基础url地址
-  baseURL: import.meta.env.VITE_GLOB_API_URL + import.meta.env.VITE_GLOB_API_URL_PREFIX,
+  // baseURL: import.meta.env.VITE_GLOB_API_URL + import.meta.env.VITE_GLOB_API_URL_PREFIX,
+  baseURL: window.location.origin + import.meta.env.VITE_GLOB_API_URL_PREFIX,
   // 为开发服务器配置 CORS。默认启用并允许任何源，传递一个 选项对象 来调整行为或设为 false 表示禁用
   cors: true,
   // 是否在请求中协带cookie

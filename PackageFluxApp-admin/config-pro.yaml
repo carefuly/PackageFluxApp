@@ -1,0 +1,8 @@
+nacos:
+  host: '192.168.66.102'
+  port: 8848
+  namespace: '7b67f752-f132-439c-baef-ee74e85fd363'
+  user: 'nacos'
+  password: '152369cj'
+  dataId: 'config-pro.yaml'
+  group: 'Production'

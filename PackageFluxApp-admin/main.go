@@ -40,7 +40,7 @@ import (
 func main() {
 	var relyConfig config.RelyConfig
 	relyConfig.Logger = initialize.InitStdoutLogger()
-	initConfig := initialize.InitConfig(true)
+	initConfig := initialize.InitConfig(false)
 	relyConfig.Mail = initConfig.EmailConfig
 	relyConfig.Db = initialize.NewDbPool().InitDb(initConfig.DatabaseConfig)
 	relyConfig.Redis = initialize.InitRedis(initConfig.RedisConfig)
