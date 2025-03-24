@@ -8,6 +8,10 @@
 
 package config
 
+type EnvironmentConfig struct {
+	Live string `mapstructure:"live"`
+}
+
 type NaCosConfig struct {
 	Host      string `mapstructure:"host"`
 	Port      uint64 `mapstructure:"port"`
@@ -19,5 +23,7 @@ type NaCosConfig struct {
 }
 
 type Nacos struct {
-	NaCosConfig `mapstructure:"nacos"`
+	EnvironmentConfig `mapstructure:"environment"`
+	ServerConfig      ServerConfig `mapstructure:"server"`
+	NaCosConfig       `mapstructure:"nacos"`
 }

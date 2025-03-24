@@ -9,6 +9,6 @@
 package config
 
 type ServerConfig struct {
-	Host string `yaml:"host" json:"host"`
-	Port int    `yaml:"port" json:"port"`
+	Host string `mapstructure:"host" yaml:"host" json:"host"`
+	Port int    `mapstructure:"port" yaml:"port" json:"port"`
 }

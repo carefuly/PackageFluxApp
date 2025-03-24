@@ -15,8 +15,6 @@ export function getVersion() {
 
 export function recordLogger(sysInfo, config) {
 	return new Promise((RES, REJ) => {
-		console.log(sysInfo);
-		console.log(config);
 		uni.request({
 			url: config.logUrl,
 			method: 'POST',

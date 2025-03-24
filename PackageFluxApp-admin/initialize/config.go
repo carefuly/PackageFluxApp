@@ -89,7 +89,10 @@ func InitConfig(debug bool) *config.Config {
 		zap.L().Error("解析配置文件失败", zap.Error(err))
 	}
 
-	fmt.Println(globalConfig)
+	globalConfig.ServerConfig.Host = conf.ServerConfig.Host
+	globalConfig.ServerConfig.Port = conf.ServerConfig.Port
+
+	fmt.Println("globalConfig", globalConfig)
 
 	// 将配置信息写入到全局变量中
 	return globalConfig
